@@ -18,7 +18,6 @@ model Component {
   authorId  String?
   index     String
   type      String
-  data     ComponentData
 }
 
 model Page {
