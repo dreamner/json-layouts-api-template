@@ -119,7 +119,7 @@ const Header: React.FC = () => {
       <div className="left">
         <Link href="/">
           <a className="bold" data-active={isActive('/')}>
-            Feed
+            Admin
           </a>
         </Link>
         <Link href="/drafts">
@@ -153,7 +153,7 @@ const Header: React.FC = () => {
         </p>
         <Link href="/create">
           <button>
-            <a>New post</a>
+            <a>New app</a>
           </button>
         </Link>
         <button onClick={() => signOut()}>

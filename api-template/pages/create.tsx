@@ -27,7 +27,7 @@ const Draft: React.FC = () => {
     <Layout>
       <div>
         <form onSubmit={submitData}>
-          <h1>New Draft</h1>
+          <h1>New App</h1>
           <input
             autoFocus
             onChange={(e) => setTitle(e.target.value)}
@@ -38,7 +38,7 @@ const Draft: React.FC = () => {
           <textarea
             cols={50}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Content"
+            placeholder="Description"
             rows={8}
             value={content}
           />
