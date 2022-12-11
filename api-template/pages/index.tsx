@@ -1,9 +1,11 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import App, { AppProps } from "../components/App"
+import React from "react";
+import { GetStaticProps } from "next";
+import Layout from "../components/Layout";
+import App, { AppProps } from "../components/App";
 
-import prisma from '../lib/prisma';
+import prisma from "../lib/prisma";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async () => {
   const apps = await prisma.app.findMany({
@@ -20,22 +22,37 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-
 type Props = {
-  apps: AppProps[]
-}
+  apps: AppProps[];
+};
 
 const Blog: React.FC<Props> = (props) => {
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <div>Authenticating ...</div>;
+  }
+  const userHasValidSession = Boolean(session);
+  const hasApps = Boolean(props.apps.length);
+  const router = useRouter();
   return (
     <Layout>
       <div className="page">
-        <h1>Your apps</h1>
+        {userHasValidSession && <h1>Your apps</h1>}
+        {!userHasValidSession && (
+          <p>You need to be signed in to view your apps</p>
+        )}
         <main>
           {props.apps.map((app) => (
             <div key={app.id} className="post">
               <App app={app} />
             </div>
           ))}
+          {!hasApps && userHasValidSession && (
+            <div>
+              <h6>You do not have any apps. Create a new app below</h6>
+              <button onClick={() => router.push("/create")}>Create app</button>
+            </div>
+          )}
         </main>
       </div>
       <style jsx>{`
@@ -53,7 +70,7 @@ const Blog: React.FC<Props> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;
