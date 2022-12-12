@@ -1,4 +1,6 @@
-import Box, { IBox } from "../../components/Box";
+// import Box, { IBox } from "../../components/Box";
+
+import Box, { IBox } from "./components/Box";
 
 export default function renderBox({
   components = [],

@@ -15,10 +15,6 @@ import {
   import renderText from "./renderText";
   
   import renderButton from "./renderButton";
-  import DefaultComponent from "../../components/DefaultComponent";
-  import renderImage from "./renderImage";
-  import renderTable from "./renderTable";
-  import renderForm from "./renderForm";
   import renderTextField from "./renderTextField";
   import renderAppbar from "./renderAppbar";
   import renderSelect from "./renderSelect";
@@ -27,12 +23,13 @@ import {
   import renderTooltip from "./renderTooltip";
   import renderRating from "./renderRating";
   import renderImageField from "./renderImageField";
-  import renderTransferList from "./renderTransferList";
   import renderBox from "./renderBox";
-  import { IBox } from "../../components/Box";
-  import renderTabs from "./display/renderTabs";
-  
-  import Avatar from "../../components/Avatar";
+import renderImage from "../renderImage";
+import renderTable from "../renderTable";
+import renderForm from "../renderForm";
+import renderTabs from "./renderTabs";
+import { IBox } from "./components/Box";
+import DefaultComponent from "./components/DefaultComponent";
   
   export default function renderComponents(components: any[] = []) {
     return components.map((component, index) => {
@@ -149,13 +146,13 @@ import {
           );
         }
         case "transfer_list": {
-          return renderTransferList();
+          // return renderBox({});
         }
         case "toggle_button": {
         }
         case "avatar": {
           const { clickAction = "" } = data;
-          return <Avatar clickAction={clickAction} />;
+          // return <Avatar clickAction={clickAction} />;
         }
         case "badge": {
           return <Badge />;

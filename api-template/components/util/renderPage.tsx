@@ -1,11 +1,9 @@
 import React from "react";
-import { ErrorBoundary } from "../../features/errorBoundary";
-
-const Dashboard = React.lazy(() => import("../../layouts/dashboard"));
-const DefaultLayout = React.lazy(() => import("../../layouts/DefaultLayout"));
+import Dashboard from "../layouts/dashboard";
+import DefaultLayout from "../layouts/defaultlayout";
+import renderBox from "./renderBox";
 
 import renderComponents from "./renderComponents";
-import renderDrawer from "./renderDrawer";
 import renderGrid from "./renderGrid";
 import renderStack from "./renderStack";
 
@@ -26,31 +24,17 @@ export default function renderPage(page: Ipage = defaultPageProps) {
   switch (layout) {
     case "page": {
       return (
-        <ErrorBoundary>
-          <React.Suspense fallback={<>Loading page...</>}>
-            {children}
-          </React.Suspense>
-        </ErrorBoundary>
+        <React.Suspense fallback={<>Loading page...</>}>
+          {children}
+        </React.Suspense>
       );
     }
     case "dashboard": {
       const drawerLists = (opts as any)?.lists ?? [];
-      return (
-        <ErrorBoundary>
-          <React.Suspense fallback={<>Loading page...</>}>
-            <Dashboard drawer={renderDrawer(drawerLists)}>{children}</Dashboard>
-          </React.Suspense>
-        </ErrorBoundary>
-      );
+      return <Dashboard drawer={renderBox(drawerLists)}>{children}</Dashboard>;
     }
     default: {
-      return (
-        <ErrorBoundary>
-          <React.Suspense fallback={<>Loading page...</>}>
-            <DefaultLayout name={name}>{children}</DefaultLayout>
-          </React.Suspense>
-        </ErrorBoundary>
-      );
+      return <DefaultLayout name={name}>{children}</DefaultLayout>;
     }
   }
 }

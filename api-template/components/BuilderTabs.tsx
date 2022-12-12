@@ -4,7 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Themes from "./Themes";
-import Components from "./Components";
+import ComponentsTab from "./Components";
 import Pages from "./Pages";
 import Preferences from "./Preferences";
 
@@ -61,10 +61,10 @@ export default function BuilderTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Components />
+        <ComponentsTab />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Components />
+        <ComponentsTab />
       </TabPanel>
     </Box>
   );
