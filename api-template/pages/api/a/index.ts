@@ -1,8 +1,32 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+import Cors from "cors";
 import prisma from "../../../lib/prisma";
 
-export default async function handle(req, res) {
-  const apps = await prisma.app.findMany({
-    where: { published: true },
+const cors = Cors({
+  methods: ["POST", "GET", "HEAD"],
+});
+
+function runMiddleware(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  fn: Function
+) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result: any) => {
+      if (result instanceof Error) {
+        return reject(result);
+      }
+
+      return resolve(result);
+    });
   });
-  res.json(apps);
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  await runMiddleware(req, res, cors);
+  const apps = await prisma.app.findMany({ where: { published: true } });
+  res.json(apps ?? []);
 }
