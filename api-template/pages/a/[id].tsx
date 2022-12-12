@@ -62,7 +62,7 @@ const App: React.FC<AppProps> = (props) => {
           <button onClick={() => Router.push(`/builder/${props.id}`)}>Open in builder</button>
         )}
         {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => publishPost(props.id)}>Publish</button>
+          <button disabled onClick={() => publishPost(props.id)}>Publish</button>
         )}
         {userHasValidSession && postBelongsToUser && (
           <button onClick={() => deletePost(props.id)}>Delete</button>

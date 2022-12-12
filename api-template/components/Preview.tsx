@@ -1,8 +1,10 @@
 import { Paper } from "@mui/material";
+import { usePagesStateValue } from "../lib/builder";
+import renderPage from "./util/renderPage";
 
 export default function Preview() {
-  const page = { name: null };
-  if (!page?.name)
+  const pageData = usePagesStateValue("pages")[0];
+  if (!pageData)
     return (
       <Paper
         sx={{
@@ -21,6 +23,8 @@ export default function Preview() {
   return (
     <Paper
       sx={{ p: 2, maxHeight: "60vh", minHeight: "60vh", overflow: "scroll" }}
-    ></Paper>
+    >
+      {renderPage(pageData)}
+    </Paper>
   );
 }

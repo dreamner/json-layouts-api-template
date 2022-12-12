@@ -8,9 +8,14 @@ import Layout from "../../components/Layout";
 import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
-import { Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import Preview from "../../components/Preview";
 import BuilderTabs from "../../components/BuilderTabs";
+import { PagesContextProvider } from "../../lib/builder";
+
+import { ThemeProvider } from "@mui/material";
+import { defaultTheme } from "../../lib/defaultheme";
+import ToggleButtons from "../../components/ToggleButtons";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -55,26 +60,34 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   return (
-    <Grid container>
-      <Grid item xs={8}>
-        <Paper
-          sx={{
-            bgcolor: "lightgray",
-            minHeight: "60vh",
-            p: 3,
-            overflow: "auto",
-          }}
-        >
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            {title}
-          </Typography>
-          <Preview />
-        </Paper>
+    <PagesContextProvider>
+      <Grid container>
+        <Grid item xs={8}>
+          <Paper
+            sx={{
+              bgcolor: "lightgray",
+              minHeight: "60vh",
+              p: 3,
+              overflow: "auto",
+            }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <Typography variant="h6" sx={{ mb: 2, flexGrow: 1 }}>
+                {title}
+              </Typography>
+              <ToggleButtons />
+            </Box>
+
+            <ThemeProvider theme={defaultTheme}>
+              <Preview />
+            </ThemeProvider>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <BuilderTabs />
+        </Grid>
       </Grid>
-      <Grid item xs={4}>
-        <BuilderTabs />
-      </Grid>
-    </Grid>
+    </PagesContextProvider>
   );
 };
 
