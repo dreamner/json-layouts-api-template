@@ -15,7 +15,7 @@ const Header: React.FC = () => {
     <div className="left">
       <Link href="/">
         <a className="bold" data-active={isActive('/')}>
-          Admin
+          Apps
         </a>
       </Link>
       <style jsx>{`
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
       <div className="left">
         <Link href="/">
           <a className="bold" data-active={isActive('/')}>
-            Admin
+            Apps
           </a>
         </Link>
         <style jsx>{`
@@ -119,7 +119,7 @@ const Header: React.FC = () => {
       <div className="left">
         <Link href="/">
           <a className="bold" data-active={isActive('/')}>
-            Admin
+            Apps
           </a>
         </Link>
         <Link href="/drafts">

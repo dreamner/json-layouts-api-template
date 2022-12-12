@@ -9,14 +9,14 @@ import prisma from '../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 403;
-    return { props: { drafts: [] } };
-  }
+  // if (!session) {
+  //   res.statusCode = 403;
+  //   return { props: { drafts: [] } };
+  // }
 
   const drafts = await prisma.app.findMany({
     where: {
-      author: { email: session.user.email },
+      // author: { email: session.user.email },
       published: false,
     },
     include: {
@@ -40,7 +40,7 @@ const Drafts: React.FC<Props> = (props) => {
   if (!session) {
     return (
       <Layout>
-        <h1>My Drafts</h1>
+        <h1>Drafts</h1>
         <div>You need to be authenticated to view this page.</div>
       </Layout>
     );
@@ -49,7 +49,7 @@ const Drafts: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>My Drafts</h1>
+        <h1>Drafts</h1>
         <main>
           {props.drafts.map((app) => (
             <div key={app.id} className="post">

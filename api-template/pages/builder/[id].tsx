@@ -8,6 +8,9 @@ import Layout from "../../components/Layout";
 import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
+import { Grid, Paper, Typography } from "@mui/material";
+import Preview from "../../components/Preview";
+import BuilderTabs from "../../components/BuilderTabs";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -32,7 +35,6 @@ async function publishPost(id: string): Promise<void> {
   await Router.push("/");
 }
 
-
 async function deletePost(id: string): Promise<void> {
   await fetch(`/api/app/${id}`, {
     method: "DELETE",
@@ -53,43 +55,26 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   return (
-    <Layout>
-      <div>
-        <h2>{title}</h2>
-        <p>By {props?.author?.name || "Unknown author"}</p>
-        <ReactMarkdown children={props.description} />
-        {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => Router.push(`/builder/${props.id}`)}>Open in builder</button>
-        )}
-        {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => publishPost(props.id)}>Publish</button>
-        )}
-        {userHasValidSession && postBelongsToUser && (
-          <button onClick={() => deletePost(props.id)}>Delete</button>
-        )}
-      </div>
-      <style jsx>{`
-        .page {
-          background: var(--geist-background);
-          padding: 2rem;
-        }
-
-        .actions {
-          margin-top: 2rem;
-        }
-
-        button {
-          background: #ececec;
-          border: 0;
-          border-radius: 0.125rem;
-          padding: 1rem 2rem;
-        }
-
-        button + button {
-          margin-left: 1rem;
-        }
-      `}</style>
-    </Layout>
+    <Grid container>
+      <Grid item xs={8}>
+        <Paper
+          sx={{
+            bgcolor: "lightgray",
+            minHeight: "60vh",
+            p: 3,
+            overflow: "auto",
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            {title}
+          </Typography>
+          <Preview />
+        </Paper>
+      </Grid>
+      <Grid item xs={4}>
+        <BuilderTabs />
+      </Grid>
+    </Grid>
   );
 };
 
