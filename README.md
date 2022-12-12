@@ -1,1 +1,0 @@
-# json-layouts-api-template

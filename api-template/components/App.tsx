@@ -4,12 +4,12 @@ import ReactMarkdown from "react-markdown";
 
 export type AppProps = {
   id: string;
-  title: string;
+  name: string;
   author: {
     name: string;
     email: string;
   } | null;
-  content: string;
+  description: string;
   published: boolean;
 };
 
@@ -17,9 +17,9 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
   const authorName = app.author ? app.author.name : "Unknown author";
   return (
     <div onClick={() => Router.push("/a/[id]", `/a/${app.id}`)}>
-      <h2>{app.title}</h2>
+      <h2>{app.name}</h2>
       <small>By {authorName}</small>
-      <ReactMarkdown children={app.content} />
+      <ReactMarkdown children={app.description} />
       <style jsx>{`
         div {
           color: inherit;

@@ -8,39 +8,41 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 model Component {
   id        String  @id @default(cuid())
   title     String
   content   String?
   published Boolean @default(false)
-  page      Page?    @relation(fields: [id], references: [id])
+  page      Page?   @relation(fields: [id], references: [id])
   authorId  String?
   index     String
   type      String
 }
 
 model Page {
-  id        String  @id @default(cuid())
-  path      String
-  index     String
-  exact     Boolean @default(false)
-  title     String
-  content   String?
-  published Boolean @default(false)
-  app       App?    @relation(fields: [id], references: [id])
-  authorId  String?
+  id         String      @id @default(cuid())
+  path       String
+  index      String
+  exact      Boolean     @default(false)
+  title      String
+  content    String?
+  published  Boolean     @default(false)
+  app        App?        @relation(fields: [id], references: [id])
+  authorId   String?
   components Component[]
 }
 
 model App {
-  id        String  @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
-  pages     Page[]
+  id          String  @id @default(cuid())
+  title       String?
+  name        String?
+  description String?
+  image       String?
+  type        String?
+  published   Boolean @default(false)
+  author      User?   @relation(fields: [authorId], references: [id])
+  authorId    String?
+  pages       Page[]
 }
 
 model Account {
