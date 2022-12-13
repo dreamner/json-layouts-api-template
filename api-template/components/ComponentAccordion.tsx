@@ -70,7 +70,7 @@ export default function CompontentsAccordion({ component, index }) {
                 if (typeof component?.data[key] === "object") {
                   const obj = component?.data[key];
                   return (
-                    <Box>
+                    <Box key={idx} >
                       <Typography variant="caption">{key}</Typography>
                       {Object.keys(obj ?? {}).map(
                         (childcomponentKey, index) => {
