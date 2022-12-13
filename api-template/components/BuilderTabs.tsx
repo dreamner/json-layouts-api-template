@@ -9,6 +9,7 @@ import Pages from "./Pages";
 import Preferences from "./Preferences";
 
 import dynamic from "next/dynamic";
+import ComponentForm from "./ComponentForm";
 const Code = dynamic(import("./Code"), {
   ssr: false,
 });
@@ -54,7 +55,7 @@ export default function BuilderTabs() {
   };
 
   return (
-    <Box sx={{ width: "100%",  overflow: "auto" }}>
+    <Box sx={{ width: "100%", overflow: "auto" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -62,8 +63,8 @@ export default function BuilderTabs() {
           aria-label="basic tabs example"
         >
           <Tab label="Code" {...a11yProps(0)} />
-          {/* <Tab label="Add component" {...a11yProps(1)} /> */}
-          <Tab label="Components" {...a11yProps(3)} />
+          <Tab label="Components" {...a11yProps(1)} />
+          <Tab label="Add Component" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -72,8 +73,8 @@ export default function BuilderTabs() {
       <TabPanel value={value} index={1}>
         <ComponentsTab />
       </TabPanel>
-      <TabPanel value={value} index={3}>
-        {/* <ComponentsTab /> */}
+      <TabPanel value={value} index={2}>
+        <ComponentForm />
       </TabPanel>
     </Box>
   );
