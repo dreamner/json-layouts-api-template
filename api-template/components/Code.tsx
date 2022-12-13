@@ -1,42 +1,28 @@
 import AceEditor from "react-ace";
 
 import "ace-builds/src-noconflict/mode-json";
-
 import "ace-builds/src-noconflict/theme-solarized_dark";
-
 import "ace-builds/src-noconflict/ext-language_tools";
-import { useState } from "react";
+
+import React, { useState } from "react";
 import { useRef } from "react";
 import { usePagesStateValue } from "../lib/builder";
 
 export default function Code() {
-  const [code, setCode] = useState("");
-
   const editor = useRef();
 
-  const { handleChange } = useActions();
-
-  function run() {}
-
-  function successHandler(res) {
-    const { data } = res;
-    console.log(data);
-  }
-
-  function errorHandler(err) {
-    console.error(err);
-  }
-
-  function handleReset() {
-    setCode("");
-    (editor as any)?.current?.setValue("", 0);
-  }
-
   const pages = usePagesStateValue("pages");
-
   const pageIndex = usePagesStateValue("pageIndex");
 
   const page = pages[pageIndex];
+  const [code, setCode] = useState(() => JSON.stringify(page, null, "\t"));
+
+  const { handleChange: updatePage } = useActions();
+  const handleChange = (value) => setCode(value);
+
+  React.useEffect(() => {
+    updatePage(code);
+  }, [code]);
 
   return (
     <>
@@ -55,8 +41,7 @@ export default function Code() {
           enableEmmet: false,
           showGutter: false,
         }}
-        value={JSON.stringify(page, null, "\t")}
-        // height={"70vh"}
+        value={code}
         width={"100%"}
         showGutter
         fontSize={15}

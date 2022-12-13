@@ -119,14 +119,14 @@ function useActions() {
     handleSubmit(type: string) {
       let allPages = [...pages];
       let page = allPages[pageIndex];
-      page.components = [...(page.components ?? []), components[type]];
+      page.components = [...(page.components ?? []), { ...components[type] }];
       allPages[pageIndex] = page;
       const payload = allPages;
       const key = "pages";
       dispatch({
         type: "update_all",
         payload,
-        pages,
+        key,
       });
     },
   };

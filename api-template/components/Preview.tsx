@@ -3,7 +3,8 @@ import { usePagesStateValue } from "../lib/builder";
 import renderPage from "./util/renderPage";
 
 export default function Preview() {
-  const pageData = usePagesStateValue("pages")[0];
+  const pageIndex = usePagesStateValue("pageIndex");
+  const pageData = usePagesStateValue("pages")[pageIndex];
   if (!pageData)
     return (
       <Paper

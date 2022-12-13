@@ -1,9 +1,10 @@
-import { Box, Paper, TextField, Divider } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
 import CompontentsAccordion from "./ComponentAccordion";
 
 export default function ComponentsTab() {
-  const pages = usePagesStateValue("pages")[0];
+  const pageIndex = usePagesStateValue("pageIndex");
+  const pages = usePagesStateValue("pages")[pageIndex];
   const componentsData = pages?.components ?? [];
   return (
     <Box

@@ -45,7 +45,7 @@ function useActions() {
     addPage(template) {
       const type = "update_all";
       const key = "pages";
-      const payload = [...pages, template];
+      const payload = [...pages, { ...template }];
       dispatch({ key, type, payload });
     },
   };

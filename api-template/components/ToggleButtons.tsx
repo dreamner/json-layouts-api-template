@@ -26,7 +26,7 @@ export default function ToggleButtons() {
             id="demo-simple-select"
             value={pageIndex}
             label="Select page"
-            onChange={(e) => changePage(e.target.value)}
+            onChange={(e) => changePage(parseInt(e.target.value))}
           >
             {pages.map((page, index) => {
               return (
