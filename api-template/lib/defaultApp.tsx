@@ -5,15 +5,10 @@ const defaultPage = {
     {
       type: "box",
       data: {
-        flex: true,
-        centerHorizontal: true,
-        centerVertical: true,
-        minHeight: "100vh",
         components: [
           {
             type: "box",
             data: {
-              textAlign: "center",
               components: [
                 {
                   type: "text",
@@ -35,6 +30,12 @@ const defaultPage = {
                     href: "https://json-layouts-api-template.vercel.app/api/auth/signin",
                     target: "blank",
                     sx: "mt:4",
+                  },
+                },
+                {
+                  type: "image",
+                  data: {
+                    imageUrl: "http://res.cloudinary.com/dreamercodes/image/upload/v1670931695/Screenshot_2021-09-05-21-17-59-492_host.exp.exponent_cqe8gb.jpg",
                   },
                 },
               ],
