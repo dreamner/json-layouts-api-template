@@ -44,7 +44,7 @@ export default function Code() {
         value={code}
         width={"100%"}
         showGutter
-        fontSize={15}
+        fontSize={11}
       />
     </>
   );
