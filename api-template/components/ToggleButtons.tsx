@@ -10,9 +10,9 @@ import { usePagesStateValue } from "../lib/builder";
 import AddPageDialog from "./AddPageDialog";
 
 export default function ToggleButtons() {
-  const handleChange = (e) => {};
-  const page = "homepage";
   const pages = usePagesStateValue("pages");
+  const pageIndex = usePagesStateValue("pageIndex");
+  const { changePage } = useActions();
   return (
     <Box sx={{ mb: 3, display: "flex" }}>
       <Box sx={{ width: 200 }}>
@@ -24,16 +24,33 @@ export default function ToggleButtons() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={0}
+            value={pageIndex}
             label="Select page"
-            onChange={handleChange}
+            onChange={(e) => changePage(e.target.value)}
           >
             {pages.map((page, index) => {
-              return <MenuItem key={index} value={index}>{page.name}</MenuItem>;
+              return (
+                <MenuItem key={index} value={index}>
+                  {page.name}
+                </MenuItem>
+              );
             })}
           </Select>
         </FormControl>
       </Box>
     </Box>
   );
+}
+
+function useActions() {
+  const dispatch = usePagesStateValue("dispatch");
+
+  return {
+    changePage(index: number) {
+      const type = "update_all";
+      const payload = index;
+      const key = "pageIndex";
+      dispatch({ type, key, payload });
+    },
+  };
 }

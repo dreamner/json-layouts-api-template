@@ -8,6 +8,11 @@ import ComponentsTab from "./PageComponents";
 import Pages from "./Pages";
 import Preferences from "./Preferences";
 
+import dynamic from "next/dynamic";
+const Code = dynamic(import("./Code"), {
+  ssr: false,
+});
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -49,26 +54,26 @@ export default function BuilderTabs() {
   };
 
   return (
-    <Box sx={{ width: "100%", maxHeight: "70vh", overflow: "auto" }}>
+    <Box sx={{ width: "100%",  overflow: "auto" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Componets" {...a11yProps(0)} />
-          <Tab label="Add component" {...a11yProps(1)} />
-          <Tab label="Edit code" {...a11yProps(3)} />
+          <Tab label="Code" {...a11yProps(0)} />
+          {/* <Tab label="Add component" {...a11yProps(1)} /> */}
+          <Tab label="Components" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <ComponentsTab />
+        <Code />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ComponentsTab />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <ComponentsTab />
+        {/* <ComponentsTab /> */}
       </TabPanel>
     </Box>
   );
