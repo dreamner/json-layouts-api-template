@@ -9,8 +9,8 @@ export default function Preview() {
       <Paper
         sx={{
           p: 2,
-          maxHeight: "60vh",
-          minHeight: "60vh",
+          maxHeight: "76vh",
+          minHeight: "76vh",
           overflow: "scroll",
           display: "flex",
           justifyContent: "center",
@@ -22,7 +22,7 @@ export default function Preview() {
     );
   return (
     <Paper
-      sx={{ p: 2, maxHeight: "60vh", minHeight: "60vh", overflow: "scroll" }}
+      sx={{ p: 2, maxHeight: "76vh", minHeight: "60vh", overflow: "scroll" }}
     >
       {renderPage(pageData)}
     </Paper>

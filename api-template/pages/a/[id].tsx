@@ -7,6 +7,8 @@ import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 
+import { Avatar, Box } from "@mui/material";
+
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
     where: {
@@ -52,22 +54,32 @@ const App: React.FC<AppProps> = (props) => {
   return (
     <Layout>
       <div>
-        <h2>{title}</h2>
-        <p>By {props?.author?.name || "Unknown author"}</p>
-        <ReactMarkdown>{props.description}</ReactMarkdown>
-        {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => Router.push(`/builder/${props.id}`)}>
-            Open in builder
-          </button>
-        )}
-        {!props.published && userHasValidSession && postBelongsToUser && (
-          <button disabled onClick={() => publishPost(props.id)}>
-            Publish
-          </button>
-        )}
-        {userHasValidSession && postBelongsToUser && (
-          <button onClick={() => deletePost(props.id)}>Delete</button>
-        )}
+        <Box sx={{ display: "flex" }}>
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <Avatar src={props.image}>{title[0]}</Avatar>
+            <h2>{title}</h2>
+            <p>By {props?.author?.name || "Unknown author"}</p>
+            <ReactMarkdown>{props.description}</ReactMarkdown>
+            {!props.published && userHasValidSession && postBelongsToUser && (
+              <button onClick={() => Router.push(`/builder/${props.id}`)}>
+                Open in builder
+              </button>
+            )}
+            {!props.published && userHasValidSession && postBelongsToUser && (
+              <button onClick={() => publishPost(props.id)}>Publish</button>
+            )}
+            {userHasValidSession && postBelongsToUser && (
+              <>
+                <button onClick={() => Router.push(`/builder/${props.id}`)}>
+                  Open in editor{" "}
+                </button>
+                <button onClick={() => deletePost(props.id)}>Delete</button>
+              </>
+            )}
+          </Box>
+          <Box sx={{ flexGrow: 1 }}></Box>
+        </Box>
       </div>
       <style jsx>{`
         .page {

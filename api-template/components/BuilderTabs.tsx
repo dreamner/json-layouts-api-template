@@ -58,12 +58,16 @@ export default function BuilderTabs() {
         >
           <Tab label="Componets" {...a11yProps(0)} />
           <Tab label="Add component" {...a11yProps(1)} />
+          <Tab label="Edit code" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <ComponentsTab />
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <ComponentsTab />
+      </TabPanel>
+      <TabPanel value={value} index={3}>
         <ComponentsTab />
       </TabPanel>
     </Box>

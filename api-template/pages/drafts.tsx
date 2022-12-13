@@ -1,14 +1,15 @@
 // pages/drafts.tsx
 
-import React from 'react';
-import { GetServerSideProps } from 'next';
-import { useSession, getSession } from 'next-auth/react';
-import Layout from '../components/Layout';
-import App, { AppProps } from '../components/App';
-import prisma from '../lib/prisma';
+import React from "react";
+import { GetServerSideProps } from "next";
+import { useSession, getSession } from "next-auth/react";
+import Layout from "../components/Layout";
+import App, { AppProps } from "../components/App";
+import prisma from "../lib/prisma";
+import { Box, Grid } from "@mui/material";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
+  // const session = await getSession({ req });
   // if (!session) {
   //   res.statusCode = 403;
   //   return { props: { drafts: [] } };
@@ -31,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 type Props = {
-  drafts: AppProps[];
+  drafts: any;
 };
 
 const Drafts: React.FC<Props> = (props) => {
@@ -49,13 +50,23 @@ const Drafts: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>Drafts</h1>
+        <h1>{props.drafts.length} Drafts</h1>
         <main>
-          {props.drafts.map((app) => (
-            <div key={app.id} className="post">
-              <App app={app} />
-            </div>
-          ))}
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flexGrow: 1 }}></Box>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container>
+                {props.drafts.map((app) => (
+                  <Grid item xs={4} key={app.id}>
+                    <div className="post">
+                      <App app={app} />
+                    </div>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+            <Box sx={{ flexGrow: 1 }}></Box>
+          </Box>
         </main>
       </div>
       <style jsx>{`

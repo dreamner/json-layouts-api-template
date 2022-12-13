@@ -8,7 +8,7 @@ import Layout from "../../components/Layout";
 import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
 import Preview from "../../components/Preview";
 import BuilderTabs from "../../components/BuilderTabs";
 import { PagesContextProvider } from "../../lib/builder";
@@ -66,15 +66,21 @@ const App: React.FC<AppProps> = (props) => {
           <Paper
             sx={{
               bgcolor: "lightgray",
-              minHeight: "60vh",
+              minHeight: "85vh",
               p: 3,
               overflow: "auto",
             }}
           >
             <Box sx={{ display: "flex" }}>
-              <Typography variant="h6" sx={{ mb: 2, flexGrow: 1 }}>
-                {title}
-              </Typography>
+              <Box sx={{ mb: 2, flexGrow: 1, display: "flex" }}>
+                <Avatar sx={{ mr: 1 }} src={props.image}>
+                  {title[0]}
+                </Avatar>
+                <Box>
+                  <Typography variant="h6">{title}</Typography>
+                  <Typography variant="caption">{props.description}</Typography>
+                </Box>
+              </Box>
               <ToggleButtons />
             </Box>
 

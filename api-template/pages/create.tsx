@@ -16,12 +16,15 @@ import {
   TextField,
 } from "@mui/material";
 import useUpload from "../hooks/useUpload";
+import { useSession } from "next-auth/react";
 
 const Draft: React.FC = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [type, setType] = useState("Other");
+
+  const { data: session, status } = useSession();
 
   const [saving, setSaving] = useState(false);
 
@@ -35,7 +38,7 @@ const Draft: React.FC = () => {
     const images = (uploads as unknown as any).reduce((p, c) => {
       return { ...p, [c.field]: c.url };
     }, {});
-    let currentState = { name, description, type };
+    let currentState = { name, description, type, email: session?.user?.email };
 
     if (Boolean(images)) {
       currentState = { ...currentState, ...images };
@@ -54,18 +57,15 @@ const Draft: React.FC = () => {
     }
   };
 
-  const handleLogoChange = React.useCallback(
-    (data) => {
-      setImage(data[0]);
-    },
-    []
-  );
+  const handleLogoChange = React.useCallback((data) => {
+    setImage(data[0]);
+  }, []);
 
   return (
     <Layout>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}></Box>
-        <form onSubmit={submitData}>
+        <form style={{ flexGrow: 1 }} onSubmit={submitData}>
           <Stack spacing={2}>
             <h1>New App</h1>
             <TextField
@@ -109,13 +109,14 @@ const Draft: React.FC = () => {
               disabled={!name || !description || !image || saving}
               type="submit"
             >
-              { saving?  "Creating app..." : "Create app"}
+              {saving ? "Creating app..." : "Create app"}
             </Button>
             <a className="back" href="#" onClick={() => Router.push("/")}>
               or Cancel
             </a>
           </Stack>
         </form>
+        <Box sx={{ flexGrow: 1 }}></Box>
       </Box>
       <style jsx>{`
         .page {

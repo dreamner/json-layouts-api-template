@@ -6,16 +6,17 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { usePagesStateValue } from "../lib/builder";
+import AddPageDialog from "./AddPageDialog";
 
 export default function ToggleButtons() {
   const handleChange = (e) => {};
   const page = "homepage";
+  const pages = usePagesStateValue("pages");
   return (
     <Box sx={{ mb: 3, display: "flex" }}>
       <Box sx={{ width: 200 }}>
-        <Button fullWidth sx={{ textTransform: "none" }} variant="outlined">
-          Add page
-        </Button>
+        <AddPageDialog />
       </Box>
       <Box sx={{ width: 180, ml: 2 }}>
         <FormControl size="small" fullWidth>
@@ -23,11 +24,13 @@ export default function ToggleButtons() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={page}
+            value={0}
             label="Select page"
             onChange={handleChange}
           >
-            <MenuItem value={"homepage"}>Homepage</MenuItem>
+            {pages.map((page, index) => {
+              return <MenuItem key={index} value={index}>{page.name}</MenuItem>;
+            })}
           </Select>
         </FormControl>
       </Box>
