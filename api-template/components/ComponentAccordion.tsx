@@ -34,7 +34,7 @@ export default function CompontentsAccordion({ component, index }) {
 
   return (
     <div>
-      <Accordion elevation={0}  sx={{ mt: 2 }}>
+      <Accordion elevation={0} sx={{ mt: 2 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -54,8 +54,9 @@ export default function CompontentsAccordion({ component, index }) {
               name="type"
               onChange={handleChange}
             >
-              <MenuItem value={"box"}>Box</MenuItem>
               <MenuItem value={"text"}>Text</MenuItem>
+              <MenuItem value={"box"}>Box</MenuItem>
+              <MenuItem value={"image"}>Image</MenuItem>
               <MenuItem value={"button"}>Button</MenuItem>
             </Select>
           </FormControl>
@@ -69,6 +70,37 @@ export default function CompontentsAccordion({ component, index }) {
               {Object.keys(component?.data ?? {})?.map((key, idx) => {
                 if (typeof component?.data[key] === "object") {
                   const obj = component?.data[key];
+                  if (key === "components") {
+                    return (
+                      <>
+                        <Box>
+                          <Typography variant="caption">{key}</Typography>
+                          {(obj ?? []).map((child, index) => {
+                            return (
+                              <div
+                                key={index}
+                                style={{
+                                  backgroundClip: "lightgray",
+                                  padding: "6px",
+                                }}
+                              >
+                                <TextField
+                                  label={"Type"}
+                                  key={index}
+                                  fullWidth
+                                  value={child.type}
+                                />
+                                <Divider sx={{ my: 1 }} />
+                                {child?.components?.map((component) => {
+                                  return <>{component.type}</>;
+                                })}
+                              </div>
+                            );
+                          })}
+                        </Box>
+                      </>
+                    );
+                  }
                   return (
                     <Box>
                       <Typography variant="caption">{key}</Typography>
