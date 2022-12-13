@@ -14,6 +14,7 @@ import {
   TextField,
   Box,
   Stack,
+  Divider,
 } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
 import { components } from "./ComponentForm";
@@ -59,9 +60,13 @@ export default function CompontentsAccordion({ component, index }) {
             </Select>
           </FormControl>
           <Box sx={{ my: 2 }}>
-            <Stack>
-              {Object.keys(component?.data ?? {})?.map((data, idx) => {
-                return <TextField key={idx} label={component} />;
+            <Typography variant="h5"> {component?.type} Metadata</Typography>
+            <Divider sx={{ my: 2 }} />
+            <Stack spacing={2}>
+              {Object.keys(component?.data ?? {})?.map((key, idx) => {
+                return (
+                  <TextField value={component[key]} key={idx} label={key} />
+                );
               })}
             </Stack>
           </Box>
