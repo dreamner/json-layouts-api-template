@@ -33,6 +33,7 @@ export default function ComponentForm() {
         >
           <MenuItem value={"box"}>Box</MenuItem>
           <MenuItem value={"text"}>Text</MenuItem>
+          <MenuItem value={"image"}>Image</MenuItem>
           <MenuItem value={"button"}>Button</MenuItem>
         </Select>
       </FormControl>
@@ -42,7 +43,7 @@ export default function ComponentForm() {
           if (typeof component?.data[key] === "object") {
             const obj = component?.data[key];
             return (
-              <Box key={idx} >
+              <Box key={idx}>
                 <Typography variant="caption">{key}</Typography>
                 {Object.keys(obj ?? {}).map((childcomponentKey, index) => {
                   return (
@@ -74,6 +75,13 @@ export default function ComponentForm() {
 }
 
 export const components = {
+  image: {
+    type: "image",
+    data: {
+      imageUrl:
+        "http://res.cloudinary.com/dreamercodes/image/upload/v1670931695/Screenshot_2021-09-05-21-17-59-492_host.exp.exponent_cqe8gb.jpg",
+    },
+  },
   button: {
     type: "button",
     data: {

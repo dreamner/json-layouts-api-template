@@ -56,6 +56,7 @@ export default function CompontentsAccordion({ component, index }) {
             >
               <MenuItem value={"box"}>Box</MenuItem>
               <MenuItem value={"text"}>Text</MenuItem>
+              <MenuItem value={"image"}>Image</MenuItem>
               <MenuItem value={"button"}>Button</MenuItem>
             </Select>
           </FormControl>
