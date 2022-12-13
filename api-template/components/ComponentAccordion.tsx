@@ -60,12 +60,38 @@ export default function CompontentsAccordion({ component, index }) {
             </Select>
           </FormControl>
           <Box sx={{ my: 2 }}>
-            <Typography variant="h5"> {component?.type} Metadata</Typography>
+            <Typography variant="caption">
+              {" "}
+              {component?.type} Metadata
+            </Typography>
             <Divider sx={{ my: 2 }} />
             <Stack spacing={2}>
               {Object.keys(component?.data ?? {})?.map((key, idx) => {
+                if (typeof component?.data[key] === "object") {
+                  const obj = component?.data[key];
+                  return (
+                    <Box>
+                      <Typography variant="caption">{key}</Typography>
+                      {Object.keys(obj ?? {}).map(
+                        (childcomponentKey, index) => {
+                          return (
+                            <TextField
+                              label={childcomponentKey}
+                              key={index}
+                              value={obj[childcomponentKey]}
+                            />
+                          );
+                        }
+                      )}
+                    </Box>
+                  );
+                }
                 return (
-                  <TextField value={component[key]} key={idx} label={key} />
+                  <TextField
+                    value={component?.data[key]}
+                    key={idx}
+                    label={key}
+                  />
                 );
               })}
             </Stack>
