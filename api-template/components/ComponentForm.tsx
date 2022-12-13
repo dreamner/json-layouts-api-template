@@ -43,7 +43,7 @@ export default function ComponentForm() {
   );
 }
 
-const components = {
+export const components = {
   button: {
     type: "button",
     data: {

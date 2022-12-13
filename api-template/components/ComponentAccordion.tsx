@@ -10,9 +10,13 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Select,
+  TextField,
+  Box,
+  Stack,
 } from "@mui/material";
-import Select from "./util/components/Select";
 import { usePagesStateValue } from "../lib/builder";
+import { components } from "./ComponentForm";
 
 export default function CompontentsAccordion({ component, index }) {
   const [componentData, setComponentData] = React.useState(() => component);
@@ -38,7 +42,7 @@ export default function CompontentsAccordion({ component, index }) {
           <Typography>{component.type}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{ mt: 2 }}>Configure this component</Typography>
+          <Typography sx={{ my: 2 }}>Configure this component</Typography>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Type</InputLabel>
             <Select
@@ -54,6 +58,13 @@ export default function CompontentsAccordion({ component, index }) {
               <MenuItem value={"button"}>Button</MenuItem>
             </Select>
           </FormControl>
+          <Box sx={{ my: 2 }}>
+            <Stack>
+              {Object.keys(component?.data ?? {})?.map((data, idx) => {
+                return <TextField key={idx} label={component} />;
+              })}
+            </Stack>
+          </Box>
           <AccordionActions>
             <Button
               variant="outlined"
@@ -87,7 +98,8 @@ function useActions() {
       try {
         let allPages = [...pages];
         let page = allPages[pageIndex];
-        page.components[index] = component;
+        const componentType = component.type;
+        page.components[index] = { ...components[componentType], ...component };
         allPages[pageIndex] = page;
         const type = "update_all";
         const payload = allPages;

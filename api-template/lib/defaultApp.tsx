@@ -1,6 +1,6 @@
 const defaultPage = {
   layout: "page",
-  name: "App not created",
+  name: "Hello World",
   components: [
     {
       type: "box",
@@ -46,6 +46,5 @@ const defaultPage = {
   ],
   opts: {},
 };
-
 
 export default defaultPage;

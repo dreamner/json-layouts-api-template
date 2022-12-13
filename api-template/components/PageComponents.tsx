@@ -6,9 +6,15 @@ export default function ComponentsTab() {
   const pages = usePagesStateValue("pages")[0];
   const componentsData = pages?.components ?? [];
   return (
-    <Box sx={{ p: 2, bgcolor: "lightblue" }}>
+    <Box sx={{ p: 2, bgcolor: "lightblue", maxHeight: "69vh" }}>
       {componentsData.map((component: any, index: number) => {
-        return <CompontentsAccordion key={index} index={index} component={component} />;
+        return (
+          <CompontentsAccordion
+            key={index}
+            index={index}
+            component={component}
+          />
+        );
       })}
     </Box>
   );
