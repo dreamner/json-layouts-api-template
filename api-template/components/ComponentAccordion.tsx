@@ -91,8 +91,8 @@ export default function CompontentsAccordion({ component, index }) {
                                   value={child.type}
                                 />
                                 <Divider sx={{ my: 1 }} />
-                                {child?.components?.map((component) => {
-                                  return <>{component.type}</>;
+                                {child?.data?.components?.map((component) => {
+                                  return <div>{component.type}</div>;
                                 })}
                               </div>
                             );

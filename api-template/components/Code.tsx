@@ -18,7 +18,7 @@ export default function Code() {
   const [code, setCode] = useState(() => JSON.stringify(page, null, "\t"));
 
   const { handleChange: updatePage } = useActions();
-  const handleChange = (value) => setCode(value);
+  const handleChange = (value) => setCode(JSON.stringify(value, null, "\t"));
 
   React.useEffect(() => {
     updatePage(code);
