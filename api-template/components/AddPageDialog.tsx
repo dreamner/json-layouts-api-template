@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+import NewPageForm from "./NewPageForm";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -44,7 +45,7 @@ export default function FullScreenDialog() {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AppBar elevation={0} sx={{ position: "relative" }}>
+        <AppBar elevation={0} sx={{ position: "fixed" }}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -62,7 +63,10 @@ export default function FullScreenDialog() {
             </Button>
           </Toolbar>
         </AppBar>
-        <div></div>
+        <div>
+          <Toolbar />
+          <NewPageForm />
+        </div>
       </Dialog>
     </div>
   );

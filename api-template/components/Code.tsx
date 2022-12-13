@@ -52,6 +52,8 @@ export default function Code() {
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
           enableSnippets: true,
+          enableEmmet: false,
+          showGutter: false,
         }}
         value={JSON.stringify(page, null, "\t")}
         // height={"70vh"}

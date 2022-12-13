@@ -34,7 +34,7 @@ export default function CompontentsAccordion({ component, index }) {
 
   return (
     <div>
-      <Accordion sx={{ mt: 2 }}>
+      <Accordion elevation={0}  sx={{ mt: 2 }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -69,6 +69,7 @@ export default function CompontentsAccordion({ component, index }) {
               {Object.keys(component?.data ?? {})?.map((key, idx) => {
                 if (typeof component?.data[key] === "object") {
                   const obj = component?.data[key];
+                  console.log(obj);
                   return (
                     <Box>
                       <Typography variant="caption">{key}</Typography>

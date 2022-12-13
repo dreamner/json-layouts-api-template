@@ -5,6 +5,10 @@ import {
   Select,
   MenuItem,
   Button,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { usePagesStateValue } from "../lib/builder";
@@ -13,6 +17,7 @@ export default function ComponentForm() {
   const [type, setType] = useState("box");
   const handleChange = (e) => setType(e.target.value);
   const { handleSubmit } = useActions();
+  const component = components[type];
   return (
     <Box>
       <FormControl fullWidth>
@@ -31,6 +36,31 @@ export default function ComponentForm() {
           <MenuItem value={"button"}>Button</MenuItem>
         </Select>
       </FormControl>
+      <Divider sx={{ my: 2 }} />
+      <Stack spacing={2}>
+        {Object.keys(component?.data ?? {})?.map((key, idx) => {
+          if (typeof component?.data[key] === "object") {
+            const obj = component?.data[key];
+            return (
+              <Box>
+                <Typography variant="caption">{key}</Typography>
+                {Object.keys(obj ?? {}).map((childcomponentKey, index) => {
+                  return (
+                    <TextField
+                      label={childcomponentKey}
+                      key={index}
+                      value={obj[childcomponentKey]}
+                    />
+                  );
+                })}
+              </Box>
+            );
+          }
+          return (
+            <TextField value={component?.data[key]} key={idx} label={key} />
+          );
+        })}
+      </Stack>
       <Button
         fullWidth
         sx={{ mt: 3 }}
@@ -63,6 +93,10 @@ export const components = {
     type: "box",
     data: {
       textAlign: "center",
+      flex: true,
+      centerHorizontal: true,
+      centerVertical: true,
+      minHeight: "100vh",
       components: [
         {
           type: "text",
