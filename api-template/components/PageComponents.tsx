@@ -6,9 +6,9 @@ export default function ComponentsTab() {
   const componentsData = pages?.components ?? [];
   return (
     <Box sx={{ p: 2, bgcolor: "lightblue" }}>
-      {componentsData.map((component: any) => {
+      {componentsData.map((component: any, index:number) => {
         return (
-          <Paper sx={{ p: 2 }}>
+          <Paper key={index}  sx={{ p: 2 }}>
             <TextField
               fullWidth
               size="small"

@@ -12,7 +12,7 @@ export interface IImageFied{
 }
 
 
-export default function ({ desc, value, handleChange }:IImageFied) {
+export default function ImageField({ desc, value, handleChange }:IImageFied) {
   const [image, setImage] = React.useState<string>("");
 
   const onDrop = React.useCallback((acceptedFiles:any) => {

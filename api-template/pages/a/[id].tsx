@@ -1,5 +1,3 @@
-// pages/p/[id].tsx
-
 import React from "react";
 import { GetServerSideProps } from "next";
 import ReactMarkdown from "react-markdown";
@@ -32,7 +30,6 @@ async function publishPost(id: string): Promise<void> {
   await Router.push("/");
 }
 
-
 async function deletePost(id: string): Promise<void> {
   await fetch(`/api/app/${id}`, {
     method: "DELETE",
@@ -57,12 +54,16 @@ const App: React.FC<AppProps> = (props) => {
       <div>
         <h2>{title}</h2>
         <p>By {props?.author?.name || "Unknown author"}</p>
-        <ReactMarkdown children={props.description} />
+        <ReactMarkdown>{props.description}</ReactMarkdown>
         {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => Router.push(`/builder/${props.id}`)}>Open in builder</button>
+          <button onClick={() => Router.push(`/builder/${props.id}`)}>
+            Open in builder
+          </button>
         )}
         {!props.published && userHasValidSession && postBelongsToUser && (
-          <button disabled onClick={() => publishPost(props.id)}>Publish</button>
+          <button disabled onClick={() => publishPost(props.id)}>
+            Publish
+          </button>
         )}
         {userHasValidSession && postBelongsToUser && (
           <button onClick={() => deletePost(props.id)}>Delete</button>

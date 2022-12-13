@@ -1,15 +1,15 @@
-import { getSession } from 'next-auth/react';
-import prisma from '../../../lib/prisma';
+import { getSession } from "next-auth/react";
+import prisma from "../../../lib/prisma";
 
 export default async function handle(req, res) {
-
-  const { title, content } = req.body;
-
+  const { name, description, type, image } = req.body;
   const session = await getSession({ req });
   const result = await prisma.app.create({
     data: {
-      title: title,
-      content: content,
+      name,
+      description,
+      type,
+      image,
       author: { connect: { email: session?.user?.email } },
     },
   });

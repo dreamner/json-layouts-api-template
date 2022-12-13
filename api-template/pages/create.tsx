@@ -58,7 +58,7 @@ const Draft: React.FC = () => {
     (data) => {
       setImage(data[0]);
     },
-    [image]
+    []
   );
 
   return (

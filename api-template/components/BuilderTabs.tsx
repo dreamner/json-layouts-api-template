@@ -4,7 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Themes from "./Themes";
-import ComponentsTab from "./Components";
+import ComponentsTab from "./PageComponents";
 import Pages from "./Pages";
 import Preferences from "./Preferences";
 

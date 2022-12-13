@@ -31,7 +31,7 @@ export default function renderPage(page: Ipage = defaultPageProps) {
     }
     case "dashboard": {
       const drawerLists = (opts as any)?.lists ?? [];
-      return <Dashboard drawer={renderBox(drawerLists)}>{children}</Dashboard>;
+      return <Dashboard drawer={null}>{children}</Dashboard>;
     }
     default: {
       return <DefaultLayout name={name}>{children}</DefaultLayout>;

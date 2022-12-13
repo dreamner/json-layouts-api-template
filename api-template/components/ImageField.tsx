@@ -14,7 +14,7 @@ export default function ImageField({ desc, value, handleChange }: IImageFied) {
 
   const onDrop = React.useCallback((acceptedFiles: any) => {
     handleChange(acceptedFiles);
-  }, []);
+  }, [handleChange]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {

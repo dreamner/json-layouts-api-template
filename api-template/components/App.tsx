@@ -19,7 +19,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
     <div onClick={() => Router.push("/a/[id]", `/a/${app.id}`)}>
       <h2>{app.name}</h2>
       <small>By {authorName}</small>
-      <ReactMarkdown children={app.description} />
+      <ReactMarkdown>{app.description}</ReactMarkdown>
       <style jsx>{`
         div {
           color: inherit;

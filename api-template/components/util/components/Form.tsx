@@ -13,7 +13,7 @@ export default function Form({ components = [], intents = {} }: any) {
       const { name, value } = e.target;
       setState((p: any) => ({ ...p, [name]: value }));
     },
-    [state]
+    []
   );
 
   const handleSubmit = React.useCallback(() => {}, []);
@@ -26,7 +26,7 @@ export default function Form({ components = [], intents = {} }: any) {
         value: state[component.name],
         submitting: loading,
       })),
-    [components, handleChange, handleSubmit, state, loading]
+    [components, handleChange, state, loading]
   );
 
   const fields = renderComponents(componentData);

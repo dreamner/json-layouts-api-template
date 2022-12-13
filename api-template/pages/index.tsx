@@ -28,12 +28,12 @@ type Props = {
 
 const Blog: React.FC<Props> = (props) => {
   const { data: session, status } = useSession();
+  const router = useRouter();
   if (status === "loading") {
     return <div>Authenticating ...</div>;
   }
   const userHasValidSession = Boolean(session);
   const hasApps = Boolean(props.apps.length);
-  const router = useRouter();
   return (
     <Layout>
       <div className="page">

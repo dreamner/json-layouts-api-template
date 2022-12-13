@@ -2,7 +2,7 @@ import React from "react";
 
 import reducer from "./reducer";
 import { nestedObjectReducer } from "./nestedObjectReducer";
-import { defaultPage } from "./defaultApp";
+import defaultPage from "./defaultApp";
 
 const initialState = {
   pages: [defaultPage],

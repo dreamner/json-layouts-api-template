@@ -14,7 +14,7 @@ export default function Select({
   const items = React.useMemo(
     () =>
       options.map((option: any) => renderMenuItem(option.label, option.value)),
-    options
+    [...options]
   );
   return (
     <FormControl fullWidth>
