@@ -58,9 +58,6 @@ export default function FullScreenDialog() {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Pages
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Add
-            </Button>
           </Toolbar>
         </AppBar>
         <div>

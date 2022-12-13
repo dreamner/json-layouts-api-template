@@ -31,7 +31,7 @@ export default function ToggleButtons() {
             {pages.map((page, index) => {
               return (
                 <MenuItem key={index} value={index}>
-                  {page.name}
+                  {index + 1} {page.name}
                 </MenuItem>
               );
             })}

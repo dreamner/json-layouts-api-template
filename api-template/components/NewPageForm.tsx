@@ -1,26 +1,34 @@
 import defaultPage from "../lib/defaultApp";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, ThemeProvider, Typography } from "@mui/material";
 import renderPage from "./util/renderPage";
+import { usePagesStateValue } from "../lib/builder";
+import { defaultTheme } from "../lib/defaultheme";
 export default function NewPageForm() {
   const templates = [defaultPage];
+  const { addPage } = useActions();
   return (
     <Box>
-      <Box>
-        <Typography variant="h5">Pick a template to start from</Typography>
+      <Box sx={{ p: 8, bgcolor: "lightblue", borderRadius: "4px" }}>
+        <Typography sx={{ my: 4 }} variant="h3">
+          Templates
+        </Typography>
         <Grid container spacing={2}>
           {templates.map((template, index) => {
             return (
               <Grid item key={index} xs={4}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    maxWidth: "100%",
-                    border: "1px solid gray",
-                    cursor: "poiner",
-                  }}
-                >
-                  {renderPage(template)}
-                </Paper>
+                <ThemeProvider theme={defaultTheme}>
+                  <Paper
+                    onClick={() => addPage(template)}
+                    sx={{
+                      p: 2,
+                      maxWidth: "100%",
+                      border: "1px solid gray",
+                      cursor: "poiner",
+                    }}
+                  >
+                    {renderPage(template)}
+                  </Paper>
+                </ThemeProvider>
               </Grid>
             );
           })}
@@ -28,4 +36,17 @@ export default function NewPageForm() {
       </Box>
     </Box>
   );
+}
+
+function useActions() {
+  const dispatch = usePagesStateValue("dispatch");
+  const pages = usePagesStateValue("pages");
+  return {
+    addPage(template) {
+      const type = "update_all";
+      const key = "pages";
+      const payload = [...pages, template];
+      dispatch({ key, type, payload });
+    },
+  };
 }
