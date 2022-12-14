@@ -79,28 +79,22 @@ const App: React.FC<AppProps> = (props) => {
               </ThemeProvider>
             </Paper>
             <ReactMarkdown>{props.description}</ReactMarkdown>
-            {!props.published && userHasValidSession && postBelongsToUser && (
-              <button onClick={() => Router.push(`/builder/${props.id}`)}>
-                Customize
+            <button onClick={() => Router.push(`/builder/${props.id}`)}>
+              Customize
+            </button>
+            <button onClick={() => publishPost(props.id)}>Publish</button>
+            <>
+              <button onClick={() => Router.push(`/preferences/${props.id}`)}>
+                Preferences
               </button>
-            )}
-            {!props.published && userHasValidSession && postBelongsToUser && (
-              <button onClick={() => publishPost(props.id)}>Publish</button>
-            )}
-            {userHasValidSession && postBelongsToUser && (
-              <>
-                <button onClick={() => Router.push(`/preferences/${props.id}`)}>
-                  Preferences
-                </button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => deletePost(props.id)}
-                >
-                  Delete
-                </Button>
-              </>
-            )}
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => deletePost(props.id)}
+              >
+                Delete
+              </Button>
+            </>
           </Box>
           <Box sx={{ flexGrow: 1 }}></Box>
         </Box>
