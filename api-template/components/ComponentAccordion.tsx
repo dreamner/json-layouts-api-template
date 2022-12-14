@@ -72,8 +72,7 @@ export default function CompontentsAccordion({ component, index }) {
                   const obj = component?.data[key];
                   if (key === "components") {
                     return (
-                      <>
-                        <Box>
+                        <Box key={idx} >
                           <Typography variant="caption">{key}</Typography>
                           {(obj ?? []).map((child, index) => {
                             return (
@@ -98,7 +97,6 @@ export default function CompontentsAccordion({ component, index }) {
                             );
                           })}
                         </Box>
-                      </>
                     );
                   }
                   return (

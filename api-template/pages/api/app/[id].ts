@@ -18,7 +18,7 @@ export default async function handle(req, res) {
       password,
       passwordProtectionMessage,
       type,
-      publised,
+      published,
       draft,
     } = JSON.parse(req.body);
     const post = await prisma.app.update({
@@ -33,7 +33,7 @@ export default async function handle(req, res) {
         password,
         passwordProtectionMessage,
         type,
-        publised,
+        published,
         draft,
       },
     });
