@@ -33,7 +33,12 @@ import DefaultComponent from "./components/DefaultComponent";
 
 export default function renderComponents(components: any[] = []) {
   return components.map((component, index) => {
-    const { type, data } = component;
+    const {
+      type,
+      data = {
+        components: [],
+      },
+    } = component;
     switch (type) {
       case "grid": {
         const { components = [], spacing = 2 }: any = data;
@@ -76,7 +81,7 @@ export default function renderComponents(components: any[] = []) {
         return renderTable(headers, rows);
       }
       case "form": {
-        const { components=[], label }: any = data;
+        const { components = [], label }: any = data;
         return renderForm({ components, label });
       }
       case "checkbox": {
@@ -99,7 +104,7 @@ export default function renderComponents(components: any[] = []) {
       }
       case "box": {
         const {
-          components=[],
+          components = [],
           centerHorizontal,
           centerVertical,
           minHeight,
@@ -129,7 +134,7 @@ export default function renderComponents(components: any[] = []) {
         return renderRating();
       }
       case "select": {
-        const { options=[], label } = data;
+        const { options = [], label } = data;
         return renderSelect({ options, label });
       }
       case "slider": {
