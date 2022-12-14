@@ -7,7 +7,10 @@ import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, Paper, Button } from "@mui/material";
+import Preview from "../../components/Preview";
+import { ThemeProvider } from "@mui/system";
+import defaultTheme from "../../lib/defaultheme";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -57,13 +60,28 @@ const App: React.FC<AppProps> = (props) => {
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1 }}></Box>
           <Box sx={{ flexGrow: 1 }}>
-            <Avatar src={props.image}>{title[0]}</Avatar>
-            <h2>{title}</h2>
-            <p>By {props?.author?.name || "Unknown author"}</p>
+            <Box sx={{ display: "flex" }}>
+              <Box sx={{ flexGrow: 1 }}>
+                <Avatar src={props.image}>{title[0]}</Avatar>
+                <h2>{title}</h2>
+                <p>By {props?.author?.name || "Unknown author"}</p>
+              </Box>
+              <Box>
+                <Button onClick={() => Router.push(`/preview/${props.id}`)}>
+                  Preview Store
+                </Button>
+              </Box>
+            </Box>
+
+            <Paper sx={{ maxHeight: "30vh", overflow: "hidden" }}>
+              <ThemeProvider theme={defaultTheme}>
+                <Preview />
+              </ThemeProvider>
+            </Paper>
             <ReactMarkdown>{props.description}</ReactMarkdown>
             {!props.published && userHasValidSession && postBelongsToUser && (
               <button onClick={() => Router.push(`/builder/${props.id}`)}>
-                Open in builder
+                Customize
               </button>
             )}
             {!props.published && userHasValidSession && postBelongsToUser && (
@@ -71,10 +89,16 @@ const App: React.FC<AppProps> = (props) => {
             )}
             {userHasValidSession && postBelongsToUser && (
               <>
-                <button onClick={() => Router.push(`/builder/${props.id}`)}>
-                  Open in editor{" "}
+                <button onClick={() => Router.push(`/preferences/${props.id}`)}>
+                  Preferences
                 </button>
-                <button onClick={() => deletePost(props.id)}>Delete</button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => deletePost(props.id)}
+                >
+                  Delete
+                </Button>
               </>
             )}
           </Box>

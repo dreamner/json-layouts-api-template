@@ -46,3 +46,5 @@ const fontHeader = {
 export const defaultTheme = {
   ...rawTheme,
 };
+
+export default defaultTheme;

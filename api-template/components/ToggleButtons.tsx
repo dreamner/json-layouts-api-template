@@ -4,15 +4,47 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  CircularProgress,
   Select,
 } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
 import AddPageDialog from "./AddPageDialog";
+import { GetServerSideProps } from "next";
+import React from "react";
+import prisma from "../lib/prisma";
 
-export default function ToggleButtons() {
+export default function ToggleButtons({ app }) {
   const pages = usePagesStateValue("pages");
   const pageIndex = usePagesStateValue("pageIndex");
   const { changePage } = useActions();
+
+  const [saving, setSaving] = React.useState(false);
+
+  async function updateApp(id: string, payload): Promise<any> {
+    return await fetch(`/api/app/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  const handleSave = async (e) => {
+    try {
+      setSaving(true);
+      const res = await updateApp(app.id, {
+        ...app,
+        draft: JSON.stringify(pages),
+      });
+      if (res) {
+        setSaving(false);
+      } else {
+        setSaving(false);
+      }
+    } catch (e) {
+      setSaving(false);
+      console.log(e);
+    }
+  };
+
   return (
     <Box sx={{ mb: 3, display: "flex" }}>
       <Box sx={{ width: 200 }}>
@@ -37,6 +69,19 @@ export default function ToggleButtons() {
             })}
           </Select>
         </FormControl>
+      </Box>
+      <Box>
+        <Box sx={{ width: 200, ml: 2 }}>
+          <Button
+            size="small"
+            disabled={saving}
+            onClick={handleSave}
+            disableElevation
+            variant="contained"
+          >
+            {saving ? <CircularProgress /> : "Save Changes"}
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

@@ -33,20 +33,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-async function publishPost(id: string): Promise<void> {
-  await fetch(`/api/publish/${id}`, {
-    method: "PUT",
-  });
-  await Router.push("/");
-}
-
-async function deletePost(id: string): Promise<void> {
-  await fetch(`/api/app/${id}`, {
-    method: "DELETE",
-  });
-  Router.push("/");
-}
-
 const App: React.FC<AppProps> = (props) => {
   const { data: session, status } = useSession();
   if (status === "loading") {
@@ -81,7 +67,7 @@ const App: React.FC<AppProps> = (props) => {
                   <Typography variant="caption">{props.description}</Typography>
                 </Box>
               </Box>
-              <ToggleButtons />
+              <ToggleButtons app={props} />
             </Box>
 
             <ThemeProvider theme={defaultTheme}>

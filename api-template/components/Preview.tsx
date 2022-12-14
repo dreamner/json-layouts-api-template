@@ -1,8 +1,9 @@
-import { Paper } from "@mui/material";
+import { Paper, ThemeProvider } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
+import defaultTheme from "../lib/defaultheme";
 import renderPage from "./util/renderPage";
 
-export default function Preview() {
+export default function Preview({ fullScreen = false }) {
   const pageIndex = usePagesStateValue("pageIndex");
   const pageData = usePagesStateValue("pages")[pageIndex];
   if (!pageData)
@@ -10,9 +11,9 @@ export default function Preview() {
       <Paper
         sx={{
           p: 2,
-          maxHeight: "76vh",
-          minHeight: "76vh",
-          overflow: "scroll",
+          maxHeight: `${fullScreen ? "100%" : "76vh"}`,
+          minHeight: `${fullScreen ? "100%" : "76vh"}`,
+          overflow: "auto",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -21,9 +22,19 @@ export default function Preview() {
         No page data found
       </Paper>
     );
+  if (fullScreen) {
+    return (
+      <ThemeProvider theme={defaultTheme}>{renderPage(pageData)}</ThemeProvider>
+    );
+  }
   return (
     <Paper
-      sx={{ p: 2, maxHeight: "76vh", minHeight: "60vh", overflow: "scroll" }}
+      sx={{
+        p: fullScreen ? 0 : 2,
+        maxHeight: `${fullScreen ? "100%" : "76vh"}`,
+        minHeight: `${fullScreen ? "100%" : "60vh"}`,
+        overflow: "auto",
+      }}
     >
       {renderPage(pageData)}
     </Paper>

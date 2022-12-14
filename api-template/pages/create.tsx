@@ -1,5 +1,3 @@
-// pages/create.tsx
-
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
@@ -7,6 +5,7 @@ import ImageField from "../components/ImageField";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   Grid,
   InputLabel,
@@ -63,7 +62,7 @@ const Draft: React.FC = () => {
 
   return (
     <Layout>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", mb:4 }}>
         <Box sx={{ flexGrow: 1 }}></Box>
         <form style={{ flexGrow: 1 }} onSubmit={submitData}>
           <Stack spacing={2}>
@@ -105,15 +104,16 @@ const Draft: React.FC = () => {
             </Box>
 
             <Button
-              variant="outlined"
+              variant="contained"
+              disableElevation
               disabled={!name || !description || !image || saving}
               type="submit"
             >
-              {saving ? "Creating app..." : "Create app"}
+              {saving ? <CircularProgress size={20} /> : "Create app"}
             </Button>
-            <a className="back" href="#" onClick={() => Router.push("/")}>
+            <Button  disableElevation color="error" variant="outlined" className="back" href="#" onClick={() => Router.push("/")}>
               or Cancel
-            </a>
+            </Button >
           </Stack>
         </form>
         <Box sx={{ flexGrow: 1 }}></Box>

@@ -12,13 +12,21 @@ export type AppProps = {
   description: string;
   published: boolean;
   image: string;
+  meta: string;
+  favicon: string;
+  password: string;
+  passwordProtectionMessage: string;
+  draft: string;
+  title: string;
 };
 
 const App: React.FC<{ app: AppProps }> = ({ app }) => {
   const authorName = app.author ? app.author.name : "Unknown author";
   return (
     <div onClick={() => Router.push("/a/[id]", `/a/${app.id}`)}>
-      <Avatar alt={app.name} src={app.image}>{app.name[0]}</Avatar>
+      <Avatar alt={app.name} src={app.image}>
+        {app.name[0]}
+      </Avatar>
       <h2>{app.name}</h2>
       <small>By {authorName}</small>
       {/* <ReactMarkdown>{app.description}</ReactMarkdown> */}

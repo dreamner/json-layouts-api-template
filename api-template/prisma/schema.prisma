@@ -1,7 +1,12 @@
 // schema.prisma
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 generator client {
@@ -33,16 +38,21 @@ model Page {
 }
 
 model App {
-  id          String  @id @default(cuid())
-  title       String?
-  name        String?
-  description String?
-  image       String?
-  type        String?
-  published   Boolean @default(false)
-  author      User?   @relation(fields: [authorId], references: [id])
-  authorId    String?
-  pages       Page[]
+  id                        String  @id @default(cuid())
+  title                     String?
+  name                      String?
+  description               String?
+  meta                      String?
+  favicon                   String?
+  image                     String?
+  password                  String?
+  passwordProtectionMessage String?
+  type                      String?
+  published                 Boolean @default(false)
+  author                    User?   @relation(fields: [authorId], references: [id])
+  authorId                  String?
+  pages                     Page[]
+  draft                     String?
 }
 
 model Account {

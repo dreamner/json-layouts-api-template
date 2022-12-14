@@ -55,7 +55,7 @@ export default function BuilderTabs() {
   };
 
   return (
-    <Box sx={{ width: "100%", overflow: "auto" }}>
+    <Box sx={{ width: "90%", overflow: "auto" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
