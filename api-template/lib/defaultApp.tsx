@@ -35,7 +35,8 @@ const defaultPage = {
                 {
                   type: "image",
                   data: {
-                    imageUrl: "http://res.cloudinary.com/dreamercodes/image/upload/v1670931695/Screenshot_2021-09-05-21-17-59-492_host.exp.exponent_cqe8gb.jpg",
+                    imageUrl:
+                      "http://res.cloudinary.com/dreamercodes/image/upload/v1670928699/Screenshot_2021-09-05-21-17-28-950_host.exp.exponent_i7hxjl.jpg",
                   },
                 },
               ],

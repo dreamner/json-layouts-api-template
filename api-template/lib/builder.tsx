@@ -30,6 +30,28 @@ export const PagesContextProvider: React.FC<IPagesProvider> = ({
   return (
     <PagesContext.Provider value={{ ...(state as any), dispatch }}>
       {children}
+      <style jsx>{`
+        /* width */
+        ::-webkit-scrollbar {
+          width: 4px;
+          border-radius: 4px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: blue;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: blue;
+        }
+      `}</style>
     </PagesContext.Provider>
   );
 };
