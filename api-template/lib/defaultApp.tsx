@@ -5,15 +5,10 @@ const defaultPage = {
     {
       type: "box",
       data: {
-        flex: true,
-        centerHorizontal: true,
-        centerVertical: true,
-        minHeight: "100vh",
         components: [
           {
             type: "box",
             data: {
-              textAlign: "center",
               components: [
                 {
                   type: "text",

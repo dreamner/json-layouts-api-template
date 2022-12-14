@@ -43,7 +43,7 @@ export default function ComponentForm() {
           if (typeof component?.data[key] === "object") {
             const obj = component?.data[key];
             return (
-              <Box>
+              <Box key={idx}>
                 <Typography variant="caption">{key}</Typography>
                 {Object.keys(obj ?? {}).map((childcomponentKey, index) => {
                   return (
