@@ -76,7 +76,7 @@ export default function renderComponents(components: any[] = []) {
         return renderTable(headers, rows);
       }
       case "form": {
-        const { components, label }: any = data;
+        const { components=[], label }: any = data;
         return renderForm({ components, label });
       }
       case "checkbox": {
@@ -99,7 +99,7 @@ export default function renderComponents(components: any[] = []) {
       }
       case "box": {
         const {
-          components,
+          components=[],
           centerHorizontal,
           centerVertical,
           minHeight,
@@ -129,7 +129,7 @@ export default function renderComponents(components: any[] = []) {
         return renderRating();
       }
       case "select": {
-        const { options, label } = data;
+        const { options=[], label } = data;
         return renderSelect({ options, label });
       }
       case "slider": {

@@ -7,6 +7,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import React, { useState } from "react";
 import { useRef } from "react";
 import { usePagesStateValue } from "../lib/builder";
+import { getStyleValue } from "@mui/system";
 
 export default function Code() {
   const editor = useRef();
@@ -18,7 +19,7 @@ export default function Code() {
   const [code, setCode] = useState(() => JSON.stringify(page, null, "\t"));
 
   const { handleChange: updatePage } = useActions();
-  const handleChange = (value) => setCode(JSON.stringify(value, null, "\t"));
+  const handleChange = (value) => setCode(value);
 
   React.useEffect(() => {
     updatePage(code);

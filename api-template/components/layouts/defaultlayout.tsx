@@ -14,19 +14,19 @@ interface IDefaultLayout {
 export default function DefaultLayout({ children, name }: IDefaultLayout) {
   const pages = usePagesStateValue("pages");
   const pageTitle = React.useMemo(() => renderText(name, "h2"), [name]);
-  const linkToPages = React.useMemo(
-    () => pages.map((page: any) => renderBox(page.name)),
-    [pages]
-  );
-  const linkStack = React.useMemo(
-    () => renderStack(linkToPages),
-    [linkToPages]
-  );
+  // const linkToPages = React.useMemo(
+  //   () => pages.map((page: any) => renderBox({})),
+  //   [pages]
+  // // );
+  // const linkStack = React.useMemo(
+  //   () => renderStack(linkToPages),
+  //   [linkToPages]
+  // );
   return (
     <Container>
       {pageTitle}
       {children}
-      {linkStack}
+      {/* {linkStack} */}
     </Container>
   );
 }
