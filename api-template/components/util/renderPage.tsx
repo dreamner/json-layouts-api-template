@@ -7,6 +7,8 @@ import renderComponents from "./renderComponents";
 import renderGrid from "./renderGrid";
 import renderStack from "./renderStack";
 
+import Box from "@mui/material/Box";
+
 interface Ipage {
   layout: string;
   name: string;
@@ -31,7 +33,11 @@ export default function renderPage(page: Ipage = defaultPageProps) {
     }
     case "dashboard": {
       const drawerLists = (opts as any)?.lists ?? [];
-      return <Dashboard drawer={null}>{children}</Dashboard>;
+      return (
+        <Box style={{ position: "absolute", width:100 }}>
+          <Dashboard  drawer={null}>{children}</Dashboard>;
+        </Box>
+      );
     }
     default: {
       return <DefaultLayout name={name}>{children}</DefaultLayout>;
