@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import ReactMarkdown from "react-markdown";
 import Router from "next/router";
@@ -7,7 +7,15 @@ import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
 
-import { Avatar, Box, Paper, Button } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Paper,
+  Button,
+  Container,
+  Chip,
+  CircularProgress,
+} from "@mui/material";
 import Preview from "../../components/Preview";
 import { ThemeProvider } from "@mui/system";
 import defaultTheme from "../../lib/defaultheme";
@@ -29,80 +37,115 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-async function publishPost(id: string): Promise<void> {
-  await fetch(`/api/publish/${id}`, {
-    method: "PUT",
-  });
-  await Router.push("/");
-}
-
-async function deletePost(id: string): Promise<void> {
-  await fetch(`/api/app/${id}`, {
-    method: "DELETE",
-  });
-  Router.push("/");
-}
-
 const App: React.FC<AppProps> = (props) => {
   const { data: session, status } = useSession();
   usePages();
 
+  const [deleting, setDeleting] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+
+  async function publishPost(id: string): Promise<any> {
+    try {
+      setPublishing(true);
+      const res = await fetch(`/api/publish/${id}`, {
+        method: "PUT",
+      });
+      if (res.json()) {
+        setPublishing(false);
+        await Router.push("/");
+      } else setPublishing(false);
+    } catch (e) {
+      setPublishing(false);
+    }
+  }
+
+  async function deletePost(id: string): Promise<void> {
+    try {
+      setPublishing(true);
+      const res = await fetch(`/api/app/${id}`, {
+        method: "DELETE",
+      });
+      if (res.json()) {
+        setPublishing(false);
+        await Router.push("/");
+      } else setPublishing(false);
+    } catch (e) {
+      setPublishing(false);
+    }
+  }
 
   if (status === "loading") {
     return <div>Authenticating ...</div>;
   }
-  const userHasValidSession = Boolean(session);
-  const postBelongsToUser = session?.user?.email === props.author?.email;
+
   let title = props.name;
+
   if (!props.published) {
     title = `${title} (Draft)`;
   }
 
-
   return (
     <Layout>
       <div>
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ flexGrow: 1 }}></Box>
+        <Container>
           <Box sx={{ flexGrow: 1 }}>
             <Box sx={{ display: "flex" }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Avatar src={props.image}>{title[0]}</Avatar>
                 <h2>{title}</h2>
-                <p>By {props?.author?.name || "Unknown author"}</p>
+                <Chip
+                  avatar={<Avatar alt="Natacha" src={session.user.image} />}
+                  label={`By ${props?.author?.name || "Unknown author"}`}
+                  variant="outlined"
+                />
               </Box>
               <Box>
-                <Button variant="outlined" onClick={() => Router.push(`/preview/${props.id}`)}>
+                <Button
+                  variant="outlined"
+                  onClick={() => Router.push(`/preview/${props.id}`)}
+                >
                   Preview
                 </Button>
               </Box>
             </Box>
 
-            <Paper sx={{ maxHeight: "30vh", overflow: "hidden" }}>
+            <Paper elevation={0} sx={{ maxHeight: "30vh", overflow: "hidden", my:5 }}>
               <ThemeProvider theme={defaultTheme}>
                 <Preview />
               </ThemeProvider>
             </Paper>
-            <ReactMarkdown>{props.description}</ReactMarkdown>
-            <button onClick={() => Router.push(`/builder/${props.id}`)}>
+            <Button
+              className="button"
+              onClick={() => Router.push(`/builder/${props.id}`)}
+            >
               Customize
-            </button>
-            <button onClick={() => publishPost(props.id)}>Publish</button>
+            </Button>
+            <Button
+              disabled={props.published || publishing}
+              className="button"
+              onClick={() => publishPost(props.id)}
+            >
+              {deleting ? <CircularProgress size={20} /> : "Publish app"}
+            </Button>
             <>
-              <button onClick={() => Router.push(`/preferences/${props.id}`)}>
-                Preferences
-              </button>
               <Button
+                className="button"
+                onClick={() => Router.push(`/preferences/${props.id}`)}
+              >
+                Preferences
+              </Button>
+              <Button
+                disabled={deleting}
                 variant="outlined"
                 color="error"
                 onClick={() => deletePost(props.id)}
               >
-                Delete
+                {deleting ? <CircularProgress size={20} /> : "Delete"}
               </Button>
             </>
+            <ReactMarkdown>{props.description}</ReactMarkdown>
           </Box>
-          <Box sx={{ flexGrow: 1 }}></Box>
-        </Box>
+        </Container>
       </div>
       <style jsx>{`
         .page {
@@ -114,11 +157,8 @@ const App: React.FC<AppProps> = (props) => {
           margin-top: 2rem;
         }
 
-        button {
-          background: #ececec;
-          border: 0;
-          border-radius: 0.125rem;
-          padding: 1rem 2rem;
+        .button {
+          margin-left: 1rem;
         }
 
         button + button {

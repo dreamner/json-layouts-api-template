@@ -36,7 +36,7 @@ export default function FullScreenDialog() {
 
   return (
     <div>
-      <Button fullWidth variant="outlined" onClick={handleClickOpen}>
+      <Button size="small" fullWidth variant="outlined" onClick={handleClickOpen}>
         Add Page
       </Button>
       <Dialog

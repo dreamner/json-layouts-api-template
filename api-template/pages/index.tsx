@@ -6,20 +6,19 @@ import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Container } from "@mui/material";
 
 export const getStaticProps: GetStaticProps = async () => {
   const apps = await prisma.app.findMany({
     where: { published: true },
     include: {
       author: {
-        select: { name: true },
+        select: { name: true, email: true },
       },
     },
   });
   return {
     props: { apps },
-    revalidate: 10,
   };
 };
 
@@ -34,7 +33,12 @@ const Blog: React.FC<Props> = (props) => {
     return <div>Authenticating ...</div>;
   }
   const userHasValidSession = Boolean(session);
-  const hasApps = Boolean(props.apps.length);
+
+  const apps = props.apps.filter(
+    (app) => app.author.email === session.user.email
+  );
+  const hasApps = Boolean(apps.length);
+
   return (
     <Layout>
       <div className="page">
@@ -43,16 +47,17 @@ const Blog: React.FC<Props> = (props) => {
           <p>You need to be signed in to view your apps</p>
         )}
         <main>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flexGrow: 1 }}></Box>
+          <Container sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
-              <Grid container>
+              <Grid container spacing={2}>
                 {userHasValidSession && (
                   <>
-                    {props.apps.map((app) => (
-                      <div key={app.id} className="post">
-                        <App app={app} />
-                      </div>
+                    {apps.map((app) => (
+                      <Grid key={app.id} item xs>
+                        <div className="post">
+                          <App app={app} />
+                        </div>
+                      </Grid>
                     ))}
                   </>
                 )}
@@ -70,8 +75,7 @@ const Blog: React.FC<Props> = (props) => {
                 )}
               </Grid>
             </Box>
-            <Box sx={{ flexGrow: 1 }}></Box>
-          </Box>
+          </Container>
         </main>
       </div>
       <style jsx>{`

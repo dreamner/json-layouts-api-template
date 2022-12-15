@@ -12,6 +12,7 @@ export default function Preview({ fullScreen = false }) {
   if (!pageData)
     return (
       <Paper
+        elevation={0}
         sx={{
           p: 2,
           maxHeight: `${fullScreen ? "100%" : "76vh"}`,
@@ -32,6 +33,7 @@ export default function Preview({ fullScreen = false }) {
   }
   return (
     <Paper
+      elevation={0}
       sx={{
         p: fullScreen ? 0 : 2,
         maxHeight: `${fullScreen ? "100%" : "76vh"}`,

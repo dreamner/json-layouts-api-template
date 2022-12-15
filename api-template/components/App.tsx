@@ -1,6 +1,7 @@
 import React from "react";
 import Router from "next/router";
-import { Avatar } from "@mui/material";
+import { Avatar, Chip } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 export type AppProps = {
   id: string;
@@ -22,14 +23,18 @@ export type AppProps = {
 
 const App: React.FC<{ app: AppProps }> = ({ app }) => {
   const authorName = app.author ? app.author.name : "Unknown author";
+  const { data: session, status } = useSession();
   return (
     <div onClick={() => Router.push("/a/[id]", `/a/${app.id}`)}>
       <Avatar alt={app.name} src={app.image}>
         {app.name[0]}
       </Avatar>
       <h2>{app.name}</h2>
-      <small>By {authorName}</small>
-      {/* <ReactMarkdown>{app.description}</ReactMarkdown> */}
+      <Chip
+        avatar={<Avatar alt="Natacha" src={session.user.image} />}
+        label={`By ${authorName}`}
+        variant="outlined"
+      />
       <style jsx>{`
         div {
           color: inherit;

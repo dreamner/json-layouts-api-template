@@ -12,45 +12,43 @@ import AddPageDialog from "./AddPageDialog";
 import { GetServerSideProps } from "next";
 import React from "react";
 import prisma from "../lib/prisma";
+import { Router, useRouter } from "next/router";
 
 export default function ToggleButtons({ app }) {
   const pages = usePagesStateValue("pages");
   const pageIndex = usePagesStateValue("pageIndex");
   const { changePage } = useActions();
 
+  const router = useRouter();
+
   const [saving, setSaving] = React.useState(false);
 
-  async function updateApp(id: string, payload): Promise<any> {
-    return await fetch(`/api/app/${id}`, {
+  function updateApp(id: string, payload) {
+    fetch(`/api/app/${id}`, {
       method: "PUT",
       body: JSON.stringify(payload),
-    });
+    })
+      .then(() => {
+        setSaving(false);
+        router.push(`/a/${id}`);
+      })
+      .catch((e) => {
+        setSaving(false);
+        alert("An error occured, try again");
+      });
   }
 
-  const handleSave = async (e) => {
-    try {
-      setSaving(true);
-      const res = await updateApp(app.id, {
-        ...app,
-        draft: JSON.stringify(pages),
-      });
-      if (res) {
-        setSaving(false);
-      } else {
-        setSaving(false);
-      }
-    } catch (e) {
-      setSaving(false);
-      console.log(e);
-    }
+  const handleSave = (e) => {
+    setSaving(true);
+    updateApp(app.id, {
+      ...app,
+      draft: JSON.stringify(pages),
+    });
   };
 
   return (
     <Box sx={{ mb: 3, display: "flex" }}>
-      <Box sx={{ width: 200 }}>
-        <AddPageDialog />
-      </Box>
-      <Box sx={{ width: 180, ml: 2 }}>
+      <Box sx={{ width: 180, mr: 2 }}>
         <FormControl size="small" fullWidth>
           <InputLabel id="demo-simple-select-label">Select page</InputLabel>
           <Select
@@ -70,18 +68,36 @@ export default function ToggleButtons({ app }) {
           </Select>
         </FormControl>
       </Box>
+      <Box sx={{ width: 200 }}>
+        <AddPageDialog />
+      </Box>
       <Box>
-        <Box sx={{ width: 200, ml: 2 }}>
+        <Box sx={{ width: 140, ml: 2 }}>
           <Button
             size="small"
+            fullWidth
             disabled={saving}
             onClick={handleSave}
+            sx={{ textTransform: "none" }}
             disableElevation
             variant="contained"
           >
             {saving ? <CircularProgress size={20} /> : "Save Changes"}
           </Button>
         </Box>
+      </Box>
+      <Box sx={{ width: 80, ml: 2 }}>
+        <Button
+          fullWidth
+          sx={{ textTransform: "none" }}
+          size="small"
+          disabled={saving}
+          onClick={() => router.push("/")}
+          disableElevation
+          variant="outlined"
+        >
+          Cancel
+        </Button>
       </Box>
     </Box>
   );

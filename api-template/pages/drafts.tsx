@@ -6,7 +6,8 @@ import { useSession, getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Container } from "@mui/material";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // const session = await getSession({ req });
@@ -22,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
     include: {
       author: {
-        select: { name: true },
+        select: { name: true, email: true },
       },
     },
   });
@@ -38,6 +39,13 @@ type Props = {
 const Drafts: React.FC<Props> = (props) => {
   const { data: session } = useSession();
 
+  const router = useRouter();
+
+  const apps = props.drafts.filter(
+    (app) => app.author.email === session.user.email
+  );
+  const hasApps = Boolean(apps.length);
+
   if (!session) {
     return (
       <Layout>
@@ -51,9 +59,8 @@ const Drafts: React.FC<Props> = (props) => {
     <Layout>
       <div className="page">
         <h1>{props.drafts.length} Drafts</h1>
-        <main>
+        <Container>
           <Box sx={{ display: "flex" }}>
-            <Box sx={{ flexGrow: 1 }}></Box>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container>
                 {props.drafts.map((app) => (
@@ -64,10 +71,20 @@ const Drafts: React.FC<Props> = (props) => {
                   </Grid>
                 ))}
               </Grid>
+              {!hasApps && (
+                <div>
+                  <h6>You do not have any published apps</h6>
+                  <button onClick={() => router.push("/create")}>
+                    Create app
+                  </button>
+                  <button onClick={() => router.push("/drafts")}>
+                    Go to drafts
+                  </button>
+                </div>
+              )}
             </Box>
-            <Box sx={{ flexGrow: 1 }}></Box>
           </Box>
-        </main>
+        </Container>
       </div>
       <style jsx>{`
         .post {

@@ -64,7 +64,6 @@ const App: React.FC<AppProps> = (props) => {
                 </Avatar>
                 <Box>
                   <Typography variant="h6">{title}</Typography>
-                  <Typography variant="caption">{props.description}</Typography>
                 </Box>
               </Box>
               <ToggleButtons app={props} />
