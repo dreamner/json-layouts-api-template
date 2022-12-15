@@ -5,9 +5,10 @@ import defaultTheme from "../lib/defaultheme";
 import renderPage from "./util/renderPage";
 
 export default function Preview({ fullScreen = false }) {
-  usePages();
+  const pages = usePages();
   const pageIndex = usePagesStateValue("pageIndex");
-  const pageData = usePagesStateValue("pages")[pageIndex];
+  const pageData = pages[pageIndex];
+  const loader = usePagesStateValue("loaders.page");
   if (!pageData)
     return (
       <Paper

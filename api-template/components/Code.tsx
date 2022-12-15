@@ -8,11 +8,12 @@ import React, { useState } from "react";
 import { useRef } from "react";
 import { usePagesStateValue } from "../lib/builder";
 import { getStyleValue } from "@mui/system";
+import usePages from "../hooks/usePages";
 
 export default function Code() {
   const editor = useRef();
 
-  const pages = usePagesStateValue("pages");
+  const pages = usePages();
   const pageIndex = usePagesStateValue("pageIndex");
 
   const page = pages[pageIndex];

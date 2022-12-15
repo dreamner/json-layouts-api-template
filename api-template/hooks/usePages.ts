@@ -7,6 +7,8 @@ import { useAxios } from "./useAxios";
 export default function usePages() {
   const pages = usePagesStateValue("pages");
 
+  const [p, setP] = React.useState([helloWorld]);
+
   const router = useRouter();
   const { id: appId } = router.query;
 
@@ -18,15 +20,14 @@ export default function usePages() {
   async function updateAll() {
     togglePagesLoader(true);
     try {
-      const response = await axios.get(`/pages/api/${appId}`);
+      const response = await axios.get(`/api/page/${appId}`);
       const data = response.data;
-      if (data) {
-        if (data.length) updatePages([...data]);
-        else updatePages([helloWorld]);
-        togglePagesLoader(false);
-        return;
-      }
+      if (data.length) {
+        updatePages([...data]);
+        setP([...data]);
+      } else updatePages([helloWorld]);
       togglePagesLoader(false);
+      return;
     } catch (e) {
       console.error(e);
       togglePagesLoader(false);
@@ -42,16 +43,19 @@ export default function usePages() {
     if (couldBeEmpty && appId) updateAll();
   }, [couldBeEmpty, appId]);
 
-  return [...pages];
+  console.log(pages);
+
+  if (pages.length) return [...pages];
+  return p;
 }
 
 function useActions() {
-  const dispatchToPages = usePagesStateDisptch();
+  const dispatchToPages = usePagesStateValue("dispatch");
   const pages = usePagesStateValue("pages");
   const loaders = usePagesStateValue("loaders");
   const loadingPages = usePagesStateValue("loaders.pages");
   const updatePages = React.useCallback(
-    (payload: any[]) => {
+    (payload: any) => {
       const type = "update_all";
       const key = "pages";
       dispatchToPages({ payload, type, key });

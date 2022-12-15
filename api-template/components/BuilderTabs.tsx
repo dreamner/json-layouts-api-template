@@ -62,10 +62,10 @@ export default function BuilderTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab sx={{ textTransform: "none" }} label="Code" {...a11yProps(0)} />
+          <Tab sx={{ textTransform: "none" }} label="Add Component" {...a11yProps(0)} />
           <Tab
             sx={{ textTransform: "none" }}
-            label="Add Component"
+            label="JSON"
             {...a11yProps(1)}
           />
           <Tab
@@ -77,10 +77,10 @@ export default function BuilderTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Code />
+        <ComponentForm />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ComponentForm />
+        <Code />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <ComponentsTab />

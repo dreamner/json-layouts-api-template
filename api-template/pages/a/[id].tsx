@@ -45,6 +45,9 @@ async function deletePost(id: string): Promise<void> {
 
 const App: React.FC<AppProps> = (props) => {
   const { data: session, status } = useSession();
+  usePages();
+
+
   if (status === "loading") {
     return <div>Authenticating ...</div>;
   }
@@ -55,7 +58,6 @@ const App: React.FC<AppProps> = (props) => {
     title = `${title} (Draft)`;
   }
 
-  usePages();
 
   return (
     <Layout>
@@ -70,8 +72,8 @@ const App: React.FC<AppProps> = (props) => {
                 <p>By {props?.author?.name || "Unknown author"}</p>
               </Box>
               <Box>
-                <Button onClick={() => Router.push(`/preview/${props.id}`)}>
-                  Preview Store
+                <Button variant="outlined" onClick={() => Router.push(`/preview/${props.id}`)}>
+                  Preview
                 </Button>
               </Box>
             </Box>
