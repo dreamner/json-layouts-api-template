@@ -42,7 +42,7 @@ const Drafts: React.FC<Props> = (props) => {
   const router = useRouter();
 
   const apps = props.drafts.filter(
-    (app) => app.author.email === session.user.email
+    (app) => app.author.email === session?.user?.email
   );
   const hasApps = Boolean(apps.length);
 
