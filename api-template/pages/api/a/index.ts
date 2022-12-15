@@ -66,6 +66,15 @@ export default async function handler(
                         variant: "h3",
                       },
                     },
+                    {
+                      type: "button",
+                      data: {
+                        text: "Create a new app",
+                        href: `https://json-layouts-api-template.vercel.app`,
+                        target: "blank",
+                        sx: "mt:4",
+                      },
+                    },
                   ],
                   ...apps.map((app) => {
                     return {
@@ -73,10 +82,9 @@ export default async function handler(
                       data: {
                         components: [
                           {
-                            type: "image",
+                            type: "avatar",
                             data: {
                               imageUrl: app.image,
-                              variant: "h6",
                             },
                           },
                           {
