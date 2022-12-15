@@ -1,6 +1,5 @@
 import {
   Divider,
-  Checkbox,
   Chip,
   Switch,
   Badge,
@@ -30,6 +29,33 @@ import renderForm from "../renderForm";
 import renderTabs from "./renderTabs";
 import { IBox } from "./components/Box";
 import DefaultComponent from "./components/DefaultComponent";
+import Autocomplete from "./components/AutoComplete";
+import Checkbox from "./components/Checkbox";
+import Fab from "./components/Fab";
+import RadioButtonsGroup from "./components/RadioGroup";
+import Rating from "./components/Rating";
+import Slider from "./components/Slider";
+import TransferList from "./components/TransferList";
+import ToggleButton from "./components/ToggleButton";
+import Avatar from "./components/Avatar";
+import SimpleBadge from "./components/Badge";
+import BasicChips from "./components/Chip";
+import SimpleDialog from "./components/Dialog";
+import Progress from "./components/Progress";
+import Skeleton from "./components/Skeleton";
+import SimpleSnackbar from "./components/Snackbar";
+import ControlledAccordions from "./components/Accordions";
+import WovenImageList from "./components/ImageList";
+import SimpleContainer from "./components/Container";
+import HorizontalStepper from "./components/Stepper";
+import BasicSpeedDial from "./components/SpeedDial";
+import PaginationOutlined from "./components/Pagination";
+import PositionedMenu from "./components/Menu";
+import UnderlineLink from "./components/Link";
+import TemporaryDrawer from "./components/Drawer";
+import Crumbs from "./components/Crumbs";
+import BottomNav from "./components/BottomNav";
+import Paypal from "./components/Paypal";
 
 export default function renderComponents(components: any[] = []) {
   return components.map((component, index) => {
@@ -43,6 +69,12 @@ export default function renderComponents(components: any[] = []) {
       case "grid": {
         const { components = [], spacing = 2 }: any = data;
         return renderGrid({ components, spacing });
+      }
+      case "autocomplete": {
+        return <Autocomplete />;
+      }
+      case "dialog": {
+        return <SimpleDialog />;
       }
       case "button": {
         const {
@@ -75,6 +107,9 @@ export default function renderComponents(components: any[] = []) {
       case "image": {
         const { imageUrl } = data;
         return renderImage(imageUrl);
+      }
+      case "imagelist": {
+        return <WovenImageList />;
       }
       case "table": {
         const { rows = [], headers = [] }: any = data;
@@ -125,19 +160,65 @@ export default function renderComponents(components: any[] = []) {
       case "circular_progress": {
         return <CircularProgress />;
       }
+      case "breadcrumbs": {
+        return <Crumbs />;
+      }
+      case "drawer": {
+        return <TemporaryDrawer />;
+      }
+      case "link": {
+        return <UnderlineLink />;
+      }
+      case "menu": {
+        return <PositionedMenu />;
+      }
+      case "paypal": {
+        return <Paypal />;
+      }
+      case "speeddial": {
+        return <BasicSpeedDial />;
+      }
+      case "pagination": {
+        return <PaginationOutlined />;
+      }
+      case "sketon": {
+        return <Skeleton />;
+      }
+      case "bottom_navigation": {
+        return <BottomNav />;
+      }
+      case "snackbar": {
+        return <SimpleSnackbar />;
+      }
+      case "progress": {
+        return <Progress />;
+      }
+      case "stepper": {
+        return <HorizontalStepper />;
+      }
       case "appbar": {
         return renderAppbar();
       }
       case "radio_group": {
-      }
-      case "rating": {
-        return renderRating();
       }
       case "select": {
         const { options = [], label } = data;
         return renderSelect({ options, label });
       }
       case "slider": {
+        return <Slider />;
+      }
+      case "fab": {
+        return <Fab />;
+      }
+      case "radiogroup": {
+        return <RadioButtonsGroup />;
+      }
+      case "rating": {
+        return <Rating />;
+      }
+      case "container": {
+        return <SimpleContainer />;
       }
       case "switch": {
         const { label } = data;
@@ -150,26 +231,31 @@ export default function renderComponents(components: any[] = []) {
           </FormGroup>
         );
       }
-      case "transfer_list": {
+      case "transferlist": {
         // return renderBox({});
+        return <TransferList />;
       }
-      case "toggle_button": {
+      case "togglebutton": {
+        return <ToggleButton />;
+      }
+      case "accordion": {
+        return <ControlledAccordions />;
       }
       case "avatar": {
         const { clickAction = "" } = data;
-        // return <Avatar clickAction={clickAction} />;
+        return <Avatar clickAction={clickAction} />;
       }
       case "badge": {
-        return <Badge />;
+        return <SimpleBadge />;
       }
       case "chip": {
-        return <Chip />;
+        return <BasicChips />;
       }
       case "divider": {
-        return <Divider sx={{ my: 1 }} />;
+        return <Divider sx={{ my: 2 }} />;
       }
-      case "icons": {
-      }
+      // case "icons": {
+      // }
       case "list": {
         return renderList({ children: null });
       }

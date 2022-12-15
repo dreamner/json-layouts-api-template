@@ -54,10 +54,11 @@ export default function CompontentsAccordion({ component, index }) {
               name="type"
               onChange={handleChange}
             >
-              <MenuItem value={"text"}>Text</MenuItem>
-              <MenuItem value={"box"}>Box</MenuItem>
-              <MenuItem value={"image"}>Image</MenuItem>
-              <MenuItem value={"button"}>Button</MenuItem>
+              {Object.keys(components).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {key}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <Box sx={{ my: 2 }}>
@@ -72,35 +73,39 @@ export default function CompontentsAccordion({ component, index }) {
                   const obj = component?.data[key];
                   if (key === "components") {
                     return (
-                        <Box key={idx} >
-                          <Typography variant="caption">{key}</Typography>
-                          {(obj ?? []).map((child, index) => {
-                            return (
-                              <div
+                      <Box key={idx}>
+                        <Typography variant="caption">{key}</Typography>
+                        {(obj ?? []).map((child, index) => {
+                          return (
+                            <div
+                              key={index}
+                              style={{
+                                backgroundClip: "lightgray",
+                                padding: "6px",
+                              }}
+                            >
+                              <TextField
+                                label={"Type"}
                                 key={index}
-                                style={{
-                                  backgroundClip: "lightgray",
-                                  padding: "6px",
-                                }}
-                              >
-                                <TextField
-                                  label={"Type"}
-                                  key={index}
-                                  fullWidth
-                                  value={child.type}
-                                />
-                                <Divider sx={{ my: 1 }} />
-                                {child?.data?.components?.map((component, index) => {
-                                  return <div key={index} >{component.type}</div>;
-                                })}
-                              </div>
-                            );
-                          })}
-                        </Box>
+                                fullWidth
+                                value={child.type}
+                              />
+                              <Divider sx={{ my: 1 }} />
+                              {child?.data?.components?.map(
+                                (component, index) => {
+                                  return (
+                                    <div key={index}>{component.type}</div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          );
+                        })}
+                      </Box>
                     );
                   }
                   return (
-                    <Box key={idx} >
+                    <Box key={idx}>
                       <Typography variant="caption">{key}</Typography>
                       {Object.keys(obj ?? {}).map(
                         (childcomponentKey, index) => {

@@ -2,15 +2,18 @@
 // import renderTableHead from "./renderTablehead";
 // import renderTableRows from "./renderTableRows";
 
+import EnhancedTable from "./util/components/Table";
+
 export default function renderTable(headers: any[] = [], objs: any = []) {
   //   const head = renderTableHead(headers);
   //   const rowdata = createTableData(headers, objs);
   //   const rows = renderTableRows(rowdata);
   return (
-    <table>
-      {/* <thead>{head}</thead> */}
-      {/* <tbody>{rows}</tbody> */}
-    </table>
+    <EnhancedTable />
+    // <table>
+    //   {/* <thead>{head}</thead> */}
+    //   {/* <tbody>{rows}</tbody> */}
+    // </table>
   );
 }
 
