@@ -73,10 +73,9 @@ export default async function handler(
                       data: {
                         components: [
                           {
-                            type: "image",
+                            type: "avatar",
                             data: {
                               imageUrl: app.image,
-                              variant: "h6",
                             },
                           },
                           {
