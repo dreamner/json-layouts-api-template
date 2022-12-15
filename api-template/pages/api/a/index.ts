@@ -70,7 +70,7 @@ export default async function handler(
                       type: "button",
                       data: {
                         text: "Create a new app",
-                        href: `https://json-layouts-api-template.vercel.app/create`,
+                        href: `https://json-layouts-api-template.vercel.app`,
                         target: "blank",
                         sx: "mt:4",
                       },
