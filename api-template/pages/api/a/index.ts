@@ -73,11 +73,10 @@ export default async function handler(
                       data: {
                         components: [
                           {
-                            type: "avatar",
+                            type: "image",
                             data: {
-                              src: app.image,
+                              imageUrl: app.image,
                               variant: "h6",
-                              clickAction: `update_state_value-appId-${app.id}`,
                             },
                           },
                           {
@@ -97,10 +96,14 @@ export default async function handler(
                             type: "button",
                             data: {
                               text: "View App",
-                              href: "https://json-layouts-api-template.vercel.app/api/auth/signin",
-                              target: "blank",
+                              clickAction: `update_state_value-appId-${app.id}`,
+                              disabled: false,
                               sx: "mt:4",
                             },
+                          },
+                          {
+                            type: "divider",
+                            data: {},
                           },
                         ],
                       },
