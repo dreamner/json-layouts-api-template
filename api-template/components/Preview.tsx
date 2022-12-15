@@ -1,9 +1,11 @@
 import { Paper, ThemeProvider } from "@mui/material";
+import usePages from "../hooks/usePages";
 import { usePagesStateValue } from "../lib/builder";
 import defaultTheme from "../lib/defaultheme";
 import renderPage from "./util/renderPage";
 
 export default function Preview({ fullScreen = false }) {
+  usePages();
   const pageIndex = usePagesStateValue("pageIndex");
   const pageData = usePagesStateValue("pages")[pageIndex];
   if (!pageData)

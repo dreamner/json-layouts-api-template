@@ -1,10 +1,10 @@
-import defaultPage from "../lib/defaultApp";
+import helloWorld from "../lib/defaultApp";
 import { Box, Grid, Paper, ThemeProvider, Typography } from "@mui/material";
 import renderPage from "./util/renderPage";
 import { usePagesStateValue } from "../lib/builder";
 import { defaultTheme } from "../lib/defaultheme";
 export default function NewPageForm() {
-  const templates = [defaultPage];
+  const templates = [helloWorld];
   const { addPage } = useActions();
   return (
     <Box>

@@ -11,6 +11,7 @@ import { Avatar, Box, Paper, Button } from "@mui/material";
 import Preview from "../../components/Preview";
 import { ThemeProvider } from "@mui/system";
 import defaultTheme from "../../lib/defaultheme";
+import usePages from "../../hooks/usePages";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -53,6 +54,8 @@ const App: React.FC<AppProps> = (props) => {
   if (!props.published) {
     title = `${title} (Draft)`;
   }
+
+  usePages();
 
   return (
     <Layout>

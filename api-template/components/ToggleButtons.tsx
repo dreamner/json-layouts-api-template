@@ -79,7 +79,7 @@ export default function ToggleButtons({ app }) {
             disableElevation
             variant="contained"
           >
-            {saving ? <CircularProgress /> : "Save Changes"}
+            {saving ? <CircularProgress size={20} /> : "Save Changes"}
           </Button>
         </Box>
       </Box>

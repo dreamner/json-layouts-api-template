@@ -2,10 +2,10 @@ import React from "react";
 
 import reducer from "./reducer";
 import { nestedObjectReducer } from "./nestedObjectReducer";
-import defaultPage from "./defaultApp";
+import helloWorld from "./defaultApp";
 
 const initialState = {
-  pages: [defaultPage],
+  pages: [],
   dispatch: () => {},
   loaders: {},
   theme: null,

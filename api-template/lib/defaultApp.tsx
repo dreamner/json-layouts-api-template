@@ -1,4 +1,4 @@
-const defaultPage = {
+const helloWorld = {
   layout: "page",
   name: "Hello World",
   components: [
@@ -49,4 +49,4 @@ const defaultPage = {
   opts: {},
 };
 
-export default defaultPage;
+export default helloWorld;
