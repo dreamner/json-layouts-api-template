@@ -35,7 +35,7 @@ const Blog: React.FC<Props> = (props) => {
   const userHasValidSession = Boolean(session);
 
   const apps = props.apps.filter(
-    (app) => app.author.email === session.user.email
+    (app) => app.author.email === session?.user?.email
   );
   const hasApps = Boolean(apps.length);
 
