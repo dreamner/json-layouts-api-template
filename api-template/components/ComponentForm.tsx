@@ -9,15 +9,71 @@ import {
   Stack,
   TextField,
   Typography,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+  Paper,
 } from "@mui/material";
 import { useState } from "react";
 import { usePagesStateValue } from "../lib/builder";
 
-export default function ComponentForm() {
-  const [type, setType] = useState("box");
-  const handleChange = (e) => setType(e.target.value);
+interface IC {
+  data?: any;
+  index?: number;
+}
+
+export default function ComponentForm({ data, index: cIindex }: IC) {
+  const [type, setType] = useState(data?.type ?? "text");
   const { handleSubmit } = useActions();
   const component = components[type];
+
+  const [state, setState] = useState(data ?? component);
+
+  const handleTypeChange = (e) => {
+    setState(components[e.target.value]);
+    setType(e.target.value);
+  };
+
+  const handleChange = (e) => {
+    setState((s) => ({
+      ...s,
+      data: { ...s.data, [e.target.name]: e.target.value },
+    }));
+  };
+  const handleCheck = (e) => {
+    setState((s) => ({
+      ...s,
+      data: { ...s.data, [e.target.name]: e.target.checked },
+    }));
+  };
+
+  const handleComponentTypeChange = (e, index) => {
+    setState((s) => {
+      let allComponents = [...s.data.components];
+      allComponents[index] = components[e.target.value];
+      return { ...s, data: { ...s.data, components: allComponents } };
+    });
+  };
+
+  const handleComponentDataTypeChange = (e, index) => {
+    setState((s) => {
+      let allComponents = [...s.data.components];
+      allComponents[index].data = {
+        ...allComponents[index].data,
+        [e.target.name]: e.target.value || e.target.checked,
+      };
+      return { ...s, data: { ...s.data, components: allComponents } };
+    });
+  };
+
+  const deleteChildComponent = (index) => {
+    setState((s) => {
+      let allComponents = [...s.data.components];
+      (allComponents[index]?.components ?? []).splice(index, 0);
+      return { ...s, data: { ...s.data, components: allComponents } };
+    });
+  };
+
   return (
     <Box>
       <FormControl fullWidth>
@@ -29,7 +85,7 @@ export default function ComponentForm() {
           id="demo-simple-select"
           value={type}
           label="Select component type"
-          onChange={handleChange}
+          onChange={handleTypeChange}
         >
           {Object.keys(components).map((key) => (
             <MenuItem key={key} value={key}>
@@ -40,36 +96,110 @@ export default function ComponentForm() {
       </FormControl>
       <Divider sx={{ my: 2 }} />
       <Stack spacing={2}>
-        {Object.keys(component?.data ?? {})?.map((key, idx) => {
-          if (typeof component?.data[key] === "object") {
-            const obj = component?.data[key];
+        {Object.keys(state?.data ?? {})?.map((key, idx) => {
+          if (typeof state?.data[key] === "object") {
+            const obj = state?.data[key];
             return (
               <Box key={idx}>
-                <Typography variant="caption">{key}</Typography>
-                {Object.keys(obj ?? {}).map((childcomponentKey, index) => {
-                  return (
-                    <TextField
-                      label={childcomponentKey}
-                      key={index}
-                      value={obj[childcomponentKey]}
-                    />
-                  );
-                })}
+                {key === "components" && (
+                  <Typography variant="caption">{key}</Typography>
+                )}
+                <Stack spacing={2} sx={{ p: 2 }}>
+                  {(obj ?? []).map((scComponent, index) => {
+                    return (
+                      <>
+                        <Paper sx={{ width: "100%", p: 1 }}>
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">
+                              Select component type
+                            </InputLabel>
+                            <Select
+                              fullWidth
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={scComponent.type}
+                              label="Select component type"
+                              onChange={(e) =>
+                                handleComponentTypeChange(e, idx)
+                              }
+                            >
+                              {Object.keys(components).map((key) => (
+                                <MenuItem key={key} value={key}>
+                                  {key}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+
+                          <Divider sx={{ my: 2 }} />
+                          <Stack spacing={2}>
+                            {Object.keys(scComponent.data ?? []).map(
+                              (schild, sindex) => {
+                                return (
+                                  <>
+                                    <TextField
+                                      name={schild}
+                                      onChange={(e) =>
+                                        handleComponentDataTypeChange(e, idx)
+                                      }
+                                      value={scComponent.data[schild]}
+                                      key={sindex}
+                                      label={schild}
+                                    />
+                                  </>
+                                );
+                              }
+                            )}
+                          </Stack>
+                          <button onClick={() => deleteChildComponent(idx)}>
+                            Delete component
+                          </button>
+                        </Paper>
+                      </>
+                    );
+                  })}
+                </Stack>
               </Box>
             );
           }
+          if (typeof component?.data[key] === "boolean") {
+            return (
+              <>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        name={key}
+                        onChange={handleCheck}
+                        value={state?.data[key]}
+                        defaultChecked={state?.data[key]}
+                      />
+                    }
+                    label={key}
+                  />
+                </FormGroup>
+              </>
+            );
+          }
           return (
-            <TextField value={component?.data[key]} key={idx} label={key} />
+            <TextField
+              name={key}
+              onChange={handleChange}
+              value={state?.data[key]}
+              key={idx}
+              label={key}
+            />
           );
         })}
       </Stack>
       <Button
         fullWidth
         sx={{ mt: 3 }}
-        onClick={(e) => handleSubmit(type)}
+        disableElevation
+        onClick={(e) => handleSubmit(state, cIindex)}
         variant="contained"
       >
-        Add
+        {data ? "Update" : "Add"}
       </Button>
     </Box>
   );
@@ -81,10 +211,25 @@ function useActions() {
   const pageIndex = usePagesStateValue("pageIndex");
 
   return {
-    handleSubmit(type: string) {
+    handleSubmit(state, index) {
+      if (index === 0 || index) {
+        alert(index);
+        let allPages = [...pages];
+        let page = allPages[pageIndex];
+        page.components[index] = { ...state };
+        allPages[pageIndex] = page;
+        const payload = allPages;
+        const key = "pages";
+        dispatch({
+          type: "update_all",
+          payload,
+          key,
+        });
+        return;
+      }
       let allPages = [...pages];
       let page = allPages[pageIndex];
-      page.components = [...(page.components ?? []), { ...components[type] }];
+      page.components = [...(page.components ?? []), { ...state }];
       allPages[pageIndex] = page;
       const payload = allPages;
       const key = "pages";

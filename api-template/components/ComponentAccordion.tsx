@@ -17,7 +17,7 @@ import {
   Divider,
 } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
-import { components } from "./ComponentForm";
+import ComponentForm, { components } from "./ComponentForm";
 
 export default function CompontentsAccordion({ component, index }) {
   const [componentData, setComponentData] = React.useState(() => component);
@@ -43,113 +43,27 @@ export default function CompontentsAccordion({ component, index }) {
           <Typography>{component.type}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{ my: 2 }}>Configure this component</Typography>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Type</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={componentData?.type}
-              label="Type"
-              name="type"
-              onChange={handleChange}
-            >
-              {Object.keys(components).map((key) => (
-                <MenuItem key={key} value={key}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Box sx={{ my: 2 }}>
-            <Typography variant="caption">
-              {" "}
-              {component?.type} Metadata
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Stack spacing={2}>
-              {Object.keys(component?.data ?? {})?.map((key, idx) => {
-                if (typeof component?.data[key] === "object") {
-                  const obj = component?.data[key];
-                  if (key === "components") {
-                    return (
-                      <Box key={idx}>
-                        <Typography variant="caption">{key}</Typography>
-                        {(obj ?? []).map((child, index) => {
-                          return (
-                            <div
-                              key={index}
-                              style={{
-                                backgroundClip: "lightgray",
-                                padding: "6px",
-                              }}
-                            >
-                              <TextField
-                                label={"Type"}
-                                key={index}
-                                fullWidth
-                                value={child.type}
-                              />
-                              <Divider sx={{ my: 1 }} />
-                              {child?.data?.components?.map(
-                                (component, index) => {
-                                  return (
-                                    <div key={index}>{component.type}</div>
-                                  );
-                                }
-                              )}
-                            </div>
-                          );
-                        })}
-                      </Box>
-                    );
-                  }
-                  return (
-                    <Box key={idx}>
-                      <Typography variant="caption">{key}</Typography>
-                      {Object.keys(obj ?? {}).map(
-                        (childcomponentKey, index) => {
-                          return (
-                            <TextField
-                              label={childcomponentKey}
-                              key={index}
-                              value={obj[childcomponentKey]}
-                            />
-                          );
-                        }
-                      )}
-                    </Box>
-                  );
-                }
-                return (
-                  <TextField
-                    value={component?.data[key]}
-                    key={idx}
-                    label={key}
-                  />
-                );
-              })}
-            </Stack>
-          </Box>
-          <AccordionActions>
-            <Button
-              variant="outlined"
-              disabled={component.type === componentData.type}
-              sx={{ mt: 3 }}
-              onClick={handleUpdate}
-            >
-              Update
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              sx={{ mt: 3 }}
-              onClick={handleDelete}
-            >
-              Delete{" "}
-            </Button>
-          </AccordionActions>
+          <Typography sx={{ my: 2 }}>Edit component</Typography>
+          <ComponentForm data={component} index={index} />
         </AccordionDetails>
+        <AccordionActions>
+          <Button
+            variant="outlined"
+            disabled={component.type === componentData.type}
+            sx={{ mt: 3 }}
+            onClick={handleUpdate}
+          >
+            Update
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ mt: 3 }}
+            onClick={handleDelete}
+          >
+            Delete{" "}
+          </Button>
+        </AccordionActions>
       </Accordion>
     </div>
   );
