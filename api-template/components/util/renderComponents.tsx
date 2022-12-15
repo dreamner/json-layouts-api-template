@@ -1,8 +1,6 @@
 import {
   Divider,
-  Chip,
   Switch,
-  Badge,
   FormGroup,
   FormControlLabel,
   CircularProgress,
