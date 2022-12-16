@@ -9,7 +9,7 @@ export default function useUpload() {
         data.append("cloud_name", "dreamercodes");
         fetch("  https://api.cloudinary.com/v1_1/dreamercodes/image/upload", {
           method: "post",
-          body: data,
+            body: data,
         })
           .then((resp) => resp.json())
           .then((data) => {

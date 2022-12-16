@@ -240,8 +240,8 @@ export default function renderComponents(components: any[] = []) {
         return <ControlledAccordions />;
       }
       case "avatar": {
-        const { clickAction = "" } = data;
-        return <Avatar clickAction={clickAction} />;
+        const { clickAction = "", imageUrl } = data;
+        return <Avatar imageUrl={imageUrl} clickAction={clickAction} />;
       }
       case "badge": {
         return <SimpleBadge />;
