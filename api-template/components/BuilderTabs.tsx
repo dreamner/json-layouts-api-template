@@ -10,6 +10,7 @@ import Preferences from "./Preferences";
 
 import dynamic from "next/dynamic";
 import ComponentForm from "./ComponentForm";
+import ComponentFormTabs from "./ComponenentFormTabs";
 const Code = dynamic(import("./Code"), {
   ssr: false,
 });
@@ -77,7 +78,7 @@ export default function BuilderTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <ComponentForm />
+        <ComponentFormTabs />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Code />

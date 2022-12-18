@@ -10,21 +10,35 @@ import { usePagesStateValue } from "../lib/builder";
 import { getStyleValue } from "@mui/system";
 import usePages from "../hooks/usePages";
 
-export default function Code() {
+interface ICode {
+  state?: any
+  size?: string
+  setState?: any
+}
+
+export default function Code({ state, size = "large", setState }: ICode) {
   const editor = useRef();
 
   const pages = usePages();
   const pageIndex = usePagesStateValue("pageIndex");
 
   const page = pages[pageIndex];
-  const [code, setCode] = useState(() => JSON.stringify(page, null, "\t"));
+  const [code, setCode] = useState(() => state ? JSON.stringify(state, null, "\t") : JSON.stringify(page, null, "\t"));
 
   const { handleChange: updatePage } = useActions();
   const handleChange = (value) => setCode(value);
 
   React.useEffect(() => {
-    updatePage(code);
-  }, [code]);
+    if (!state)
+      updatePage(code);
+    if (state && setState) {
+      try {
+        setState(JSON.parse(code))
+      } catch (e) {
+
+      }
+    }
+  }, [code, state]);
 
   return (
     <>
@@ -44,6 +58,7 @@ export default function Code() {
           showGutter: false,
         }}
         value={code}
+        height={size === "small" ? "35vh" : "80vh"}
         width={"100%"}
         showGutter
         fontSize={11}
@@ -63,7 +78,7 @@ function useActions() {
       let allPages = [...pages];
       try {
         allPages[pageIndex] = JSON.parse(codeString);
-      } catch (e) {}
+      } catch (e) { }
       dispatch({
         type: type,
         payload: allPages,
