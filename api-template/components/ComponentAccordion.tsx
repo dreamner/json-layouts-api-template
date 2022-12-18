@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
 import ComponentForm, { components } from "./ComponentForm";
+import ComponentFormTabs from "./ComponenentFormTabs";
 
 export default function CompontentsAccordion({ component, index }) {
   const [componentData, setComponentData] = React.useState(() => component);
@@ -44,7 +45,7 @@ export default function CompontentsAccordion({ component, index }) {
         </AccordionSummary>
         <AccordionDetails>
           <Typography sx={{ my: 2 }}>Edit component</Typography>
-          <ComponentForm data={component} index={index} />
+          <ComponentFormTabs data={component} index={index} />
         </AccordionDetails>
         <AccordionActions>
           <Button

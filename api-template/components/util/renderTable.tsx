@@ -2,7 +2,7 @@
 // import renderTableHead from "./renderTablehead";
 // import renderTableRows from "./renderTableRows";
 
-import EnhancedTable from "./util/components/Table";
+import EnhancedTable from "./components/Table";
 
 export default function renderTable(headers: any[] = [], objs: any = []) {
   //   const head = renderTableHead(headers);

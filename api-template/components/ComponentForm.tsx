@@ -20,60 +20,18 @@ import { usePagesStateValue } from "../lib/builder";
 interface IC {
   data?: any;
   index?: number;
+  handleTypeChange?: any
+  type: string
+  handleComponentTypeChange: any
+  handleComponentDataTypeChange: any
+  deleteChildComponent: any
+  handleCheck: any
+  handleChange: any
 }
 
-export default function ComponentForm({ data, index: cIindex }: IC) {
-  const [type, setType] = useState(data?.type ?? "text");
+export default function ComponentForm({ data: state, index: cIindex, handleTypeChange, type, handleComponentTypeChange, handleComponentDataTypeChange
+  , deleteChildComponent, handleChange, handleCheck }: IC) {
   const { handleSubmit } = useActions();
-  const component = components[type];
-
-  const [state, setState] = useState(data ?? component);
-
-  const handleTypeChange = (e) => {
-    setState(components[e.target.value]);
-    setType(e.target.value);
-  };
-
-  const handleChange = (e) => {
-    setState((s) => ({
-      ...s,
-      data: { ...s.data, [e.target.name]: e.target.value },
-    }));
-  };
-  const handleCheck = (e) => {
-    setState((s) => ({
-      ...s,
-      data: { ...s.data, [e.target.name]: e.target.checked },
-    }));
-  };
-
-  const handleComponentTypeChange = (e, index) => {
-    setState((s) => {
-      let allComponents = [...s.data.components];
-      allComponents[index] = components[e.target.value];
-      return { ...s, data: { ...s.data, components: allComponents } };
-    });
-  };
-
-  const handleComponentDataTypeChange = (e, index) => {
-    setState((s) => {
-      let allComponents = [...s.data.components];
-      allComponents[index].data = {
-        ...allComponents[index].data,
-        [e.target.name]: e.target.value || e.target.checked,
-      };
-      return { ...s, data: { ...s.data, components: allComponents } };
-    });
-  };
-
-  const deleteChildComponent = (index) => {
-    setState((s) => {
-      let allComponents = [...s.data.components];
-      (allComponents[index]?.components ?? []).splice(index, 0);
-      return { ...s, data: { ...s.data, components: allComponents } };
-    });
-  };
-
   return (
     <Box>
       <FormControl fullWidth>
@@ -135,6 +93,13 @@ export default function ComponentForm({ data, index: cIindex }: IC) {
                           <Stack spacing={2}>
                             {Object.keys(scComponent.data ?? []).map(
                               (schild, sindex) => {
+                                if (schild === "components") {
+                                  return (
+                                    <>
+                                      <p>{schild}</p>
+                                    </>
+                                  )
+                                }
                                 return (
                                   <>
                                     <TextField
@@ -162,7 +127,7 @@ export default function ComponentForm({ data, index: cIindex }: IC) {
               </Box>
             );
           }
-          if (typeof component?.data[key] === "boolean") {
+          if (typeof state?.data[key] === "boolean") {
             return (
               <>
                 <FormGroup>
@@ -192,20 +157,11 @@ export default function ComponentForm({ data, index: cIindex }: IC) {
           );
         })}
       </Stack>
-      <Button
-        fullWidth
-        sx={{ mt: 3 }}
-        disableElevation
-        onClick={(e) => handleSubmit(state, cIindex)}
-        variant="contained"
-      >
-        {data ? "Update" : "Add"}
-      </Button>
     </Box>
   );
 }
 
-function useActions() {
+export function useActions() {
   const pages = usePagesStateValue("pages");
   const dispatch = usePagesStateValue("dispatch");
   const pageIndex = usePagesStateValue("pageIndex");
