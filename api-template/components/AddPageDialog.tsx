@@ -23,7 +23,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog() {
+export default function AddPage() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -36,8 +36,14 @@ export default function FullScreenDialog() {
 
   return (
     <div>
-      <Button size="small" fullWidth variant="outlined" onClick={handleClickOpen}>
-        Add Page
+      <Button
+        sx={{ textTransform: "none" }}
+        size="small"
+        fullWidth
+        variant="outlined"
+        onClick={handleClickOpen}
+      >
+        Manage pages
       </Button>
       <Dialog
         fullScreen
@@ -62,7 +68,7 @@ export default function FullScreenDialog() {
         </AppBar>
         <div>
           <Toolbar />
-          <NewPageForm />
+          {/* <NewPageForm /> */}
         </div>
       </Dialog>
     </div>

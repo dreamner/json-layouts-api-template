@@ -33,6 +33,8 @@ export default function CompontentsAccordion({ component, index }) {
   const handleUpdate = () => update(componentData, index);
   const handleDelete = () => deleteComponent(index);
 
+
+
   return (
     <div>
       <Accordion elevation={0} sx={{ mt: 2 }}>
@@ -48,18 +50,19 @@ export default function CompontentsAccordion({ component, index }) {
           <ComponentFormTabs data={component} index={index} />
         </AccordionDetails>
         <AccordionActions>
-          <Button
+          {/* <Button
             variant="outlined"
             disabled={component.type === componentData.type}
             sx={{ mt: 3 }}
             onClick={handleUpdate}
           >
             Update
-          </Button>
+          </Button> */}
           <Button
             variant="outlined"
             color="error"
-            sx={{ mt: 3 }}
+            sx={{ mt: 1 }}
+            fullWidth
             onClick={handleDelete}
           >
             Delete{" "}

@@ -11,6 +11,8 @@ import Preferences from "./Preferences";
 import dynamic from "next/dynamic";
 import ComponentForm from "./ComponentForm";
 import ComponentFormTabs from "./ComponenentFormTabs";
+import defaultTheme from "../lib/defaultheme";
+import AddPage from "./AddPageDialog";
 const Code = dynamic(import("./Code"), {
   ssr: false,
 });
@@ -59,22 +61,24 @@ export default function BuilderTabs() {
     <Box sx={{ width: "90%", overflow: "auto" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
+          scrollButtons
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab sx={{ textTransform: "none" }} label="Add Component" {...a11yProps(0)} />
           <Tab
             sx={{ textTransform: "none" }}
-            label="JSON"
-            {...a11yProps(1)}
+            label="Add Component"
+            {...a11yProps(0)}
           />
+          <Tab sx={{ textTransform: "none" }} label="JSON" {...a11yProps(1)} />
           <Tab
             sx={{ textTransform: "none" }}
             label="Components"
             {...a11yProps(2)}
           />
           <Tab sx={{ textTransform: "none" }} label="Theme" {...a11yProps(3)} />
+          <Tab sx={{ textTransform: "none" }} label="Pages" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -87,7 +91,10 @@ export default function BuilderTabs() {
         <ComponentsTab />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Code />
+        <Code state={{ ...defaultTheme }} />
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        <AddPage />
       </TabPanel>
     </Box>
   );

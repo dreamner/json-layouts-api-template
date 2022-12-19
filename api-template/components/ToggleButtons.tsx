@@ -68,9 +68,9 @@ export default function ToggleButtons({ app }) {
           </Select>
         </FormControl>
       </Box>
-      <Box sx={{ width: 200 }}>
+      {/* <Box sx={{ width: 200 }}>
         <AddPageDialog />
-      </Box>
+      </Box> */}
       <Box>
         <Box sx={{ width: 140, ml: 2 }}>
           <Button

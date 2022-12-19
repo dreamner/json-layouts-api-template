@@ -13,45 +13,72 @@ import {
   FormControlLabel,
   Switch,
   Paper,
+  Autocomplete,
+  Grid,
 } from "@mui/material";
 import { useState } from "react";
 import { usePagesStateValue } from "../lib/builder";
+import BrowseComponents from "./BrowseComponents.Dialog";
 
 interface IC {
   data?: any;
   index?: number;
-  handleTypeChange?: any
-  type: string
-  handleComponentTypeChange: any
-  handleComponentDataTypeChange: any
-  deleteChildComponent: any
-  handleCheck: any
-  handleChange: any
+  handleTypeChange?: any;
+  type: string;
+  handleComponentTypeChange: any;
+  handleComponentDataTypeChange: any;
+  deleteChildComponent: any;
+  handleCheck: any;
+  handleChange: any;
+  handleAddChildComponent?: any;
+  handleChangeOption: any;
+  handleAddOption: any;
+  handleDeleteOption: any;
 }
 
-export default function ComponentForm({ data: state, index: cIindex, handleTypeChange, type, handleComponentTypeChange, handleComponentDataTypeChange
-  , deleteChildComponent, handleChange, handleCheck }: IC) {
-  const { handleSubmit } = useActions();
+export const ComponentSelect = ({ value, onChange }) => {
+  const componentData = Object.keys(components ?? {}).map((key) => ({
+    label: key,
+    value: key,
+  }));
+
+  return (
+    <>
+      <BrowseComponents select={onChange} />
+      <Autocomplete
+        sx={{ mb: 3 }}
+        size="small"
+        disablePortal
+        value={value}
+        onChange={(e, o) => onChange(o ?? { value: "text" })}
+        id="combo-box-demo"
+        options={componentData}
+        renderInput={(params) => (
+          <TextField {...params} label="Search component" />
+        )}
+      />
+    </>
+  );
+};
+
+export default function ComponentForm({
+  data: state,
+  handleComponentTypeChange,
+  handleComponentDataTypeChange,
+  deleteChildComponent,
+  handleChange,
+  handleCheck,
+  handleAddChildComponent,
+  handleChangeOption,
+  handleAddOption,
+  handleDeleteOption,
+}: IC) {
+  const componentData = Object.keys(components ?? {}).map((key) => ({
+    label: key,
+    value: key,
+  }));
   return (
     <Box>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">
-          Select component type
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={type}
-          label="Select component type"
-          onChange={handleTypeChange}
-        >
-          {Object.keys(components).map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
       <Divider sx={{ my: 2 }} />
       <Stack spacing={2}>
         {Object.keys(state?.data ?? {})?.map((key, idx) => {
@@ -60,70 +87,301 @@ export default function ComponentForm({ data: state, index: cIindex, handleTypeC
             return (
               <Box key={idx}>
                 {key === "components" && (
-                  <Typography variant="caption">{key}</Typography>
-                )}
-                <Stack spacing={2} sx={{ p: 2 }}>
-                  {(obj ?? []).map((scComponent, index) => {
-                    return (
-                      <>
-                        <Paper sx={{ width: "100%", p: 1 }}>
-                          <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                              Select component type
-                            </InputLabel>
-                            <Select
-                              fullWidth
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                              value={scComponent.type}
-                              label="Select component type"
-                              onChange={(e) =>
-                                handleComponentTypeChange(e, idx)
-                              }
-                            >
-                              {Object.keys(components).map((key) => (
-                                <MenuItem key={key} value={key}>
-                                  {key}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
+                  <>
+                    <Stack spacing={2} sx={{ p: 2 }}>
+                      {!(obj ?? [])?.length && (
+                        <>
+                          <Typography variant="caption">{key}</Typography>
 
-                          <Divider sx={{ my: 2 }} />
-                          <Stack spacing={2}>
-                            {Object.keys(scComponent.data ?? []).map(
-                              (schild, sindex) => {
-                                if (schild === "components") {
-                                  return (
-                                    <>
-                                      <p>{schild}</p>
-                                    </>
+                          <Box>
+                            <Button
+                              fullWidth
+                              onClick={() => handleAddChildComponent(0)}
+                              sx={{ textTransform: "none" }}
+                              variant="outlined"
+                            >
+                              Add component
+                            </Button>
+                          </Box>
+                        </>
+                      )}
+                      {(obj ?? []).map((scComponent, componentIndex) => {
+                        return (
+                          <>
+                            <Paper sx={{ width: "100%", p: 1 }}>
+                              <Autocomplete
+                                sx={{ mb: 3 }}
+                                size="small"
+                                disablePortal
+                                value={scComponent.type}
+                                onChange={(e, o) =>
+                                  handleComponentTypeChange(
+                                    o ?? { value: "text" },
+                                    componentIndex
                                   )
                                 }
-                                return (
-                                  <>
-                                    <TextField
-                                      name={schild}
-                                      onChange={(e) =>
-                                        handleComponentDataTypeChange(e, idx)
-                                      }
-                                      value={scComponent.data[schild]}
-                                      key={sindex}
-                                      label={schild}
-                                    />
-                                  </>
-                                );
-                              }
-                            )}
-                          </Stack>
-                          <button onClick={() => deleteChildComponent(idx)}>
-                            Delete component
-                          </button>
-                        </Paper>
-                      </>
-                    );
-                  })}
-                </Stack>
+                                id="combo-box-demo"
+                                options={componentData}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    label="Change component"
+                                  />
+                                )}
+                              />
+
+                              <Divider sx={{ my: 2 }} />
+                              <Stack spacing={2}>
+                                {Object.keys(scComponent.data ?? []).map(
+                                  (schild, sindex) => {
+                                    if (
+                                      typeof scComponent?.data[schild] ===
+                                      "boolean"
+                                    ) {
+                                      return (
+                                        <>
+                                          <FormGroup>
+                                            <FormControlLabel
+                                              control={
+                                                <Switch
+                                                  size="small"
+                                                  name={schild}
+                                                  onChange={(e) =>
+                                                    handleComponentDataTypeChange(
+                                                      e,
+                                                      componentIndex
+                                                    )
+                                                  }
+                                                  value={
+                                                    scComponent?.data[schild]
+                                                  }
+                                                  defaultChecked={
+                                                    scComponent?.data[schild]
+                                                  }
+                                                />
+                                              }
+                                              label={schild}
+                                            />
+                                          </FormGroup>
+                                        </>
+                                      );
+                                    }
+
+                                    if (schild === "components") {
+                                      return null;
+                                    }
+
+                                    if (schild === "options") {
+                                      return (
+                                        <>
+                                          <Typography variant="caption">
+                                            {schild}
+                                          </Typography>
+                                          {(scComponent.data.options ?? []).map(
+                                            (option, optImdex) => {
+                                              return (
+                                                <Box
+                                                  sx={{ my: 2 }}
+                                                  key={optImdex}
+                                                >
+                                                  <Typography sx={{ mb: 1 }}>
+                                                    {optImdex + 1}
+                                                  </Typography>
+                                                  <Grid container spacing={2}>
+                                                    <Grid item xs={6}>
+                                                      <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        label={"Label"}
+                                                        name="label"
+                                                        value={option.label}
+                                                        // onChange={(e) =>
+                                                        //   handleChangeOption(
+                                                        //     e,
+                                                        //     optImdex
+                                                        //   )
+                                                        // }
+                                                      />
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                      <TextField
+                                                        size="small"
+                                                        fullWidth
+                                                        name="value"
+                                                        label={"Value"}
+                                                        value={option.value}
+                                                        // onChange={(e) =>
+                                                        //   handleChangeOption(
+                                                        //     e,
+                                                        //     optImdex
+                                                        //   )
+                                                        // }
+                                                      />
+                                                    </Grid>
+                                                  </Grid>
+                                                  <Box>
+                                                    <Button
+                                                      fullWidth
+                                                      onClick={() =>
+                                                        handleDeleteOption(
+                                                          optImdex
+                                                        )
+                                                      }
+                                                      sx={{
+                                                        textTransform: "none",
+                                                        mt: 2,
+                                                      }}
+                                                      variant="outlined"
+                                                      size="small"
+                                                      color="error"
+                                                    >
+                                                      Delete option
+                                                    </Button>
+                                                  </Box>
+                                                </Box>
+                                              );
+                                            }
+                                          )}
+                                        </>
+                                      );
+                                    }
+
+                                    return (
+                                      <>
+                                        <TextField
+                                          size="small"
+                                          name={schild}
+                                          onChange={(e) =>
+                                            handleComponentDataTypeChange(
+                                              e,
+                                              componentIndex
+                                            )
+                                          }
+                                          value={scComponent.data[schild]}
+                                          key={sindex}
+                                          label={schild}
+                                        />
+                                      </>
+                                    );
+                                  }
+                                )}
+                              </Stack>
+
+                              <Button
+                                size="small"
+                                sx={{ mt: 2, textTransform: "none" }}
+                                color="primary"
+                                disableElevation
+                                fullWidth
+                                variant="contained"
+                                onClick={() =>
+                                  handleAddChildComponent(
+                                    componentIndex - 1 < 0
+                                      ? 0
+                                      : componentIndex - 1
+                                  )
+                                }
+                              >
+                                Add Above
+                              </Button>
+                              <Button
+                                disableElevation
+                                size="small"
+                                sx={{ mt: 2, textTransform: "none" }}
+                                color="error"
+                                fullWidth
+                                variant="contained"
+                                onClick={() =>
+                                  handleAddChildComponent(componentIndex + 1)
+                                }
+                              >
+                                Add Below
+                              </Button>
+                              <Button
+                                size="small"
+                                sx={{ mt: 2, textTransform: "none" }}
+                                color="error"
+                                fullWidth
+                                variant="outlined"
+                                onClick={() =>
+                                  deleteChildComponent(componentIndex)
+                                }
+                              >
+                                Delete component
+                              </Button>
+                            </Paper>
+                          </>
+                        );
+                      })}
+                    </Stack>
+                  </>
+                )}
+
+                {key === "options" && (
+                  <>
+                    <Box>
+                      <Typography variant="caption">{key}</Typography>
+                      {(obj ?? []).map((option, optImdex) => {
+                        return (
+                          <Box sx={{ my: 2 }} key={optImdex}>
+                            <Typography sx={{ mb: 1 }}>
+                              {optImdex + 1}
+                            </Typography>
+                            <Grid container spacing={2}>
+                              <Grid item xs={6}>
+                                <TextField
+                                  size="small"
+                                  fullWidth
+                                  label={"Label"}
+                                  name="label"
+                                  value={option.label}
+                                  onChange={(e) =>
+                                    handleChangeOption(e, optImdex)
+                                  }
+                                />
+                              </Grid>
+                              <Grid item xs={6}>
+                                <TextField
+                                  size="small"
+                                  fullWidth
+                                  name="value"
+                                  label={"Value"}
+                                  value={option.value}
+                                  onChange={(e) =>
+                                    handleChangeOption(e, optImdex)
+                                  }
+                                />
+                              </Grid>
+                            </Grid>
+                            <Box>
+                              <Button
+                                fullWidth
+                                onClick={() => handleDeleteOption(optImdex)}
+                                sx={{ textTransform: "none", mt: 2 }}
+                                variant="outlined"
+                                size="small"
+                                color="error"
+                              >
+                                Delete option
+                              </Button>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+
+                      <Box>
+                        <Button
+                          fullWidth
+                          onClick={() => handleAddOption(0)}
+                          sx={{ textTransform: "none" }}
+                          variant="outlined"
+                        >
+                          Add Option
+                        </Button>
+                      </Box>
+                    </Box>
+                  </>
+                )}
               </Box>
             );
           }
@@ -134,6 +392,7 @@ export default function ComponentForm({ data: state, index: cIindex, handleTypeC
                   <FormControlLabel
                     control={
                       <Switch
+                        size="small"
                         name={key}
                         onChange={handleCheck}
                         value={state?.data[key]}
@@ -148,6 +407,7 @@ export default function ComponentForm({ data: state, index: cIindex, handleTypeC
           }
           return (
             <TextField
+              size="small"
               name={key}
               onChange={handleChange}
               value={state?.data[key]}
@@ -169,7 +429,6 @@ export function useActions() {
   return {
     handleSubmit(state, index) {
       if (index === 0 || index) {
-        alert(index);
         let allPages = [...pages];
         let page = allPages[pageIndex];
         page.components[index] = { ...state };
@@ -197,6 +456,8 @@ export function useActions() {
     },
   };
 }
+
+var option = [{ label: "Label", value: "value" }];
 
 export var components = {
   image: {
@@ -255,7 +516,9 @@ export var components = {
   },
   autocomplete: {
     type: "autocomplete",
-    data: {},
+    data: {
+      options: [{ ...option }],
+    },
   },
   buttongroup: {
     type: "buttongroup",
@@ -279,7 +542,9 @@ export var components = {
   },
   select: {
     type: "select",
-    data: {},
+    data: {
+      options: [{ ...option }],
+    },
   },
   slider: {
     type: "slider",

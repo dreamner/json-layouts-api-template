@@ -16,6 +16,11 @@ export default function ComponentsTab() {
         overflow: "auto",
       }}
     >
+      {!componentsData.length && (
+        <Box>
+          This page has no components
+        </Box>
+      )}
       {componentsData.map((component: any, index: number) => {
         return (
           <>

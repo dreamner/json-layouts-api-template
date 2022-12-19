@@ -1,7 +1,15 @@
-import { Paper, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import usePages from "../hooks/usePages";
 import { usePagesStateValue } from "../lib/builder";
 import defaultTheme from "../lib/defaultheme";
+import AddPage from "./AddPageDialog";
 import renderPage from "./util/renderPage";
 
 export default function Preview({ fullScreen = false }) {
@@ -39,8 +47,28 @@ export default function Preview({ fullScreen = false }) {
         maxHeight: `${fullScreen ? "100%" : "76vh"}`,
         minHeight: `${fullScreen ? "100%" : "60vh"}`,
         overflow: "auto",
+        position: "relative",
       }}
     >
+      <Toolbar
+        sx={{
+          bgcolor: "lightgray",
+          mb: 4,
+          position: "fixed",
+          width: "55%",
+          zIndex: 100,
+        }}
+      >
+        <Typography sx={{ flexGrow: 1 }} variant="h5">
+          {" "}
+          {pageData.name} preview
+        </Typography>
+        <Box>
+          <AddPage />
+        </Box>
+      </Toolbar>
+      <Toolbar />
+      <Toolbar />
       {renderPage(pageData)}
     </Paper>
   );
