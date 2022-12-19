@@ -76,7 +76,7 @@ export default async function handler(
                       },
                     },
                   ],
-                  ...apps.map((app) => {
+                  ...[].map((app) => {
                     return {
                       type: "box",
                       data: {
