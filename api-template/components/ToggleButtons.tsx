@@ -13,6 +13,7 @@ import { GetServerSideProps } from "next";
 import React from "react";
 import prisma from "../lib/prisma";
 import { Router, useRouter } from "next/router";
+import helloWorld from "../lib/defaultApp";
 
 export default function ToggleButtons({ app }) {
   const pages = usePagesStateValue("pages");
@@ -103,14 +104,29 @@ export default function ToggleButtons({ app }) {
   );
 }
 
-function useActions() {
+export function useActions() {
   const dispatch = usePagesStateValue("dispatch");
+
+  const pages = usePagesStateValue("pages");
 
   return {
     changePage(index: number) {
       const type = "update_all";
       const payload = index;
       const key = "pageIndex";
+      dispatch({ type, key, payload });
+    },
+    deletePage(index) {
+      const type = "update_all";
+      let payload = [...pages];
+      payload.splice(index, 1);
+      const key = "pages";
+      dispatch({ type, key, payload });
+    },
+    handleAddPage() {
+      const type = "update_all";
+      let payload = [...pages, helloWorld];
+      const key = "pages";
       dispatch({ type, key, payload });
     },
   };
