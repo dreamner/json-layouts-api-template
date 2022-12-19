@@ -102,6 +102,7 @@ const App: React.FC<AppProps> = (props) => {
               <Box>
                 <Button
                   variant="outlined"
+                  sx={{ textTransform: "none", mr: 2 }}
                   onClick={() => Router.push(`/preview/${props.id}`)}
                 >
                   Preview
@@ -109,18 +110,25 @@ const App: React.FC<AppProps> = (props) => {
               </Box>
             </Box>
 
-            <Paper elevation={0} sx={{ maxHeight: "30vh", overflow: "hidden", my:5 }}>
+            <Paper
+              elevation={0}
+              sx={{ maxHeight: "30vh", overflow: "hidden", my: 5 }}
+            >
               <ThemeProvider theme={defaultTheme}>
                 <Preview />
               </ThemeProvider>
             </Paper>
             <Button
+              variant="outlined"
+              sx={{ textTransform: "none", mr: 2 }}
               className="button"
               onClick={() => Router.push(`/builder/${props.id}`)}
             >
               Customize
             </Button>
             <Button
+              variant="outlined"
+              sx={{ textTransform: "none", mr: 2 }}
               disabled={props.published || publishing}
               className="button"
               onClick={() => publishPost(props.id)}
@@ -129,6 +137,8 @@ const App: React.FC<AppProps> = (props) => {
             </Button>
             <>
               <Button
+                variant="outlined"
+                sx={{ textTransform: "none", mr: 2 }}
                 className="button"
                 onClick={() => Router.push(`/preferences/${props.id}`)}
               >

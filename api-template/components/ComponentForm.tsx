@@ -517,16 +517,30 @@ export var components = {
   autocomplete: {
     type: "autocomplete",
     data: {
-      options: [{ ...option }],
+      label: "Choose OS",
+      options: [
+        { label: "IOS", value: "ios" },
+        { label: "Android", value: "android" },
+        { label: "Web", value: "web" },
+      ],
     },
   },
   buttongroup: {
     type: "buttongroup",
-    data: {},
+    data: {
+      options: [
+        { label: "IOS", value: "ios" },
+        { label: "Android", value: "android" },
+        { label: "Web", value: "web" },
+      ],
+    },
   },
   checkbox: {
     type: "checkbox",
-    data: {},
+    data: {
+      defaultChecked: true,
+      label: "Checkbox",
+    },
   },
   fab: {
     type: "fab",
@@ -534,11 +548,20 @@ export var components = {
   },
   radiogroup: {
     type: "radiogroup",
-    data: {},
+    label: "Radio group",
+    data: {
+      options: [
+        { label: "IOS", value: "ios" },
+        { label: "Android", value: "android" },
+        { label: "Web", value: "web" },
+      ],
+    },
   },
   rating: {
     type: "rating",
-    data: {},
+    data: {
+      initialValue: 3,
+    },
   },
   select: {
     type: "select",
@@ -552,12 +575,16 @@ export var components = {
   },
   switch: {
     type: "switch",
-    data: {},
+    data: {
+      defaultChecked: true,
+      label: "A switch",
+    },
   },
   textfield: {
     type: "textfield",
     data: {
       label: "Textfield",
+      type:"text"
     },
   },
   transferlist: {
@@ -566,12 +593,18 @@ export var components = {
   },
   togglebutton: {
     type: "togglebutton",
-    data: {},
+    data: {
+      options: [
+        { label: "IOS", value: "ios" },
+        { label: "Android", value: "android" },
+        { label: "Web", value: "web" },
+      ],
+    },
   },
   avatar: {
     type: "avatar",
     data: {
-      imageUrl: "",
+      imageUrl: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
     },
   },
   badge: {
@@ -588,7 +621,18 @@ export var components = {
   },
   list: {
     type: "list",
-    data: {},
+    data: {
+      options: [
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Bed",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Coffee",
+        },
+      ],
+    },
   },
   table: {
     type: "table",
@@ -608,7 +652,17 @@ export var components = {
   },
   dialog: {
     type: "dialog",
-    data: {},
+    data: {
+      buttonText: "Open Dialog",
+      components: [
+        { type: "textfield", data: { label: "TextField" } },
+        {
+          type: "button",
+          data: { text: "submit", disabled: false, type: "submit" },
+        },
+      ],
+      actions: [],
+    },
   },
   progress: {
     type: "progress",
@@ -632,7 +686,12 @@ export var components = {
   },
   card: {
     type: "card",
-    data: {},
+    data: {
+      imageUrl: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+      title: "A sample card",
+      body: "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all ",
+      actions: ["share", "learn more"],
+    },
   },
   bottom_navigation: {
     type: "bottom_navigation",
@@ -644,11 +703,27 @@ export var components = {
   },
   drawer: {
     type: "drawer",
-    data: {},
+    data: {
+      position: "left",
+      buttonText: "Open drawer",
+      options: [
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Bed",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Coffee",
+        },
+      ],
+    },
   },
   link: {
     type: "link",
-    data: {},
+    data: {
+      href: "#",
+      text: "Link",
+    },
   },
   paypal: {
     type: "paypal",
@@ -656,7 +731,19 @@ export var components = {
   },
   menu: {
     type: "menu",
-    data: {},
+    data: {
+      buttonText: "Menu",
+      options: [
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Bed",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Coffee",
+        },
+      ],
+    },
   },
   pagination: {
     type: "pagination",
@@ -677,18 +764,101 @@ export var components = {
   },
   container: {
     type: "container",
-    data: {},
+    data: {
+      components: [
+        {
+          type: "text",
+          data: {
+            text: "Containet",
+            variant: "h1",
+          },
+        },
+        {
+          type: "text",
+          data: {
+            text: "Grid 2",
+            variant: "h1",
+          },
+        },
+      ],
+    },
   },
   grid: {
     type: "grid",
-    data: {},
+    data: {
+      spacing: 2,
+      components: [
+        {
+          type: "text",
+          data: {
+            xs: true,
+            text: "Grid 1",
+            variant: "h1",
+          },
+        },
+        {
+          type: "text",
+          data: {
+            xs: true,
+            text: "Grid 2",
+            variant: "h1",
+          },
+        },
+      ],
+    },
   },
   stack: {
     type: "stack",
-    data: {},
+    data: {
+      spacing: 2,
+      direction: "column",
+      components: [
+        {
+          type: "text",
+          data: {
+            xs: true,
+            text: "Grid 1",
+            variant: "h1",
+          },
+        },
+        {
+          type: "text",
+          data: {
+            xs: true,
+            text: "Grid 2",
+            variant: "h1",
+          },
+        },
+      ],
+    },
   },
   imagelist: {
-    type: "imageslist",
-    data: {},
+    type: "imagelist",
+    data: {
+      height: 600,
+      width: 600,
+      options: [
+        {
+          value: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+          label: "Bed",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
+          label: "Kitchen",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
+          label: "Sink",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1525097487452-6278ff080c31",
+          label: "Books",
+        },
+        {
+          value: "https://images.unsplash.com/photo-1574180045827-681f8a1a9622",
+          label: "Chairs",
+        },
+      ],
+    },
   },
 };
