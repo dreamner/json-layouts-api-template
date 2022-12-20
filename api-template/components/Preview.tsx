@@ -10,6 +10,7 @@ import usePages from "../hooks/usePages";
 import { usePagesStateValue } from "../lib/builder";
 import defaultTheme from "../lib/defaultheme";
 import AddPage from "./AddPageDialog";
+import { ErrorBoundary } from "./ErrorBoundary";
 import renderPage from "./util/renderPage";
 
 export default function Preview({ fullScreen = false }) {
@@ -69,7 +70,9 @@ export default function Preview({ fullScreen = false }) {
       </Toolbar>
       <Toolbar />
       <Toolbar />
-      {renderPage(pageData)}
+      <ErrorBoundary>
+        {renderPage(pageData)}
+      </ErrorBoundary>
     </Paper>
   );
 }
