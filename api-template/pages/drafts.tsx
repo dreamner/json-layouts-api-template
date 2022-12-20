@@ -1,7 +1,7 @@
 // pages/drafts.tsx
 
 import React from "react";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import { useSession, getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
@@ -9,28 +9,22 @@ import prisma from "../lib/prisma";
 import { Box, Grid, Container, Button } from "@mui/material";
 import { useRouter } from "next/router";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  // const session = await getSession({ req });
-  // if (!session) {
-  //   res.statusCode = 403;
-  //   return { props: { drafts: [] } };
-  // }
 
+export const getStaticProps: GetStaticProps = async () => {
   const drafts = await prisma.app.findMany({
-    where: {
-      // author: { email: session.user.email },
-      published: false,
-    },
+    where: { published: true },
     include: {
       author: {
-        select: { name: true, email: true },
+        select: { name: true, email: true, image: true },
       },
     },
   });
   return {
     props: { drafts },
+    revalidate: 5
   };
 };
+
 
 type Props = {
   drafts: any;
@@ -62,7 +56,7 @@ const Drafts: React.FC<Props> = (props) => {
         <Container>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
-              <Grid container>
+              <Grid spacing={2} container>
                 {apps.map((app) => (
                   <Grid item xs={4} key={app.id}>
                     <div className="post">

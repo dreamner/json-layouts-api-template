@@ -26,9 +26,9 @@ export default function renderPage(page: Ipage = defaultPageProps) {
   switch (layout) {
     case "page": {
       return (
-        <React.Suspense fallback={<>Loading page...</>}>
+        <>
           {children}
-        </React.Suspense>
+        </>
       );
     }
     case "dashboard": {
