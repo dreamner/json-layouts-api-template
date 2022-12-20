@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import useUpload from "../hooks/useUpload";
 import { useSession } from "next-auth/react";
+import { AuthSpinner } from ".";
 
 const Draft: React.FC = () => {
   const [name, setName] = useState("");
@@ -60,9 +61,23 @@ const Draft: React.FC = () => {
     setImage(data[0]);
   }, []);
 
+
+  if (status === "loading") {
+    return <AuthSpinner />;
+  }
+
+  if (!session) {
+    return (
+      <Layout>
+        <h1>App</h1>
+        <div>You need to be authenticated to view this page.</div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
-      <Box sx={{ display: "flex", mb:4 }}>
+      <Box sx={{ display: "flex", mb: 4 }}>
         <Box sx={{ flexGrow: 1 }}></Box>
         <form style={{ flexGrow: 1 }} onSubmit={submitData}>
           <Stack spacing={2}>
@@ -111,7 +126,7 @@ const Draft: React.FC = () => {
             >
               {saving ? <CircularProgress size={20} /> : "Create app"}
             </Button>
-            <Button  disableElevation color="error" variant="outlined" className="back" href="#" onClick={() => Router.push("/")}>
+            <Button disableElevation color="error" variant="outlined" className="back" href="#" onClick={() => Router.push("/")}>
               or Cancel
             </Button >
           </Stack>

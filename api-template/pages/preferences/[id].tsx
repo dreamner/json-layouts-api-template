@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import ImageField from "../../components/ImageField";
 import useUpload from "../../hooks/useUpload";
+import { AuthSpinner } from "..";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -43,8 +44,7 @@ const App: React.FC<AppProps> = (props) => {
   const [state, setState] = React.useState(() => props);
   const [saving, setSaving] = React.useState(false);
 
-  const userHasValidSession = Boolean(session);
-  const postBelongsToUser = session?.user?.email === props.author?.email;
+
   let title = props.name;
   if (!props.published) {
     title = `${title} (Draft)`;
@@ -86,7 +86,16 @@ const App: React.FC<AppProps> = (props) => {
   };
 
   if (status === "loading") {
-    return <div>Authenticating ...</div>;
+    return <AuthSpinner />;
+  }
+
+  if (!session) {
+    return (
+      <Layout>
+        <h1>Preferences</h1>
+        <div>You need to be authenticated to view this page.</div>
+      </Layout>
+    );
   }
 
   return (

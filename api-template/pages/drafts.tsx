@@ -8,6 +8,7 @@ import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
 import { Box, Grid, Container, Button } from "@mui/material";
 import { useRouter } from "next/router";
+import { AuthSpinner } from ".";
 
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -31,7 +32,7 @@ type Props = {
 };
 
 const Drafts: React.FC<Props> = (props) => {
-  const { data: session } = useSession();
+  const { data: session , status} = useSession();
 
   const router = useRouter();
 
@@ -39,6 +40,10 @@ const Drafts: React.FC<Props> = (props) => {
     (app) => app.author.email === session?.user?.email
   );
   const hasApps = Boolean(apps.length);
+
+  if (status === "loading") {
+    return <AuthSpinner />;
+  }
 
   if (!session) {
     return (

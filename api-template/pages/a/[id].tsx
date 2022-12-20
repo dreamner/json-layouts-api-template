@@ -20,6 +20,7 @@ import Preview from "../../components/Preview";
 import { ThemeProvider } from "@mui/system";
 import defaultTheme from "../../lib/defaultheme";
 import usePages from "../../hooks/usePages";
+import { AuthSpinner } from "..";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -75,9 +76,17 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   if (status === "loading") {
-    return <div>Authenticating ...</div>;
+    return <AuthSpinner />;
   }
 
+  if (!session) {
+    return (
+      <Layout>
+        <h1>App</h1>
+        <div>You need to be authenticated to view this page.</div>
+      </Layout>
+    );
+  }
   let title = props.name;
 
   if (!props.published) {
@@ -143,6 +152,14 @@ const App: React.FC<AppProps> = (props) => {
                 onClick={() => Router.push(`/preferences/${props.id}`)}
               >
                 Preferences
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{ textTransform: "none", mr: 2 }}
+                className="button"
+                onClick={() => Router.push(`/res/${props.id}`)}
+              >
+                Resources
               </Button>
               <Button
                 disabled={deleting}

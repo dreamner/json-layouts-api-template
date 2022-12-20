@@ -15,6 +15,7 @@ import BuilderTabs from "../../components/BuilderTabs";
 import { ThemeProvider } from "@mui/material";
 import { defaultTheme } from "../../lib/defaultheme";
 import ToggleButtons from "../../components/ToggleButtons";
+import { AuthSpinner } from "..";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.app.findUnique({
@@ -34,11 +35,19 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const App: React.FC<AppProps> = (props) => {
   const { data: session, status } = useSession();
+
   if (status === "loading") {
-    return <div>Authenticating ...</div>;
+    return <AuthSpinner />;
   }
-  const userHasValidSession = Boolean(session);
-  const postBelongsToUser = session?.user?.email === props.author?.email;
+
+  if (!session) {
+    return (
+      <Layout>
+        <h1>Drafts</h1>
+        <div>You need to be authenticated to view this page.</div>
+      </Layout>
+    );
+  }
   let title = props.name;
   if (!props.published) {
     title = `${title} (Draft)`;

@@ -6,7 +6,7 @@ import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Grid, Box, Container, Autocomplete, TextField } from "@mui/material";
+import { Grid, Box, Container, Autocomplete, TextField, CircularProgress, Typography } from "@mui/material";
 
 export const getStaticProps: GetStaticProps = async () => {
   const apps = await prisma.app.findMany({
@@ -27,11 +27,11 @@ type Props = {
   apps: AppProps[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const Apps: React.FC<Props> = (props) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   if (status === "loading") {
-    return <div>Authenticating ...</div>;
+    return <AuthSpinner />;
   }
   const userHasValidSession = Boolean(session);
 
@@ -47,17 +47,20 @@ const Blog: React.FC<Props> = (props) => {
             <Box sx={{ flexGrow: 1 }}>
 
               <Box sx={{ my: 5 }} >
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={props.apps.map((app,) => ({ value: app.id, label: app.name }))}
-                  fullWidth
-                  onChange={(e, v) => {
-                    if ((v as any)?.value)
-                      router.push(`/${(v as any).value}`)
-                  }}
-                  renderInput={(params) => <TextField {...params} placeholder="Search apps" />}
-                />
+                {userHasValidSession && (
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={props.apps.map((app,) => ({ value: app.id, label: app.name }))}
+                    fullWidth
+                    onChange={(e, v) => {
+                      if ((v as any)?.value)
+                        router.push(`/${(v as any).value}`)
+                    }}
+                    renderInput={(params) => <TextField {...params} placeholder="Search apps" />}
+                  />
+                )}
+
               </Box>
               <Grid container spacing={2}>
                 {userHasValidSession && (
@@ -74,7 +77,7 @@ const Blog: React.FC<Props> = (props) => {
 
                 {!props.apps.length && userHasValidSession && (
                   <div>
-                    <h6>You do not have any published apps</h6>
+                    <h6>There are 0 published apps</h6>
                     <button onClick={() => router.push("/create")}>
                       Create app
                     </button>
@@ -107,4 +110,14 @@ const Blog: React.FC<Props> = (props) => {
   );
 };
 
-export default Blog;
+export default Apps;
+
+
+export const AuthSpinner = () => {
+  return <Box sx={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }} >
+    <Box sx={{ textAlign: "center" }} >
+      <CircularProgress />
+      <Typography>Checking login status</Typography>
+    </Box>
+  </Box>
+}
