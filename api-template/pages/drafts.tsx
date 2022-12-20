@@ -6,7 +6,7 @@ import { useSession, getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
-import { Box, Grid, Container } from "@mui/material";
+import { Box, Grid, Container, Button } from "@mui/material";
 import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -73,13 +73,10 @@ const Drafts: React.FC<Props> = (props) => {
               </Grid>
               {!hasApps && (
                 <div>
-                  <h6>You do not have any published apps</h6>
-                  <button onClick={() => router.push("/create")}>
+                  <h6>You do not have any draft applications</h6>
+                  <Button variant={"outlined"} onClick={() => router.push("/create")}>
                     Create app
-                  </button>
-                  <button onClick={() => router.push("/drafts")}>
-                    Go to drafts
-                  </button>
+                  </Button>
                 </div>
               )}
             </Box>

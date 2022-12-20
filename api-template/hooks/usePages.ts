@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { usePagesStateDisptch, usePagesStateValue } from "../lib/builder";
+import { usePagesStateValue } from "../lib/builder";
 import helloWorld from "../lib/defaultApp";
 import { useAxios } from "./useAxios";
 
 export default function usePages() {
   const pages = usePagesStateValue("pages");
+
 
   const [p, setP] = React.useState([helloWorld]);
 
@@ -22,6 +23,7 @@ export default function usePages() {
     try {
       const response = await axios.get(`/api/page/${appId}`);
       const data = response.data;
+      console.log(data)
       if (data.length) {
         updatePages([...data]);
         setP([...data]);

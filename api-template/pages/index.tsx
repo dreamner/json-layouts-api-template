@@ -13,12 +13,13 @@ export const getStaticProps: GetStaticProps = async () => {
     where: { published: true },
     include: {
       author: {
-        select: { name: true, email: true, image:true },
-  },
+        select: { name: true, email: true, image: true },
+      },
     },
   });
   return {
     props: { apps },
+    revalidate: 5
   };
 };
 
