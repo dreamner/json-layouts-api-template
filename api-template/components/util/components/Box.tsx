@@ -1,14 +1,12 @@
 import React  from "react";
 
-import Skeleton from "@mui/material/Skeleton";
+import MuiBox from "@mui/material/Box";
 import renderComponents from "../renderComponents";
 
-const MuiBox = React.lazy(() => import("@mui/material/Box"));
 
 export default function Box({
   components = [],
   flex = false,
-  spaceEvenly = false,
   centerHorizontal = false,
   centerVertical = false,
   minHeight = "100%",
