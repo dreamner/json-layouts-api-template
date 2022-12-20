@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import ReactMarkdown from "react-markdown";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
@@ -9,7 +9,7 @@ import { usePagesStateValue } from "../../lib/builder";
 import Layout from "../../components/Layout";
 import { Typography } from "@mui/material";
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const app = await prisma.app.findUnique({
         where: {
             id: String(params?.id),
@@ -22,7 +22,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     });
     return {
         props: app,
-        revalidate: 5
     };
 };
 
