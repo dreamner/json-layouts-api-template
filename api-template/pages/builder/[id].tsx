@@ -11,7 +11,6 @@ import prisma from "../../lib/prisma";
 import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
 import Preview from "../../components/Preview";
 import BuilderTabs from "../../components/BuilderTabs";
-import { PagesContextProvider } from "../../lib/builder";
 
 import { ThemeProvider } from "@mui/material";
 import { defaultTheme } from "../../lib/defaultheme";
@@ -46,7 +45,6 @@ const App: React.FC<AppProps> = (props) => {
   }
 
   return (
-    <PagesContextProvider>
       <Grid container>
         <Grid item xs={8}>
           <Paper
@@ -78,7 +76,6 @@ const App: React.FC<AppProps> = (props) => {
           <BuilderTabs />
         </Grid>
       </Grid>
-    </PagesContextProvider>
   );
 };
 

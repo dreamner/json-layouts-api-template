@@ -34,15 +34,10 @@ const Blog: React.FC<Props> = (props) => {
   }
   const userHasValidSession = Boolean(session);
 
-  const apps = props.apps.filter(
-    (app) => app.author.email === session?.user?.email
-  );
-  const hasApps = Boolean(apps.length);
 
   return (
     <Layout>
       <div className="page">
-        {userHasValidSession && <h1>Your apps</h1>}
         {!userHasValidSession && (
           <p>You need to be signed in to view your apps</p>
         )}
@@ -52,8 +47,8 @@ const Blog: React.FC<Props> = (props) => {
               <Grid container spacing={2}>
                 {userHasValidSession && (
                   <>
-                    {apps.map((app) => (
-                      <Grid key={app.id} item xs>
+                    {props.apps.map((app) => (
+                      <Grid key={app.id} item xs={3}>
                         <div className="post">
                           <App app={app} />
                         </div>
@@ -62,7 +57,7 @@ const Blog: React.FC<Props> = (props) => {
                   </>
                 )}
 
-                {!hasApps && userHasValidSession && (
+                {!props.apps.length && userHasValidSession && (
                   <div>
                     <h6>You do not have any published apps</h6>
                     <button onClick={() => router.push("/create")}>
@@ -82,6 +77,7 @@ const Blog: React.FC<Props> = (props) => {
         .post {
           background: white;
           transition: box-shadow 0.1s ease-in;
+          border-radius: 4px;
         }
 
         .post:hover {

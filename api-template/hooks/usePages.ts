@@ -43,7 +43,6 @@ export default function usePages() {
     if (couldBeEmpty && appId) updateAll();
   }, [couldBeEmpty, appId]);
 
-  console.log(pages);
 
   if (pages.length) return [...pages];
   return p;

@@ -63,7 +63,7 @@ const Drafts: React.FC<Props> = (props) => {
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container>
-                {props.drafts.map((app) => (
+                {apps.map((app) => (
                   <Grid item xs={4} key={app.id}>
                     <div className="post">
                       <App app={app} />
