@@ -1,6 +1,6 @@
 import React from "react";
 import Router from "next/router";
-import { Avatar, Chip, IconButton } from "@mui/material";
+import { Avatar, Chip, IconButton, Box } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { Edit } from "@mui/icons-material";
 
@@ -8,6 +8,7 @@ export type AppProps = {
   id: string;
   name: string;
   author: {
+    image: string;
     name: string;
     email: string;
   } | null;
@@ -31,17 +32,27 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
         {app.name[0]}
       </Avatar>
       <h2>{app.name}</h2>
-      <Chip
-        avatar={<Avatar alt="Natacha" src={session.user.image} />}
-        label={`By ${authorName}`}
-        variant="outlined"
-      />
-      <IconButton onClick={(e) => {
-        e.stopPropagation();
-        Router.push("/a/[id]", `/a/${app.id}`)
-      }}>
-        <Edit />
-      </IconButton>
+      <Box sx={{ display: "flex" }} >
+        <Chip
+          sx={{ flexGrow: 1 }}
+          avatar={<Avatar alt="Natacha" src={app.author.image} />}
+          label={`By ${authorName}`}
+          variant="outlined"
+        />
+        <Box>
+          {session?.user?.email === app?.author.email && (
+            <IconButton onClick={(e) => {
+              e.stopPropagation();
+              Router.push("/a/[id]", `/a/${app.id}`)
+            }}>
+              <Edit />
+            </IconButton>
+          )}
+
+        </Box>
+
+      </Box>
+
       <style jsx>{`
         div {
           color: inherit;
