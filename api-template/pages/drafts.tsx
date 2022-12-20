@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async () => {
   const drafts = await prisma.app.findMany({
-    where: { published: true },
+    where: { published: false },
     include: {
       author: {
         select: { name: true, email: true, image: true },
