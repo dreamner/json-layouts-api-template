@@ -33,12 +33,15 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
       </Avatar>
       <h2>{app.name}</h2>
       <Box sx={{ display: "flex" }} >
+        <Box sx={{ flexGrow: 1 }}>
+        
         <Chip
-          sx={{ flexGrow: 1 }}
           avatar={<Avatar alt="Natacha" src={app.author.image} />}
           label={`By ${authorName}`}
           variant="outlined"
         />
+        </Box>
+       
         <Box>
           {session?.user?.email === app?.author.email && (
             <IconButton onClick={(e) => {
