@@ -6,7 +6,7 @@ import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Grid, Box, Container } from "@mui/material";
+import { Grid, Box, Container, Autocomplete, TextField } from "@mui/material";
 
 export const getStaticProps: GetStaticProps = async () => {
   const apps = await prisma.app.findMany({
@@ -45,6 +45,20 @@ const Blog: React.FC<Props> = (props) => {
         <main>
           <Container sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
+
+              <Box sx={{ my: 5 }} >
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={props.apps.map((app,) => ({ value: app.id, label: app.name }))}
+                  fullWidth
+                  onChange={(e, v) => {
+                    if ((v as any)?.value)
+                      router.push(`/${(v as any).value}`)
+                  }}
+                  renderInput={(params) => <TextField {...params} placeholder="Search apps" />}
+                />
+              </Box>
               <Grid container spacing={2}>
                 {userHasValidSession && (
                   <>
