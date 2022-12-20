@@ -40,7 +40,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 const App: React.FC<AppProps> = (props) => {
   const { data: session, status } = useSession();
-  usePages();
 
   const [deleting, setDeleting] = useState(false);
   const [publishing, setPublishing] = useState(false);
@@ -123,9 +122,9 @@ const App: React.FC<AppProps> = (props) => {
               elevation={0}
               sx={{ maxHeight: "30vh", overflow: "hidden", my: 5 }}
             >
-              <ThemeProvider theme={defaultTheme}>
+              {/* <ThemeProvider theme={defaultTheme}>
                 <Preview />
-              </ThemeProvider>
+              </ThemeProvider> */}
             </Paper>
             <Button
               variant="outlined"
