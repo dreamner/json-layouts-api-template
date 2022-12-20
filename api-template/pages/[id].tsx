@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const App: React.FC<AppProps> = (props) => {
-    const pages = usePages();
+    const pages = JSON.parse(props.draft ?? "[]");
 
 
     const currentPath = usePagesStateValue("path") ?? "/"
