@@ -1,8 +1,11 @@
 // Header.tsx
-import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { signOut, useSession } from 'next-auth/react';
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { Chip, Button, Typography } from "@mui/material";
+import { Home } from "@mui/icons-material";
+import AccountMenu from "./AccountMenu";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -13,23 +16,28 @@ const Header: React.FC = () => {
 
   let left = (
     <div className="left">
+      <div className="logo">
+        <Typography variant="h5">DREAMVILLE</Typography>
+      </div>
       <Link href="/">
-        <a className="bold" data-active={isActive('/')}>
-          Apps
+        <a className="bold" data-active={isActive("/")}>
+          <Chip icon={<Home />} label="Home" />
         </a>
       </Link>
       <style jsx>{`
         .bold {
           font-weight: bold;
         }
-
+        .logo {
+          text-align: center;
+        }
         a {
           text-decoration: none;
           color: var(--geist-foreground);
           display: inline-block;
         }
 
-        .left a[data-active='true'] {
+        .left a[data-active="true"] {
           color: gray;
         }
 
@@ -42,26 +50,32 @@ const Header: React.FC = () => {
 
   let right = null;
 
-  if (status === 'loading') {
+  if (status === "loading") {
     left = (
       <div className="left">
+        <div className="logo">
+          <Typography variant="h5">DREAMVILLE</Typography>
+        </div>
         <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
-            Apps
+          <a className="bold" data-active={isActive("/")}>
+            <Chip icon={<Home />} label="Home" />
           </a>
         </Link>
+
         <style jsx>{`
           .bold {
             font-weight: bold;
           }
-
+          .logo {
+            text-align: center;
+          }
           a {
             text-decoration: none;
             color: var(--geist-foreground);
             display: inline-block;
           }
 
-          .left a[data-active='true'] {
+          .left a[data-active="true"] {
             color: gray;
           }
 
@@ -87,7 +101,9 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <Link href="/api/auth/signin">
-          <a data-active={isActive('/signup')}>Log in</a>
+          <Button variant="contained" data-active={isActive("/signup")}>
+            Login
+          </Button>
         </Link>
         <style jsx>{`
           a {
@@ -117,17 +133,20 @@ const Header: React.FC = () => {
   if (session) {
     left = (
       <div className="left">
+        <div className="logo">
+          <Typography variant="h5">DREAMVILLE</Typography>
+        </div>
         <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
-            Apps
+          <a className="bold" data-active={isActive("/")}>
+            <Chip icon={<Home />} label="Home" />
           </a>
-        </Link>
-        <Link href="/drafts">
-          <a data-active={isActive('/drafts')}>My drafts</a>
         </Link>
         <style jsx>{`
           .bold {
             font-weight: bold;
+          }
+          .logo {
+            text-align: center;
           }
 
           a {
@@ -136,7 +155,7 @@ const Header: React.FC = () => {
             display: inline-block;
           }
 
-          .left a[data-active='true'] {
+          .left a[data-active="true"] {
             color: gray;
           }
 
@@ -148,17 +167,7 @@ const Header: React.FC = () => {
     );
     right = (
       <div className="right">
-        <p>
-          {session.user.name} ({session.user.email})
-        </p>
-        <Link href="/create">
-          <button>
-            <a>New app</a>
-          </button>
-        </Link>
-        <button onClick={() => signOut()}>
-          <a>Log out</a>
-        </button>
+        <AccountMenu />
         <style jsx>{`
           a {
             text-decoration: none;

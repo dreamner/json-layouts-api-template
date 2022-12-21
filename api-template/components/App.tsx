@@ -28,10 +28,24 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
   const { data: session, status } = useSession();
   return (
     <div onClick={() => Router.push("/[id]", `/${app.id}`)}>
-      <img height="230" width="100%" alt={app.name} src={app.image} /> <h2>{app.name}</h2>
+    <Chip
+    color="success"
+    size="small"
+    sx={{mb:1}}
+      label={`Live`}
+    />
+      <img
+        height="108"
+        width="100%"
+        style={{ borderRadius: "4px" }}
+        alt={app.name}
+        src={app.image}
+      />{" "}
+      <h2>{app.name}</h2>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}>
           <Chip
+          size="small"
             avatar={<Avatar alt="Natacha" src={app.author.image} />}
             label={`By ${authorName}`}
             variant="outlined"

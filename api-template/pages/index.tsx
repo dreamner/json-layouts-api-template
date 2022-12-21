@@ -45,14 +45,11 @@ const Apps: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        {!userHasValidSession && (
-          <p>You need to be signed in to view your apps</p>
-        )}
+      
         <main>
           <Container sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Box sx={{ my: 5 }}>
-                {userHasValidSession && (
                   <Autocomplete
                     disablePortal
                     id="combo-box-demo"
@@ -69,10 +66,8 @@ const Apps: React.FC<Props> = (props) => {
                       <TextField {...params} placeholder="Search apps" />
                     )}
                   />
-                )}
               </Box>
               <Grid container spacing={2}>
-                {userHasValidSession && (
                   <>
                     {props.apps.map((app) => (
                       <Grid key={app.id} item lg={3} md={6} xs={12}>
@@ -82,7 +77,6 @@ const Apps: React.FC<Props> = (props) => {
                       </Grid>
                     ))}
                   </>
-                )}
 
                 {!props.apps.length && userHasValidSession && (
                   <div>
@@ -133,7 +127,7 @@ export const AuthSpinner = () => {
     >
       <Box sx={{ textAlign: "center" }}>
         <CircularProgress />
-        <Typography>Checking login status</Typography>
+        <Typography>Checking login status...</Typography>
       </Box>
     </Box>
   );

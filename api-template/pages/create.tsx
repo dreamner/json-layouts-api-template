@@ -51,7 +51,7 @@ const Draft: React.FC = () => {
         body: JSON.stringify(body),
       });
       if (res) setSaving(false);
-      await Router.push("/drafts");
+      await Router.push("/m");
     } catch (error) {
       setSaving(false);
     }
