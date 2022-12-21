@@ -2,24 +2,24 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import prisma from "../../lib/prisma";
 import Layout from "../../components/Layout";
-import { Container, Grid, Box, Button } from "@mui/material";
+import { Container, Grid, Box, Button, Typography, Chip } from "@mui/material";
 import { useRouter } from "next/router";
 import CreateResourceGroupDialog from "../../components/CreateResourceGroupDialog";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-    const app = await prisma.app.findUnique({
-        where: {
-            id: String(params?.id),
-        },
-        include: {
-            resourceGroups: {
-                select: { name: true, id: true },
-            },
-        } as any,
-    });
-    return {
-        props: app,
-    };
+  const app = await prisma.app.findUnique({
+    where: {
+      id: String(params?.id),
+    },
+    include: {
+      resourceGroups: {
+        select: { name: true, id: true },
+      },
+    } as any,
+  });
+  return {
+    props: app,
+  };
 };
 
 const App: React.FC<any> = (props) => {
@@ -35,8 +35,7 @@ const App: React.FC<any> = (props) => {
                                 {props.resourceGroups.map((app) => (
                                     <Grid item lg={4} md={6} xs={12} key={app.id}>
                                         <div className="post">
-                                            ',;,l m'
-                                            {/* <App app={app} /> */}
+                                            {app.name}
                                         </div>
                                     </Grid>
                                 ))}
@@ -65,8 +64,8 @@ const App: React.FC<any> = (props) => {
               margin-top: 2rem;
             }
           `}</style>
-        </Layout>
-    );
+    </Layout>
+  );
 };
 
 export default App;
