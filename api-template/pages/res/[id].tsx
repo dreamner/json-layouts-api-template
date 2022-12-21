@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { GetServerSideProps } from "next";
-import ReactMarkdown from "react-markdown";
-import Router from "next/router";
-import { useSession } from "next-auth/react";
 import prisma from "../../lib/prisma";
-import { AppProps } from "../../components/App";
-import { usePagesStateValue } from "../../lib/builder";
 import Layout from "../../components/Layout";
-import { Typography } from "@mui/material";
+import { Container, Grid, Box, Button } from "@mui/material";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const app = await prisma.app.findUnique({
@@ -15,32 +11,64 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
             id: String(params?.id),
         },
         include: {
-            author: {
-                select: { name: true, email: true },
+            resourceGroups: {
+                select: { name: true, id: true },
             },
-        },
+        } as any,
     });
     return {
         props: app,
     };
 };
 
-const App: React.FC<AppProps> = (props) => {
-    const pages = JSON.parse(props.draft ?? "[]");
-
-
-    const currentPath = usePagesStateValue("path") ?? "/"
-
-
-    let title = props.name;
-
-    if (!props.published) {
-        title = `${title} (Draft)`;
-
-    }
+const App: React.FC<any> = (props) => {
+    const router = useRouter()
     return (
         <Layout>
-            <Typography variant="h4" >Resources</Typography>
+            <div className="page">
+                <h1>{props.drafts.length} Drafts</h1>
+                <Container>
+                    <Box sx={{ display: "flex" }}>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Grid spacing={2} container>
+                                {props.app.resourceGroups.map((app) => (
+                                    <Grid item lg={4} md={6} xs={12} key={app.id}>
+                                        <div className="post">
+                                            ',;,l m'
+                                            {/* <App app={app} /> */}
+                                        </div>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                            {!Boolean(props.app.resourceGroups.length) && (
+                                <div>
+                                    <h6>You do not have any draft applications</h6>
+                                    <Button
+                                        variant={"outlined"}
+                                        onClick={() => router.push("/create")}
+                                    >
+                                        Create app
+                                    </Button>
+                                </div>
+                            )}
+                        </Box>
+                    </Box>
+                </Container>
+            </div>
+            <style jsx>{`
+            .post {
+              background: var(--geist-background);
+              transition: box-shadow 0.1s ease-in;
+            }
+    
+            .post:hover {
+              box-shadow: 1px 1px 3px #aaa;
+            }
+    
+            .post + .post {
+              margin-top: 2rem;
+            }
+          `}</style>
         </Layout>
     );
 };
