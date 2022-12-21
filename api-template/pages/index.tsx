@@ -75,7 +75,7 @@ const Apps: React.FC<Props> = (props) => {
                 {userHasValidSession && (
                   <>
                     {props.apps.map((app) => (
-                      <Grid key={app.id} item lg={4} md={6} xs={12}>
+                      <Grid key={app.id} item lg={3} md={6} xs={12}>
                         <div className="post">
                           <App app={app} />
                         </div>
