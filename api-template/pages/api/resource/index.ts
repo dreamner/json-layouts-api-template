@@ -7,7 +7,7 @@ export default async function handle(req, res) {
       name,
       description,
       tag,
-      app: { connect: { appId } },
+      appId
     },
   });
   res.json(result);
