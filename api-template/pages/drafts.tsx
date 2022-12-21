@@ -1,7 +1,7 @@
 // pages/drafts.tsx
 
 import React from "react";
-import { GetServerSideProps, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { useSession, getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
@@ -10,8 +10,7 @@ import { Box, Grid, Container, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { AuthSpinner } from ".";
 
-
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const drafts = await prisma.app.findMany({
     where: { published: false },
     include: {
@@ -22,17 +21,15 @@ export const getStaticProps: GetStaticProps = async () => {
   });
   return {
     props: { drafts },
-    revalidate: 5
   };
 };
-
 
 type Props = {
   drafts: any;
 };
 
 const Drafts: React.FC<Props> = (props) => {
-  const { data: session , status} = useSession();
+  const { data: session, status } = useSession();
 
   const router = useRouter();
 
@@ -73,7 +70,10 @@ const Drafts: React.FC<Props> = (props) => {
               {!hasApps && (
                 <div>
                   <h6>You do not have any draft applications</h6>
-                  <Button variant={"outlined"} onClick={() => router.push("/create")}>
+                  <Button
+                    variant={"outlined"}
+                    onClick={() => router.push("/create")}
+                  >
                     Create app
                   </Button>
                 </div>

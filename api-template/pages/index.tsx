@@ -1,14 +1,22 @@
 import React from "react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
 
 import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Grid, Box, Container, Autocomplete, TextField, CircularProgress, Typography } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Container,
+  Autocomplete,
+  TextField,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const apps = await prisma.app.findMany({
     where: { published: true },
     include: {
@@ -19,7 +27,6 @@ export const getStaticProps: GetStaticProps = async () => {
   });
   return {
     props: { apps },
-    revalidate: 5
   };
 };
 
@@ -35,7 +42,6 @@ const Apps: React.FC<Props> = (props) => {
   }
   const userHasValidSession = Boolean(session);
 
-
   return (
     <Layout>
       <div className="page">
@@ -45,22 +51,25 @@ const Apps: React.FC<Props> = (props) => {
         <main>
           <Container sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
-
-              <Box sx={{ my: 5 }} >
+              <Box sx={{ my: 5 }}>
                 {userHasValidSession && (
                   <Autocomplete
                     disablePortal
                     id="combo-box-demo"
-                    options={props.apps.map((app,) => ({ value: app.id, label: app.name }))}
-                    fullWidth
+                    options={props.apps.map((app) => ({
+                      value: app.id,
+                      label: app.name,
+                    }))}
+                    sx={{ width: 300 }}
                     onChange={(e, v) => {
                       if ((v as any)?.value)
-                        router.push(`/${(v as any).value}`)
+                        router.push(`/${(v as any).value}`);
                     }}
-                    renderInput={(params) => <TextField {...params} placeholder="Search apps" />}
+                    renderInput={(params) => (
+                      <TextField {...params} placeholder="Search apps" />
+                    )}
                   />
                 )}
-
               </Box>
               <Grid container spacing={2}>
                 {userHasValidSession && (
@@ -112,12 +121,20 @@ const Apps: React.FC<Props> = (props) => {
 
 export default Apps;
 
-
 export const AuthSpinner = () => {
-  return <Box sx={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }} >
-    <Box sx={{ textAlign: "center" }} >
-      <CircularProgress />
-      <Typography>Checking login status</Typography>
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box sx={{ textAlign: "center" }}>
+        <CircularProgress />
+        <Typography>Checking login status</Typography>
+      </Box>
     </Box>
-  </Box>
-}
+  );
+};

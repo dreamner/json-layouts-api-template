@@ -28,34 +28,29 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
   const { data: session, status } = useSession();
   return (
     <div onClick={() => Router.push("/[id]", `/${app.id}`)}>
-      <Avatar alt={app.name} src={app.image}>
-        {app.name[0]}
-      </Avatar>
-      <h2>{app.name}</h2>
-      <Box sx={{ display: "flex" }} >
+      <img width="100%" alt={app.name} src={app.image} /> <h2>{app.name}</h2>
+      <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}>
-        
-        <Chip
-          avatar={<Avatar alt="Natacha" src={app.author.image} />}
-          label={`By ${authorName}`}
-          variant="outlined"
-        />
+          <Chip
+            avatar={<Avatar alt="Natacha" src={app.author.image} />}
+            label={`By ${authorName}`}
+            variant="outlined"
+          />
         </Box>
-       
+
         <Box>
           {session?.user?.email === app?.author.email && (
-            <IconButton onClick={(e) => {
-              e.stopPropagation();
-              Router.push("/a/[id]", `/a/${app.id}`)
-            }}>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                Router.push("/a/[id]", `/a/${app.id}`);
+              }}
+            >
               <Edit />
             </IconButton>
           )}
-
         </Box>
-
       </Box>
-
       <style jsx>{`
         div {
           color: inherit;
