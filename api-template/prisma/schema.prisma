@@ -1,15 +1,14 @@
 // schema.prisma
 
+datasource db {
+provider = "postgresql"
+url      = env("DATABASE_URL")
+}
 
 // datasource db {
- // provider = "postgresql"
-  // url      = env("DATABASE_URL")
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
 // }
-
-datasource db {  
-  provider = "sqlite"
-  url      = "file:./dev.db"
-} 
 
 generator client {
   provider = "prisma-client-js"
@@ -39,8 +38,62 @@ model Page {
   components Component[]
 }
 
+model TableData {
+  id       String  @id @default(cuid())
+  row      Row?    @relation(fields: [rowId], references: [id])
+  rowId    String?
+  Column   Column? @relation(fields: [columnId], references: [id])
+  columnId String?
+  data     String?
+}
+
+model Row {
+  id        String      @id @default(cuid())
+  table     Table?      @relation(fields: [tableId], references: [id])
+  tableId   String?
+  tableData TableData[]
+}
+
+model Column {
+  id        String      @id @default(cuid())
+  table     Table?      @relation(fields: [tableId], references: [id])
+  tableId   String?
+  key       String
+  tableData TableData[]
+}
+
+model Table {
+  id              String         @id @default(cuid())
+  resourceGroup   ResourceGroup? @relation(fields: [resourceGroupId], references: [id])
+  resourceGroupId String?
+  columns         Column[]
+  rows            Row[]
+  name            String?
+  description     String?
+}
+
+model Image {
+  id              String         @id @default(cuid())
+  url             String?
+  isDeleted       Boolean        @default(false)
+  resourceGroup   ResourceGroup? @relation(fields: [resourceGroupId], references: [id])
+  resourceGroupId String?
+}
+
+model ResourceGroup {
+  id          String  @id @default(cuid())
+  images      Image[]
+  tables      Table[]
+  tag         String?
+  App         App?    @relation(fields: [appId], references: [id])
+  appId       String?
+  deleted     Boolean @default(false)
+  description String?
+  name        String?
+}
+
 model App {
-  id                        String  @id @default(cuid())
+  id                        String          @id @default(cuid())
   title                     String?
   name                      String?
   description               String?
@@ -50,10 +103,11 @@ model App {
   password                  String?
   passwordProtectionMessage String?
   type                      String?
-  published                 Boolean @default(false)
-  author                    User?   @relation(fields: [authorId], references: [id])
+  published                 Boolean         @default(false)
+  author                    User?           @relation(fields: [authorId], references: [id])
   authorId                  String?
   pages                     Page[]
+  resourceGroup             ResourceGroup[]
   draft                     String?
 }
 
