@@ -60,7 +60,7 @@ const Drafts: React.FC<Props> = (props) => {
             <Box sx={{ flexGrow: 1 }}>
               <Grid spacing={2} container>
                 {apps.map((app) => (
-                  <Grid item xs={4} key={app.id}>
+                  <Grid item lg={4} md={6} xs={12} key={app.id}>
                     <div className="post">
                       <App app={app} />
                     </div>
