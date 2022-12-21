@@ -28,12 +28,12 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
   const { data: session, status } = useSession();
   return (
     <div onClick={() => Router.push("/[id]", `/${app.id}`)}>
-    <Chip
-    color="success"
-    size="small"
-    sx={{mb:1}}
-      label={`Live`}
-    />
+      <Chip
+        color={app.published ? "success" : "primary"}
+        size="small"
+        sx={{ mb: 1 }}
+        label={app.published ? "Live" : "Draft"}
+      />
       <img
         height="108"
         width="100%"
@@ -45,7 +45,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}>
           <Chip
-          size="small"
+            size="small"
             avatar={<Avatar alt="Natacha" src={app.author.image} />}
             label={`By ${authorName}`}
             variant="outlined"
@@ -53,7 +53,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
         </Box>
 
         <Box>
-          {session?.user?.email === app?.author.email && (
+          {/* {session?.user?.email === app?.author.email && ( */}
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -62,7 +62,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
             >
               <Edit />
             </IconButton>
-          )}
+          {/* )} */}
         </Box>
       </Box>
       <style jsx>{`
