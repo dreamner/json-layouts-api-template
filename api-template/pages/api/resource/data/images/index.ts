@@ -5,7 +5,7 @@ export default async function handle(req, res) {
     const result = await prisma.image.create({
         data: {
             url,
-            resourceGroup: { connect: { resourceGroupId } },
+            resourceGroupId,
         },
     });
     res.json(result);
