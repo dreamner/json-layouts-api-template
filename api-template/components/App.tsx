@@ -1,8 +1,12 @@
 import React from "react";
 import Router from "next/router";
-import { Avatar, Chip, IconButton, Box } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { Edit } from "@mui/icons-material";
+
+import Edit from "@mui/icons-material/Edit";
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
 
 export type AppProps = {
   id: string;

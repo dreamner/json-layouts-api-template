@@ -9,29 +9,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import Grid from "@mui/material/Grid";
-import {
-  Autocomplete,
-  Box,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  MenuItem,
-  Paper,
-  Select,
-  Stack,
-  Switch,
-  TextField,
-} from "@mui/material";
+
+
+import Paper from "@mui/material/Paper"
+import Divider from "@mui/material/Divider"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemText from "@mui/material/ListItemText"
+import TextField from "@mui/material/TextField"
+
 import { usePagesStateValue } from "../lib/builder";
-import renderPage from "./util/renderPage";
-import ImageField from "./ImageField";
-import { useActions } from "./ToggleButtons";
 import { useRouter } from "next/router";
 
 const Transition = React.forwardRef(function Transition(

@@ -6,16 +6,16 @@ import App, { AppProps } from "../components/App";
 import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import {
-  Grid,
-  Box,
-  Container,
-  Autocomplete,
-  TextField,
-  CircularProgress,
-  Typography,
-  Button,
-} from "@mui/material";
+
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import Container from "@mui/material/Container"
+import CircularProgress from "@mui/material/CircularProgress"
+import Typography from "@mui/material/Typography"
+import Autocomplete from "@mui/material/Autocomplete"
+import TextField from "@mui/material/TextField"
+import Button from "@mui/material/Button"
+
 import CaategoryDialog from "../components/CategoryDialog";
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -49,7 +49,6 @@ const Apps: React.FC<Props> = (props) => {
   }
   const userHasValidSession = Boolean(session);
 
-  console.log(props.error);
 
   return (
     <Layout>
