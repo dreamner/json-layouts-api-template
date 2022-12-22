@@ -8,7 +8,14 @@ import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Container, Divider, Paper, Stack } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Paper,
+  Stack,
+  TextField,
+} from "@mui/material";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -32,7 +39,7 @@ export default function DatatableFormDialog({ resourceGroup }) {
 
   const [fields, setFields] = React.useState([{ name: "" }]);
 
-  const handleAddield = () => {
+  const handleAddField = () => {
     setFields((p) => [...p, { name: "" }]);
   };
 
@@ -73,6 +80,7 @@ export default function DatatableFormDialog({ resourceGroup }) {
         size="small"
         fullWidth
         variant="outlined"
+        sx={{ textTransform: "none" }}
         onClick={handleClickOpen}
       >
         Create a new table
@@ -100,9 +108,49 @@ export default function DatatableFormDialog({ resourceGroup }) {
         </AppBar>
         <div>
           <Toolbar />
-          <Container>
+          <Container sx={{mb:6}} >
             <form>
-              <Stack spacing={3}></Stack>
+              <Stack spacing={3}>
+                <div></div>
+                <TextField
+                  label="Name"
+                  name="name"
+                  onChange={handleChange}
+                  value={state.name}
+                />
+                <TextField
+                  multiline
+                  name="description"
+                  rows={5}
+                  label="Description"
+                  onChange={handleChange}
+                  value={state.description}
+                />
+                <Typography variant="h5">Fields</Typography>
+                <Box>
+                  <Container   >
+                    <Stack spacing={2}>
+                      {fields.map((field, index) => {
+                        return (
+                          <Paper sx={{ p: 2 }} key={index}>
+                            <Box sx={{ display: "flex", my: 2 }}>
+                              <Typography variant="h5" sx={{ flexGrow: 1 }}>
+                                {index + 1}.
+                              </Typography>
+                              <Button onClick={()=>handleRemoveField(index)}  size="small" variant="outlined">Remove</Button>
+                            </Box>
+                            <TextField fullWidth />
+                          </Paper>
+                        );
+                      })}
+                      <Button onClick={handleAddField} variant="outlined">Add field</Button>
+                    </Stack>
+                  </Container>
+                </Box>
+                <Button disableElevation variant="contained">
+                  Add field
+                </Button>
+              </Stack>
             </form>
           </Container>
         </div>

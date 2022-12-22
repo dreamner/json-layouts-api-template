@@ -97,12 +97,16 @@ export default function ResourceTabs({ resourceGroup }) {
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1 }}></Box>
           <Box>
             <DatatableFormDialog resourceGroup={{ ...resourceGroup }} />
           </Box>
         </Box>
+        <Typography variant="h3">Tables</Typography>
+        {!Boolean(resourceGroup.images.length) && (
+          <Typography sx={{ mt: 2 }}>No tables added </Typography>
+        )}
       </TabPanel>
     </Box>
   );
