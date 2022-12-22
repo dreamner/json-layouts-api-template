@@ -55,6 +55,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
         <Box>
           {session?.user?.email === app?.author.email && (
             <IconButton
+              size="small"
               onClick={(e) => {
                 e.stopPropagation();
                 Router.push("/a/[id]", `/a/${app.id}`);

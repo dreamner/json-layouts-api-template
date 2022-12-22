@@ -1,12 +1,17 @@
 import prisma from "../../../../../lib/prisma";
 
 export default async function handle(req, res) {
-    const { url, resourceGroupId } = req.body;
+  let images = req.body;
+  let saved = [];
+  for (let image of images) {
+    const { url, resourceGroupId } = image;
     const result = await prisma.image.create({
-        data: {
-            url,
-            resourceGroupId,
-        },
+      data: {
+        url,
+        resourceGroupId,
+      },
     });
-    res.json(result);
+    saved.push(result);
+  }
+  res.json(saved);
 }
