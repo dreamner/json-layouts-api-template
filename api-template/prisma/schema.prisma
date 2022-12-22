@@ -92,6 +92,7 @@ model ResourceGroup {
   name        String?
 }
 
+
 model App {
   id                        String          @id @default(cuid())
   title                     String?

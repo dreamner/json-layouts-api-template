@@ -127,7 +127,6 @@ export const AuthSpinner = () => {
     >
       <Box sx={{ textAlign: "center" }}>
         <CircularProgress />
-        <Typography>Checking login status...</Typography>
       </Box>
     </Box>
   );

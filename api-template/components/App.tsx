@@ -40,7 +40,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
         style={{ borderRadius: "4px" }}
         alt={app.name}
         src={app.image}
-      />{" "}
+      />
       <h2>{app.name}</h2>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ flexGrow: 1 }}>
@@ -53,7 +53,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
         </Box>
 
         <Box>
-          {/* {session?.user?.email === app?.author.email && ( */}
+          {session?.user?.email === app?.author.email && (
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -62,7 +62,7 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
             >
               <Edit />
             </IconButton>
-          {/* )} */}
+          )}
         </Box>
       </Box>
       <style jsx>{`

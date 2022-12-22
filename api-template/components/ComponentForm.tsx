@@ -195,12 +195,12 @@ export default function ComponentForm({
                                                         label={"Label"}
                                                         name="label"
                                                         value={option.label}
-                                                        // onChange={(e) =>
-                                                        //   handleChangeOption(
-                                                        //     e,
-                                                        //     optImdex
-                                                        //   )
-                                                        // }
+                                                      // onChange={(e) =>
+                                                      //   handleChangeOption(
+                                                      //     e,
+                                                      //     optImdex
+                                                      //   )
+                                                      // }
                                                       />
                                                     </Grid>
                                                     <Grid item xs={6}>
@@ -210,12 +210,12 @@ export default function ComponentForm({
                                                         name="value"
                                                         label={"Value"}
                                                         value={option.value}
-                                                        // onChange={(e) =>
-                                                        //   handleChangeOption(
-                                                        //     e,
-                                                        //     optImdex
-                                                        //   )
-                                                        // }
+                                                      // onChange={(e) =>
+                                                      //   handleChangeOption(
+                                                      //     e,
+                                                      //     optImdex
+                                                      //   )
+                                                      // }
                                                       />
                                                     </Grid>
                                                   </Grid>
@@ -459,6 +459,7 @@ export function useActions() {
 
 var option = [{ label: "Label", value: "value" }];
 
+
 export var components = {
   image: {
     type: "image",
@@ -584,7 +585,7 @@ export var components = {
     type: "textfield",
     data: {
       label: "Textfield",
-      type:"text"
+      type: "text"
     },
   },
   transferlist: {
@@ -677,7 +678,7 @@ export var components = {
     data: {},
   },
   accordion: {
-    type: "accorion",
+    type: "accordion",
     data: {},
   },
   appbar: {
@@ -760,7 +761,9 @@ export var components = {
   },
   tabs: {
     type: "tabs",
-    data: {},
+    data: {
+      items: [{ label: "Tab 1", components: []}, { label: "Tab 2", components:[] }, { label: "Tab 3", components: []}]
+    },
   },
   container: {
     type: "container",
