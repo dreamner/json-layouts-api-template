@@ -1,5 +1,5 @@
 import React from "react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
 
@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import CaategoryDialog from "../components/CategoryDialog";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const apps = await prisma.app.findMany({
     where: { published: true },
     include: {
@@ -29,7 +29,6 @@ export const getStaticProps: GetStaticProps = async () => {
   });
   return {
     props: { apps },
-    revalidate: 2
   };
 };
 
