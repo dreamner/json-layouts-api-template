@@ -1,9 +1,9 @@
-import * as React from 'react';
-import MuiTabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import renderComponents from './renderComponents';
+import * as React from "react";
+import MuiTabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import renderComponents from "./renderComponents";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -34,7 +34,7 @@ function TabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -46,20 +46,25 @@ export default function Tabs({ items = [] }) {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <MuiTabs value={value} onChange={handleChange} aria-label="basic tabs example">
+    <Box key={"hjggx"} sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <MuiTabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
           {items.map((item, index) => {
-            return <Tab label={item.label} {...a11yProps(index)} />
+            return <Tab key={index} label={item.label} {...a11yProps(index)} />;
           })}
         </MuiTabs>
       </Box>
 
       {items.map((item, index) => {
-        return <TabPanel value={value} index={0}>
-
-          {renderComponents(item.components)}
-        </TabPanel>
+        return (
+          <TabPanel index={index} value={index} key={index}>
+            {renderComponents(item.components)}
+          </TabPanel>
+        );
       })}
     </Box>
   );

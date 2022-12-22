@@ -1,12 +1,11 @@
 import prisma from "../../../../../lib/prisma";
 
 export default async function handle(req, res) {
-    const { name, description, tableId } = req.body;
+    const { key, tableId } = req.body;
     const result = await prisma.column.create({
         data: {
-            name,
-            description,
-            table: { connect: { tableId } },
+            key,
+            tableId:  tableId,
         },
     });
     res.json(result);

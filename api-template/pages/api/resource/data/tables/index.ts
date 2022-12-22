@@ -6,7 +6,7 @@ export default async function handle(req, res) {
         data: {
             name,
             description,
-            resourceGroup: { connect: { resourceGroupId } },
+            resourceGroupId,
         },
     });
     res.json(result);

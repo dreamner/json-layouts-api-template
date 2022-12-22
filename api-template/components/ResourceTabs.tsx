@@ -65,8 +65,7 @@ export default function ResourceTabs({ resourceGroup }) {
           <Typography variant='h3' >Media</Typography>
           {!Boolean(resourceGroup.images.length) && (
             <Typography sx={{mt:2}}>
-              You haven't added any media
-            </Typography>
+No media added            </Typography>
           )}
           <WovenImageList options={resourceGroup.images.map(image => ({ label: "", value: image.url }))} />
         </Box>
