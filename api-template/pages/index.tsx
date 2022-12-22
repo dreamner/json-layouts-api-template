@@ -19,21 +19,26 @@ import {
 import CaategoryDialog from "../components/CategoryDialog";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const apps = await prisma.app.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true, email: true, image: true },
+  try {
+    const apps = await prisma.app.findMany({
+      where: { published: true },
+      include: {
+        author: {
+          select: { name: true, email: true, image: true },
+        },
       },
-    },
-  });
-  return {
-    props: { apps },
-  };
+    });
+    return {
+      props: { apps },
+    };
+  } catch (e) {
+    return { props: { apps: [], error: e } };
+  }
 };
 
 type Props = {
   apps: AppProps[];
+  error?: any;
 };
 
 const Apps: React.FC<Props> = (props) => {
@@ -44,16 +49,17 @@ const Apps: React.FC<Props> = (props) => {
   }
   const userHasValidSession = Boolean(session);
 
+  console.log(props.error);
+
   return (
     <Layout>
       <div className="page">
-
         <main>
           <Container sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Box sx={{ my: 5 }}>
-                <Box sx={{ display: "flex" }} >
-                  <Box sx={{ flexGrow: 1 }} >
+                <Box sx={{ display: "flex" }}>
+                  <Box sx={{ flexGrow: 1 }}>
                     <Autocomplete
                       size="small"
                       disablePortal
@@ -74,16 +80,20 @@ const Apps: React.FC<Props> = (props) => {
                   </Box>
 
                   <Box>
-                    <CaategoryDialog appId={undefined}/>
-                    <Button  size="small" onClick={() => router.push("/explore")} sx={{ textTransform: "none", ml:2 }} disableElevation variant="contained">
+                    <CaategoryDialog appId={undefined} />
+                    <Button
+                      size="small"
+                      onClick={() => router.push("/explore")}
+                      sx={{ textTransform: "none", ml: 2 }}
+                      disableElevation
+                      variant="contained"
+                    >
                       Explore Apps
                     </Button>
                   </Box>
                 </Box>
-
-
               </Box>
-              <Grid sx={{mb:4}} container spacing={2}>
+              <Grid sx={{ mb: 4 }} container spacing={2}>
                 <>
                   {props.apps.map((app) => (
                     <Grid key={app.id} item lg={3} md={6} xs={12}>
