@@ -98,12 +98,19 @@ const Apps: React.FC<Props> = (props) => {
                 {!props.apps.length && userHasValidSession && (
                   <div>
                     <h6>There are 0 published apps</h6>
-                    <button onClick={() => router.push("/create")}>
+                    <Button
+                      variant={"outlined"}
+                      onClick={() => router.push("/create")}
+                    >
                       Create app
-                    </button>
-                    <button onClick={() => router.push("/drafts")}>
-                      Go to drafts
-                    </button>
+                    </Button>
+                    <Button
+                      sx={{ ml: 2 }}
+                      variant={"outlined"}
+                      onClick={() => router.push("/drafts")}
+                    >
+                      My Drafts
+                    </Button>
                   </div>
                 )}
               </Grid>
