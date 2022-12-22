@@ -1,0 +1,71 @@
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import CloseIcon from "@mui/icons-material/Close";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
+import { Container, Divider, Paper, Stack, Tooltip } from "@mui/material";
+import ImageField from "./ImageField";
+
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement;
+    },
+    ref: React.Ref<unknown>
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+export default function UploadImageDialog() {
+    const [open, setOpen] = React.useState(false);
+
+    const [values, setValues] = React.useState([])
+
+    const handleChange = v => setValues(v)
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <div>
+            <Button sx={{ textTransform: "none" }} size="small" fullWidth variant="outlined" onClick={handleClickOpen}>
+                Upload Images / Media
+            </Button>
+            <Dialog
+                fullScreen
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Transition}
+            >
+                <AppBar elevation={0} sx={{ position: "fixed" }}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={handleClose}
+                            aria-label="close"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                            Media
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <div>
+                    <Toolbar />
+                    <ImageField handleChange={console.log} value={null} multiple desc="Drag and drop images, or click to upload" />
+                </div>
+            </Dialog>
+        </div>
+    );
+}

@@ -56,6 +56,7 @@ import Crumbs from "./components/Crumbs";
 import BottomNav from "./components/BottomNav";
 import Paypal from "./components/Paypal";
 import ButtonGroup from "./components/ButtonGroup";
+import RenderTabs from "./renderTabs";
 
 export default function renderComponents(components: any[] = []) {
   return components.map((component, index) => {
@@ -163,7 +164,8 @@ export default function renderComponents(components: any[] = []) {
         return renderTextField({ label, type });
       }
       case "tabs": {
-        return renderTabs();
+        const { items = [] } = data;
+        return <RenderTabs items={items} key={index} />;
       }
       case "paper": {
         const { elevation = 1, padding = 2, components: cmps = [] }: any = data;
@@ -320,8 +322,8 @@ export default function renderComponents(components: any[] = []) {
         return renderAlert();
       }
       case "imagefield": {
-        const { desc, value, handleChange } = data;
-        return renderImageField({ desc, value, handleChange });
+        const { desc, value, handleChange, multiple } = data;
+        return renderImageField({ desc, value, handleChange, multiple });
       }
       default: {
         return (

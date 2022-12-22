@@ -30,7 +30,7 @@ const App: React.FC<any> = (props) => {
     <Layout>
       <Container>
         <Typography variant="h4">Resources</Typography>
-        <ResourceTabs />
+        <ResourceTabs resourceGroup={{ ...props }} />
       </Container>
     </Layout>
   );

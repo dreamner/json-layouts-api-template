@@ -3,6 +3,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import UploadImageDialog from './UploadImageDialog';
+import WovenImageList from './util/components/ImageList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,7 +39,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function ResourceTabs() {
+export default function ResourceTabs({ resourceGroup }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -48,17 +50,30 @@ export default function ResourceTabs() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Media" {...a11yProps(0)} />
-          <Tab label="Data Tables" {...a11yProps(1)} />
+          <Tab sx={{ textTransform: "none" }} label="Media" {...a11yProps(0)} />
+          <Tab sx={{ textTransform: "none" }} label="Data Tables" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Media
+        <Box sx={{ display: "flex" }} >
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <Box>
+            <UploadImageDialog />
+          </Box>
+        </Box>
+        <Box>
+          <Typography variant='h3' >Media</Typography>
+          {!Boolean(resourceGroup.images.length) && (
+            <Typography sx={{mt:2}}>
+              You haven't added any media
+            </Typography>
+          )}
+          <WovenImageList options={resourceGroup.images.map(image => ({ label: "", value: image.url }))} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Data Tables
       </TabPanel>
-  
     </Box>
   );
 }

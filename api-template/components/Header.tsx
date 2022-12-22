@@ -101,8 +101,8 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <Link href="/api/auth/signin">
-          <Button variant="contained" data-active={isActive("/signup")}>
-            Login
+          <Button disableElevation variant="contained" data-active={isActive("/signup")}>
+            Sign in
           </Button>
         </Link>
         <style jsx>{`

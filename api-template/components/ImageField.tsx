@@ -7,9 +7,10 @@ export interface IImageFied {
   desc: string;
   value: string;
   handleChange: Function;
+  multiple?:boolean
 }
 
-export default function ImageField({ desc, value, handleChange }: IImageFied) {
+export default function ImageField({ desc, value, handleChange , multiple=false}: IImageFied) {
   const [image, setImage] = React.useState<string>("");
 
   const onDrop = React.useCallback((acceptedFiles: any) => {
@@ -21,7 +22,7 @@ export default function ImageField({ desc, value, handleChange }: IImageFied) {
       "image/jpeg": [],
       "image/png": [],
     },
-    maxFiles: 1,
+    maxFiles: multiple? 100: 1,
   });
   const { ref, ...rootProps } = getRootProps();
 
