@@ -21,7 +21,7 @@ const Header: React.FC = () => {
       </div>
       <Link href="/">
         <a className="bold" data-active={isActive("/")}>
-          <Chip icon={<Home />} label="Home" />
+          <Chip sx={{ cursor: "pointer" }} icon={<Home />} label="Home" />
         </a>
       </Link>
       <style jsx>{`
@@ -58,7 +58,7 @@ const Header: React.FC = () => {
         </div>
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
-            <Chip icon={<Home />} label="Home" />
+            <Chip sx={{ cursor: "pointer" }} icon={<Home />} label="Home" />
           </a>
         </Link>
 
@@ -101,7 +101,12 @@ const Header: React.FC = () => {
     right = (
       <div className="right">
         <Link href="/api/auth/signin">
-          <Button disableElevation variant="contained" data-active={isActive("/signup")}>
+          <Button
+            sx={{ textTransform: "none" }}
+            disableElevation
+            variant="contained"
+            data-active={isActive("/signup")}
+          >
             Sign in
           </Button>
         </Link>

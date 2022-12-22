@@ -1,7 +1,10 @@
 import React from "react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 
 import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
@@ -18,7 +21,7 @@ import {
 } from "@mui/material";
 import CaategoryDialog from "../components/CategoryDialog";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const apps = await prisma.app.findMany({
     where: { published: true },
     include: {
@@ -29,7 +32,6 @@ export const getStaticProps: GetStaticProps = async () => {
   });
   return {
     props: { apps },
-    revalidate: 2
   };
 };
 
@@ -48,43 +50,64 @@ const Apps: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-
         <main>
           <Container sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
-              <Box sx={{ my: 5 }}>
-                <Box sx={{ display: "flex" }} >
-                  <Box sx={{ flexGrow: 1 }} >
-                    <Autocomplete
-                      size="small"
-                      disablePortal
-                      id="combo-box-demo"
-                      options={props.apps.map((app) => ({
-                        value: app.id,
-                        label: app.name,
-                      }))}
-                      sx={{ width: 300 }}
-                      onChange={(e, v) => {
-                        if ((v as any)?.value)
-                          router.push(`/${(v as any).value}`);
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} placeholder="Search apps" />
-                      )}
-                    />
-                  </Box>
-
-                  <Box>
-                    <CaategoryDialog appId={undefined}/>
-                    <Button  size="small" onClick={() => router.push("/explore")} sx={{ textTransform: "none", ml:2 }} disableElevation variant="contained">
-                      Explore Apps
-                    </Button>
-                  </Box>
+              <Box sx={{ display: "flex" }}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography sx={{ my: 1 }} variant="h5">
+                    Featured apps
+                  </Typography>
                 </Box>
-
-
+                <Box sx={{ display: "lex" }}>
+                  <CaategoryDialog appId={undefined} />
+                  {/* <Autocomplete
+                    size="small"
+                    sx={{ width: 100, ml: 3 }}
+                    fullWidth
+                    disablePortal
+                    id="combo-box-demo"
+                    options={props.apps.map((app) => ({
+                      value: app.id,
+                      label: app.name,
+                    }))}
+                    onChange={(e, v) => {
+                      if ((v as any)?.value)
+                        router.push(`/${(v as any).value}`);
+                    }}
+                    renderInput={(params) => (
+                      <TextField size="small" {...params} placeholder="Search apps" />
+                    )}
+                  /> */}
+                </Box>
               </Box>
-              <Grid sx={{mb:4}} container spacing={2}>
+              <Box sx={{ my: 1 }}>
+                <Box sx={{ display: "flex" }}>
+                  <Box sx={{ flexGrow: 1 }}></Box>
+                  <Box sx={{ width: 650, mt: 3 }}>
+                    <Carousel autoPlay>
+                      {props.apps.map((app, index) => {
+                        return (
+                          <div key={index}>
+                            <img
+                              style={{ borderRadius: "4px" }}
+                              src={app.image}
+                            />
+                          </div>
+                        );
+                      })}
+                    </Carousel>
+                  </Box>
+
+                  <Box sx={{ flexGrow: 1 }}></Box>
+                </Box>
+              </Box>
+              <Box sx={{ textAlign: "center" }}>
+                <Typography sx={{ my: 5 }} variant="h5">
+                  All apps
+                </Typography>
+              </Box>
+              <Grid container spacing={2}>
                 <>
                   {props.apps.map((app) => (
                     <Grid key={app.id} item lg={3} md={6} xs={12}>
