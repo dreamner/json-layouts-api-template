@@ -1,11 +1,15 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { usePagesStateDisptch, usePagesStateValue } from "../lib/builder";
 import { useAxios } from "./useAxios";
 
-export default function useApps() {
-  const apps = usePagesStateValue("apps") ?? []
+export default function useResourceGroups() {
+  const router = useRouter();
+  const queryId = router.query.id;
 
-  const loadingApps = usePagesStateValue("loaders.apps");
+  const resourceGroups = usePagesStateValue("resourceGroups") ?? {};
+
+  const loadingResourceGroups = usePagesStateValue("loaders.resourceGroups");
 
   const { updateApps, toggleAppsLoader } = useActions();
   const axios = useAxios();
@@ -13,7 +17,7 @@ export default function useApps() {
   async function updateAll() {
     try {
       toggleAppsLoader(true);
-      const response = await axios.get("/api/a");
+      const response = await axios.get(`/api/resource/${queryId}`);
       const data = response.data;
       if (data) {
         updateApps(data);
@@ -27,43 +31,46 @@ export default function useApps() {
   }
 
   const couldBeEmpty =
-    !apps.length &&
-    (loadingApps === null || loadingApps === undefined) &&
-    !loadingApps;
+    !resourceGroups &&
+    (loadingResourceGroups === null || loadingResourceGroups === undefined) &&
+    !loadingResourceGroups;
 
   React.useEffect(() => {
     if (couldBeEmpty) updateAll();
   }, [couldBeEmpty]);
 
-  return apps;
+  return resourceGroups;
 }
 
 function useActions() {
   const dispatchToPages = usePagesStateDisptch();
-  const apps = usePagesStateValue("apps");
+  const resourceGroups = usePagesStateValue("resourceGroups");
   const loaders = usePagesStateValue("loaders");
-  const loadingApps = usePagesStateValue("loaders.apps");
-  const updateApps = React.useCallback(
+  const loadingApps = usePagesStateValue("loaders.resourceGroups");
+  const updateResourceGrps = React.useCallback(
     (payload: any) => {
       const type = "update_all";
-      const key = "apps";
+      const key = "resourceGroups";
       dispatchToPages({ payload, type, key });
     },
-    [apps]
+    [resourceGroups]
   );
 
-  const toggleAppsLoader = React.useCallback(
+  const toggleResourceGroupsLoader = React.useCallback(
     (state: boolean) => {
       const type = "update_all";
       const key = "loaders";
-      let payload = { ...loaders, apps: state };
+      let payload = { ...loaders, resourceGroups: state };
       dispatchToPages({
         payload,
         type,
         key,
       });
     },
-    [apps, loaders, loadingApps]
+    [resourceGroups, loaders, loadingApps]
   );
-  return { updateApps, toggleAppsLoader };
+  return {
+    updateApps: updateResourceGrps,
+    toggleAppsLoader: toggleResourceGroupsLoader,
+  };
 }

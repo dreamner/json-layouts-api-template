@@ -5,25 +5,12 @@ import Layout from "../../components/Layout";
 import { Container, Grid, Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import CreateResourceGroupDialog from "../../components/CreateResourceGroupDialog";
+import useResourceGroups from "../../hooks/useResourceGroups";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const app = await prisma.app.findUnique({
-    where: {
-      id: String(params?.id),
-    },
-    include: {
-      resourceGroups: {
-        select: { name: true, id: true },
-      },
-    } as any,
-  });
-  return {
-    props: app,
-  };
-};
-
-const App: React.FC<any> = (props) => {
+const App: React.FC<any> = () => {
   const router = useRouter();
+  const app = useResourceGroups();
+  const props = app; // to refactor
   return (
     <Layout>
       <Container className="page">
