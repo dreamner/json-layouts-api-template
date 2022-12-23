@@ -71,7 +71,7 @@ export default function CreateResourceGroupDialog({ appId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { ...state, appId };
+      const body = { ...state, appId: router.query.id };
       const res = await fetch("/api/resource", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -79,7 +79,7 @@ export default function CreateResourceGroupDialog({ appId }) {
       });
       if (res.json()) {
         setSaving(false);
-        router.push(`/res/${appId}`);
+        setOpen(false);
       }
     } catch (error) {
       setSaving(false);

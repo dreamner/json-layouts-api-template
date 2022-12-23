@@ -1,6 +1,4 @@
 import React from "react";
-import { GetServerSideProps } from "next";
-import prisma from "../../lib/prisma";
 import Layout from "../../components/Layout";
 import { Container, Grid, Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
