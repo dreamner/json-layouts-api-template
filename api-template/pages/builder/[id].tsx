@@ -1,13 +1,8 @@
 // pages/p/[id].tsx
 
 import React from "react";
-import { GetServerSideProps } from "next";
-import ReactMarkdown from "react-markdown";
-import Router, { useRouter } from "next/router";
-import Layout from "../../components/Layout";
-import { AppProps } from "../../components/App";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import prisma from "../../lib/prisma";
 import { Avatar, Box, Grid, Paper, Typography } from "@mui/material";
 import Preview from "../../components/Preview";
 import BuilderTabs from "../../components/BuilderTabs";
@@ -18,22 +13,7 @@ import ToggleButtons from "../../components/ToggleButtons";
 import { AuthSpinner } from "..";
 import useApp from "../../hooks/useApp";
 import { usePagesStateValue } from "../../lib/builder";
-
-// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-//   const post = await prisma.app.findUnique({
-//     where: {
-//       id: String(params?.id),
-//     },
-//     include: {
-//       author: {
-//         select: { name: true, email: true },
-//       },
-//     },
-//   });
-//   return {
-//     props: post,
-//   };
-// };
+import Layout from "../../components/Layout";
 
 const App: React.FC = () => {
   const { data: session, status } = useSession();
@@ -41,7 +21,7 @@ const App: React.FC = () => {
   const router = useRouter();
 
   const app = useApp({ id: router.query.id });
-  const props = app; // to ref
+  const props = app ?? {}; // to ref
   const loadingApp = usePagesStateValue("loaders.apps");
 
   if (status === "loading" || loadingApp) {
@@ -56,8 +36,8 @@ const App: React.FC = () => {
       </Layout>
     );
   }
-  let title = props.name;
-  if (!props.published) {
+  let title = props?.name;
+  if (!props?.published) {
     title = `${title} (Draft)`;
   }
 
@@ -74,7 +54,7 @@ const App: React.FC = () => {
         >
           <Box sx={{ display: "flex" }}>
             <Box sx={{ mb: 2, flexGrow: 1, display: "flex" }}>
-              <Avatar sx={{ mr: 1 }} src={props.image}>
+              <Avatar sx={{ mr: 1 }} src={props?.image}>
                 {title[0]}
               </Avatar>
               <Box>

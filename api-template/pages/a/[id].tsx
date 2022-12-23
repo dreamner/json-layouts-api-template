@@ -26,7 +26,7 @@ const App: React.FC<AppProps> = () => {
   const router = useRouter();
 
   const app = useApp({ id: router.query.id });
-  const props = app; // to ref
+  const props = app ?? {}; // to ref
 
   const loadingApps = usePagesStateValue("loaders.apps");
 

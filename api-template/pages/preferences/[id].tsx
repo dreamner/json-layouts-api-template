@@ -1,10 +1,7 @@
 import React from "react";
-import { GetServerSideProps } from "next";
 import Router, { useRouter } from "next/router";
 import Layout from "../../components/Layout";
-import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
-import prisma from "../../lib/prisma";
 
 import {
   Avatar,
@@ -29,13 +26,13 @@ const App: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const app = useApp({ id: router.query.id });
-  const props = app; // to ref
+  const props = app ?? { name: "" }; // to ref
   const loadingApp = usePagesStateValue("loaders.apps");
   const [state, setState] = React.useState(() => props);
   const [saving, setSaving] = React.useState(false);
 
-  let title = props.name;
-  if (!props.published) {
+  let title = props?.name;
+  if (!props?.published) {
     title = `${title} (Draft)`;
   }
 
@@ -66,7 +63,7 @@ const App: React.FC = () => {
     if (Boolean(images)) {
       currentState = { ...currentState, ...images };
     }
-    const res = await updateApp(props.id, { ...currentState });
+    const res = await updateApp(props?.id, { ...currentState });
     if (res) {
       setSaving(false);
     } else {
@@ -93,7 +90,7 @@ const App: React.FC = () => {
         <Box sx={{ display: "flex" }}>
           <Box sx={{ flexGrow: 1 }}></Box>
           <Box sx={{ flexGrow: 1 }}>
-            <Avatar src={props.image}>{title[0]}</Avatar>
+            <Avatar src={props?.image}>{title[0]}</Avatar>
             <h2>{title}</h2>
             <p>By {props?.author?.name || "Unknown author"}</p>
             <Stack
