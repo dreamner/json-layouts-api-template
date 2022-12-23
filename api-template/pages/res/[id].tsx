@@ -16,9 +16,9 @@ const App: React.FC<any> = () => {
       <Container className="page">
         <Box sx={{ display: "flex" }}>
           <h1 style={{ flexGrow: 1 }}>Resource Groups</h1>
-          {Boolean(props.resourceGroups.length) && (
+          {Boolean(props?.resourceGroups?.length) && (
             <div>
-              <CreateResourceGroupDialog appId={props.id} />
+              <CreateResourceGroupDialog appId={props?.id} />
             </div>
           )}
         </Box>
@@ -27,7 +27,7 @@ const App: React.FC<any> = () => {
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Grid spacing={2} container>
-                {props.resourceGroups.map((app) => (
+                {props?.resourceGroups?.map((app) => (
                   <Grid
                     onClick={() => router.push(`/res/group/${app.id}`)}
                     item
@@ -43,7 +43,7 @@ const App: React.FC<any> = () => {
                   </Grid>
                 ))}
               </Grid>
-              {!Boolean(props.resourceGroups.length) && (
+              {!Boolean(props?.resourceGroups?.length) && (
                 <div>
                   <h6>You do not have resource groups</h6>
                   <CreateResourceGroupDialog appId={props.id} />
