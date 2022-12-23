@@ -47,7 +47,6 @@ export default function ImageField({
         try {
           reader.readAsDataURL(value as any);
         } catch (e) {
-          console.log(e);
         }
       }
     }
@@ -60,13 +59,11 @@ export default function ImageField({
         try {
           reader.readAsDataURL(val as any);
         } catch (e) {
-          console.log(e);
         }
       }
     }
   }, [value]);
 
-  console.log(images);
   return (
     <Paper
       elevation={0}

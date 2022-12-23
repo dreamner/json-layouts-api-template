@@ -23,7 +23,6 @@ export default function usePages() {
     try {
       const response = await axios.get(`/api/page/${appId}`);
       const data = response.data;
-      console.log(data)
       if (data.length) {
         updatePages([...data]);
         setP([...data]);

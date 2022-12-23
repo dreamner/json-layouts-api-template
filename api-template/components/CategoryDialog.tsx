@@ -9,15 +9,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import Grid from "@mui/material/Grid";
-import Autocomplete from "@mui/material/Autocomplete"
-import Box from "@mui/material/Box"
-import Paper from "@mui/material/Paper"
-import Divider from "@mui/material/Divider"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemButton from "@mui/material/ListItemButton"
-import ListItemText from "@mui/material/ListItemText"
-import TextField from "@mui/material/TextField"
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import TextField from "@mui/material/TextField";
 
 import { usePagesStateValue } from "../lib/builder";
 import { useRouter } from "next/router";
@@ -163,7 +163,7 @@ export default function CaategoryDialog({ appId }) {
                         label: category,
                         value: category,
                       }))}
-                      onChange={console.log}
+                      // onChange={console.log}
                       renderInput={(params) => (
                         <TextField {...params} placeholder="Search Category" />
                       )}
@@ -203,7 +203,7 @@ export default function CaategoryDialog({ appId }) {
                     </Button>
                   </Stack>
                 </form> */}
-                                    <Typography variant="body1">No subcategories found</Typography>
+                <Typography variant="body1">No subcategories found</Typography>
               </Paper>
             </Grid>
           </Grid>
