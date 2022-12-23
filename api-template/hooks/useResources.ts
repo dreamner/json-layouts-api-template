@@ -2,10 +2,8 @@ import React from "react";
 import { usePagesStateDisptch, usePagesStateValue } from "../lib/builder";
 import { useAxios } from "./useAxios";
 
-export default function useApp({ id }) {
-  const apps = usePagesStateValue("apps") ?? [];
-
-  const app = apps.find((app) => app.id === id);
+export default function useApps() {
+  const apps = usePagesStateValue("apps") ?? []
 
   const loadingApps = usePagesStateValue("loaders.apps");
 
@@ -37,7 +35,7 @@ export default function useApp({ id }) {
     if (couldBeEmpty) updateAll();
   }, [couldBeEmpty]);
 
-  return app;
+  return apps;
 }
 
 function useActions() {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import ReactMarkdown from "react-markdown";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import { AppProps } from "../../components/App";
 import { useSession } from "next-auth/react";
@@ -17,25 +17,18 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { AuthSpinner } from "..";
+import useApp from "../../hooks/useApp";
+import { usePagesStateValue } from "../../lib/builder";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const app = await prisma.app.findUnique({
-    where: {
-      id: String(params?.id),
-    },
-    include: {
-      author: {
-        select: { name: true, email: true },
-      },
-    },
-  });
-  return {
-    props: app,
-  };
-};
-
-const App: React.FC<AppProps> = (props) => {
+const App: React.FC<AppProps> = () => {
   const { data: session, status } = useSession();
+
+  const router = useRouter();
+
+  const app = useApp({ id: router.query.id });
+  const props = app; // to ref
+
+  const loadingApps = usePagesStateValue("loaders.apps");
 
   const [deleting, setDeleting] = useState(false);
   const [publishing, setPublishing] = useState(false);
@@ -70,7 +63,7 @@ const App: React.FC<AppProps> = (props) => {
     }
   }
 
-  if (status === "loading") {
+  if (status === "loading" || loadingApps) {
     return <AuthSpinner />;
   }
 
