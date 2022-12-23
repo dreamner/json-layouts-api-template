@@ -28,6 +28,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 export default function DatatableFormDialog({ resourceGroup }) {
+  console.log(resourceGroup);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -79,7 +80,7 @@ export default function DatatableFormDialog({ resourceGroup }) {
     setSaving(true);
     try {
       e.preventDefault();
-      const res = await axios.post("/resource/data/tables", {
+      const res = await axios.post("/api/resource/data/tables", {
         ...state,
         fields,
         resourceGroupId: resourceGroup?.id,

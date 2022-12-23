@@ -102,6 +102,7 @@ const Header: React.FC = () => {
       <div className="right">
         <Link href="/api/auth/signin">
           <Button
+            size="small"
             sx={{ textTransform: "none" }}
             disableElevation
             variant="contained"

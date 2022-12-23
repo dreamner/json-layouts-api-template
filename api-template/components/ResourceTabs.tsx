@@ -74,12 +74,12 @@ export default function ResourceTabs({ resourceGroup }) {
         </Box>
         <Box>
           <Typography variant="h3">Media</Typography>
-          {!Boolean(resourceGroup.images.length) && (
+          {!Boolean(resourceGroup?.images?.length) && (
             <Typography sx={{ mt: 2 }}>No media added </Typography>
           )}
 
           <Grid container sx={{ mt: 3 }} spacing={3}>
-            {resourceGroup.images.map((image) => {
+            {resourceGroup?.images?.map((image) => {
               return (
                 <Grid item xs={4} key={image.url}>
                   <Paper elevation={0} sx={{ p: 3 }}>
@@ -105,9 +105,21 @@ export default function ResourceTabs({ resourceGroup }) {
           </Box>
         </Box>
         <Typography variant="h3">Tables</Typography>
-        {!Boolean(resourceGroup.images.length) && (
+        {!Boolean(resourceGroup?.tables?.length) && (
           <Typography sx={{ mt: 2 }}>No tables added </Typography>
         )}
+        <Grid container sx={{ mt: 3 }} spacing={3}>
+          {resourceGroup?.tables?.map((table) => {
+            return (
+              <Grid item xs={4} key={table?.id}>
+                <Paper elevation={0} sx={{ p: 3 }}>
+                  <Typography>{table.name}</Typography>
+                  <Button variant="outlined">Copy link</Button>
+                </Paper>
+              </Grid>
+            );
+          })}
+        </Grid>
       </TabPanel>
     </Box>
   );
