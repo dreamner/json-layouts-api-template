@@ -30,10 +30,7 @@ export default function useResourceGroups() {
     }
   }
 
-  const couldBeEmpty =
-    !resourceGroups &&
-    (loadingResourceGroups === null || loadingResourceGroups === undefined) &&
-    !loadingResourceGroups;
+  const couldBeEmpty = !resourceGroups && !loadingResourceGroups;
 
   React.useEffect(() => {
     if (couldBeEmpty) updateAll();
