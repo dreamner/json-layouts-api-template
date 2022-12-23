@@ -58,7 +58,7 @@ const Apps: React.FC<any> = () => {
                   </Box>
 
                   <Box>
-                    <CaategoryDialog appId={undefined} />
+                    {/* <CaategoryDialog appId={undefined} /> */}
                     <Button
                       size="small"
                       onClick={() => router.push("/explore")}
