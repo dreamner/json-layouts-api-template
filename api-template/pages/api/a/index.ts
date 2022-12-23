@@ -31,7 +31,7 @@ export default async function handler(
     where: { published: true },
     include: {
       author: {
-        select: { name: true, email: true },
+        select: { name: true, email: true, image:true },
       },
     },
   });
