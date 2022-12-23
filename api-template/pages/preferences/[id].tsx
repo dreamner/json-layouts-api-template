@@ -27,14 +27,12 @@ import { usePagesStateValue } from "../../lib/builder";
 
 const App: React.FC = () => {
   const { data: session, status } = useSession();
-  const [state, setState] = React.useState(() => props);
-  const [saving, setSaving] = React.useState(false);
-
   const router = useRouter();
-
   const app = useApp({ id: router.query.id });
   const props = app; // to ref
   const loadingApp = usePagesStateValue("loaders.apps");
+  const [state, setState] = React.useState(() => props);
+  const [saving, setSaving] = React.useState(false);
 
   let title = props.name;
   if (!props.published) {
