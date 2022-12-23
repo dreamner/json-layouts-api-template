@@ -17,7 +17,7 @@ const Header: React.FC = () => {
   let left = (
     <div className="left">
       <div className="logo">
-        <Typography variant="h5">DREAMVILLE</Typography>
+        {/* <Typography variant="h5">DREAMVILLE</Typography> */}
       </div>
       <Link href="/">
         <a className="bold" data-active={isActive("/")}>
@@ -54,7 +54,7 @@ const Header: React.FC = () => {
     left = (
       <div className="left">
         <div className="logo">
-          <Typography variant="h5">DREAMVILLE</Typography>
+          {/* <Typography variant="h5">DREAMVILLE</Typography> */}
         </div>
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
@@ -139,7 +139,7 @@ const Header: React.FC = () => {
     left = (
       <div className="left">
         <div className="logo">
-          <Typography variant="h5">DREAMVILLE</Typography>
+          {/* <Typography variant="h5">DREAMVILLE</Typography> */}
         </div>
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
