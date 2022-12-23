@@ -52,7 +52,7 @@ const Apps: React.FC<any> = () => {
                           router.push(`/${(v as any).value}`);
                       }}
                       renderInput={(params) => (
-                        <TextField {...params} placeholder="Search apps" />
+                        <TextField {...params} placeholder="Search apps/categories..." />
                       )}
                     />
                   </Box>
