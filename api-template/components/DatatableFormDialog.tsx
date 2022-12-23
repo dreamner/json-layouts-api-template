@@ -16,6 +16,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { useAxios } from "../hooks/useAxios";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -37,10 +38,10 @@ export default function DatatableFormDialog({ resourceGroup }) {
     setOpen(false);
   };
 
-  const [fields, setFields] = React.useState([{ name: "" }]);
+  const [fields, setFields] = React.useState([{ key: "" }]);
 
   const handleAddField = () => {
-    setFields((p) => [...p, { name: "" }]);
+    setFields((p) => [...p, { key: "" }]);
   };
 
   const handleRemoveField = (index) => {
@@ -70,8 +71,26 @@ export default function DatatableFormDialog({ resourceGroup }) {
     setState((p) => ({ ...p, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const axios = useAxios();
+
+  const [saving, setSaving] = React.useState(false);
+
+  const handleSubmit = async (e) => {
+    setSaving(true);
+    try {
+      e.preventDefault();
+      const res = await axios.post("/resource/data/tables", {
+        ...state,
+        fields,
+        resourceGroupId: resourceGroup?.id,
+      });
+      if (res.data) {
+        setSaving(false);
+        setOpen(false);
+      }
+    } catch (e) {
+      setSaving(false);
+    }
   };
 
   return (
@@ -108,13 +127,15 @@ export default function DatatableFormDialog({ resourceGroup }) {
         </AppBar>
         <div>
           <Toolbar />
-          <Container sx={{mb:6}} >
-            <form>
+          <Container sx={{ mb: 6 }}>
+            <form onSubmit={handleSubmit}>
               <Stack spacing={3}>
                 <div></div>
                 <TextField
                   label="Name"
                   name="name"
+                  size="small"
+                  required
                   onChange={handleChange}
                   value={state.name}
                 />
@@ -122,13 +143,14 @@ export default function DatatableFormDialog({ resourceGroup }) {
                   multiline
                   name="description"
                   rows={5}
+                  size="small"
                   label="Description"
                   onChange={handleChange}
                   value={state.description}
                 />
                 <Typography variant="h5">Fields</Typography>
                 <Box>
-                  <Container   >
+                  <Container>
                     <Stack spacing={2}>
                       {fields.map((field, index) => {
                         return (
@@ -137,18 +159,39 @@ export default function DatatableFormDialog({ resourceGroup }) {
                               <Typography variant="h5" sx={{ flexGrow: 1 }}>
                                 {index + 1}.
                               </Typography>
-                              <Button onClick={()=>handleRemoveField(index)}  size="small" variant="outlined">Remove</Button>
+                              <Button
+                                onClick={() => handleRemoveField(index)}
+                                size="small"
+                                variant="outlined"
+                              >
+                                Remove
+                              </Button>
                             </Box>
-                            <TextField fullWidth />
+                            <TextField
+                              value={field.key}
+                              required
+                              size="small"
+                              onChange={(e) => handleFieldChange(e, index)}
+                              name="key"
+                              label="Field name"
+                              fullWidth
+                            />
                           </Paper>
                         );
                       })}
-                      <Button onClick={handleAddField} variant="outlined">Add field</Button>
+                      <Button onClick={handleAddField} variant="outlined">
+                        Add field
+                      </Button>
                     </Stack>
                   </Container>
                 </Box>
-                <Button disableElevation variant="contained">
-                  Add field
+                <Button
+                  type="submit"
+                  disabled={saving}
+                  disableElevation
+                  variant="contained"
+                >
+                  {saving ? "Saving..." : "Save"}
                 </Button>
               </Stack>
             </form>
