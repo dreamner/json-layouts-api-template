@@ -16,14 +16,10 @@ import {
   Chip,
   CircularProgress,
 } from "@mui/material";
-import Preview from "../../components/Preview";
-import { ThemeProvider } from "@mui/system";
-import defaultTheme from "../../lib/defaultheme";
-import usePages from "../../hooks/usePages";
 import { AuthSpinner } from "..";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const post = await prisma.app.findUnique({
+  const app = await prisma.app.findUnique({
     where: {
       id: String(params?.id),
     },
@@ -34,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     },
   });
   return {
-    props: post,
+    props: app,
   };
 };
 

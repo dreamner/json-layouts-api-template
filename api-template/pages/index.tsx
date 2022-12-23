@@ -7,47 +7,27 @@ import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import Container from "@mui/material/Container"
-import CircularProgress from "@mui/material/CircularProgress"
-import Autocomplete from "@mui/material/Autocomplete"
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import CircularProgress from "@mui/material/CircularProgress";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 import CaategoryDialog from "../components/CategoryDialog";
+import useApps from "../hooks/useApps";
+import { usePagesStateValue } from "../lib/builder";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const apps = await prisma.app.findMany({
-      where: { published: true },
-      include: {
-        author: {
-          select: { name: true, email: true, image: true },
-        },
-      },
-    });
-    return {
-      props: { apps },
-    };
-  } catch (e) {
-    return { props: { apps: [], error: e } };
-  }
-};
-
-type Props = {
-  apps: AppProps[];
-  error?: any;
-};
-
-const Apps: React.FC<Props> = (props) => {
+const Apps: React.FC<any> = () => {
+  const apps = useApps();
   const { data: session, status } = useSession();
+  const loadingApps = usePagesStateValue("loaders.apps");
   const router = useRouter();
-  if (status === "loading") {
+  if (status === "loading" || loadingApps) {
     return <AuthSpinner />;
   }
   const userHasValidSession = Boolean(session);
-
 
   return (
     <Layout>
@@ -62,7 +42,7 @@ const Apps: React.FC<Props> = (props) => {
                       size="small"
                       disablePortal
                       id="combo-box-demo"
-                      options={props.apps.map((app) => ({
+                      options={apps.map((app) => ({
                         value: app.id,
                         label: app.name,
                       }))}
@@ -93,7 +73,7 @@ const Apps: React.FC<Props> = (props) => {
               </Box>
               <Grid sx={{ mb: 4 }} container spacing={2}>
                 <>
-                  {props.apps.map((app) => (
+                  {apps.map((app) => (
                     <Grid key={app.id} item lg={3} md={6} xs={12}>
                       <div className="post">
                         <App app={app} />
@@ -102,7 +82,7 @@ const Apps: React.FC<Props> = (props) => {
                   ))}
                 </>
 
-                {!props.apps.length && userHasValidSession && (
+                {!apps.length && userHasValidSession && (
                   <div>
                     <h6>There are 0 published apps</h6>
                     <Button

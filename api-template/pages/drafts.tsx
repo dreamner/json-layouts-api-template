@@ -1,39 +1,24 @@
 // pages/drafts.tsx
 
 import React from "react";
-import { GetServerSideProps } from "next";
 import { useSession, getSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import App, { AppProps } from "../components/App";
-import prisma from "../lib/prisma";
 import { Box, Grid, Container, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { AuthSpinner } from ".";
+import useApps from "../hooks/useApps";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const drafts = await prisma.app.findMany({
-    where: { published: false },
-    include: {
-      author: {
-        select: { name: true, email: true, image: true },
-      },
-    },
-  });
-  return {
-    props: { drafts },
-  };
-};
-
-type Props = {
-  drafts: any;
-};
-
-const Drafts: React.FC<Props> = (props) => {
+const Drafts: React.FC = () => {
   const { data: session, status } = useSession();
 
   const router = useRouter();
 
-  const apps = props.drafts.filter(
+  const allApps = useApps();
+
+  const drafts = allApps.filter((a) => a.published === false);
+
+  const apps = drafts.filter(
     (app) => app.author.email === session?.user?.email
   );
   const hasApps = Boolean(apps.length);
@@ -54,7 +39,7 @@ const Drafts: React.FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>{props.drafts.length} Drafts</h1>
+        <h1>{apps.length} Drafts</h1>
         <Container>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>

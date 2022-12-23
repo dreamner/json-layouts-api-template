@@ -20,28 +20,12 @@ import {
   Button,
 } from "@mui/material";
 import CaategoryDialog from "../components/CategoryDialog";
+import useApps from "../hooks/useApps";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const apps = await prisma.app.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true, email: true, image: true },
-      },
-    },
-  });
-  return {
-    props: { apps },
-  };
-};
-
-type Props = {
-  apps: AppProps[];
-};
-
-const Apps: React.FC<Props> = (props) => {
+const Apps: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const apps = useApps();
   if (status === "loading") {
     return <AuthSpinner />;
   }
@@ -86,7 +70,7 @@ const Apps: React.FC<Props> = (props) => {
                   <Box sx={{ flexGrow: 1 }}></Box>
                   <Box sx={{ width: 650, mt: 3 }}>
                     <Carousel autoPlay>
-                      {props.apps.map((app, index) => {
+                      {apps.map((app, index) => {
                         return (
                           <div key={index}>
                             <img
@@ -109,7 +93,7 @@ const Apps: React.FC<Props> = (props) => {
               </Box>
               <Grid container spacing={2}>
                 <>
-                  {props.apps.map((app) => (
+                  {apps.map((app) => (
                     <Grid key={app.id} item lg={3} md={6} xs={12}>
                       <div className="post">
                         <App app={app} />
@@ -118,7 +102,7 @@ const Apps: React.FC<Props> = (props) => {
                   ))}
                 </>
 
-                {!props.apps.length && userHasValidSession && (
+                {!apps.length && userHasValidSession && (
                   <div>
                     <h6>There are 0 published apps</h6>
                     <button onClick={() => router.push("/create")}>
