@@ -76,7 +76,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || loadingApp) {
     return <AuthSpinner />;
   }
 
