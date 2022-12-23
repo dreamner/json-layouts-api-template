@@ -4,7 +4,6 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import UploadImageDialog from "./UploadImageDialog";
-import WovenImageList from "./util/components/ImageList";
 import { Button, Grid, Paper } from "@mui/material";
 import DatatableFormDialog from "./DatatableFormDialog";
 
@@ -47,6 +46,8 @@ export default function ResourceTabs({ resourceGroup }) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  if (!Boolean(resourceGroup)) return null;
 
   return (
     <Box sx={{ width: "100%" }}>
