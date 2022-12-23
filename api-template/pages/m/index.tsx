@@ -9,30 +9,16 @@ import prisma from "../../lib/prisma";
 import { AuthSpinner } from "..";
 import Layout from "../../components/Layout";
 import App from "../../components/App";
+import useApps from "../../hooks/useApps";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const drafts = await prisma.app.findMany({
-    include: {
-      author: {
-        select: { name: true, email: true, image: true },
-      },
-    },
-  });
-  return {
-    props: { drafts },
-  };
-};
-
-type Props = {
-  drafts: any;
-};
-
-const Index: React.FC<Props> = (props) => {
+const Index: React.FC = () => {
   const { data: session, status } = useSession();
 
   const router = useRouter();
 
-  const apps = props.drafts.filter(
+  const allApps = useApps();
+
+  const apps = allApps.filter(
     (app) => app.author.email === session?.user?.email
   );
   const hasApps = Boolean(apps.length);
@@ -56,7 +42,7 @@ const Index: React.FC<Props> = (props) => {
         <Container>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h5">My apps</Typography>
+              <Typography variant="h5">My apps</Typography>
               <Grid spacing={2} container>
                 {apps.map((app) => (
                   <Grid item lg={3} md={6} xs={12} key={app.id}>
