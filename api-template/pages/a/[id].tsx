@@ -19,6 +19,8 @@ import {
 import { AuthSpinner } from "..";
 import useApp from "../../hooks/useApp";
 import { usePagesStateValue } from "../../lib/builder";
+import useApps, { useAppActions } from "../../hooks/useApps";
+import { useAxios } from "../../hooks/useAxios";
 
 const App: React.FC<AppProps> = () => {
   const { data: session, status } = useSession();
@@ -26,6 +28,7 @@ const App: React.FC<AppProps> = () => {
   const router = useRouter();
 
   const app = useApp({ id: router.query.id });
+  const apps = useApps();
   const props = app ?? {}; // to ref
 
   const loadingApps = usePagesStateValue("loaders.apps");
@@ -33,14 +36,21 @@ const App: React.FC<AppProps> = () => {
   const [deleting, setDeleting] = useState(false);
   const [publishing, setPublishing] = useState(false);
 
+  const { updateApps } = useAppActions();
+
+  const axios = useAxios();
   async function publishPost(id: string): Promise<any> {
     try {
       setPublishing(true);
-      const res = await fetch(`/api/publish/${id}`, {
-        method: "PUT",
-      });
-      if (res.json()) {
+      const res = await axios.put(`/api/publish/${id}`);
+      if (res.data) {
+        let allApps = [...apps];
+        let _app = allApps.find((appp) => appp.id === id);
+        let indexOfApp = allApps.indexOf(_app);
+        allApps[indexOfApp] = { ..._app, published: true };
+        updateApps([...allApps]);
         setPublishing(false);
+
         await Router.push("/");
       } else setPublishing(false);
     } catch (e) {

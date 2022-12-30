@@ -97,15 +97,16 @@ export default function ComponentFormTabs({ data, index: cIndex }: ICFTabs) {
     });
   };
 
-  const handleComponentDataTypeChange = (e, index) => {
+  const handleComponentDataTypeChange = (
+    e,
+    index,
+    { check } = { check: false }
+  ) => {
     setState((s) => {
       let allComponents = [...s.data.components];
       allComponents[index].data = {
         ...allComponents[index].data,
-        [e.target.name]:
-          e.target.checked === false
-            ? false
-            : e.target.checked || e.target.value,
+        [e.target.name]: check ? e.target.checked : e.target.value,
       };
       return { ...s, data: { ...s.data, components: allComponents } };
     });

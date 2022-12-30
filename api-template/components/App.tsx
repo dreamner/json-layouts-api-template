@@ -25,6 +25,7 @@ export type AppProps = {
   passwordProtectionMessage: string;
   draft: string;
   title: string;
+  isNew: boolean;
 };
 
 const App: React.FC<{ app: AppProps }> = ({ app }) => {
@@ -36,7 +37,9 @@ const App: React.FC<{ app: AppProps }> = ({ app }) => {
         color={app.published ? "success" : "primary"}
         size="small"
         sx={{ mb: 1 }}
-        label={app.published ? "Live" : "Draft"}
+        label={
+          app.published ? `${app.isNew ? "Live (New)" : "Live"}` : `${app.isNew ? "Draft (New)" : "Draft"}`
+        }
       />
       <img
         height="108"

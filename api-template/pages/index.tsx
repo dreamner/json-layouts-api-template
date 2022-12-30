@@ -1,11 +1,9 @@
 import React from "react";
-import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
-import App, { AppProps } from "../components/App";
+import App from "../components/App";
 
-import prisma from "../lib/prisma";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import router from "next/router";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -15,15 +13,15 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-import CaategoryDialog from "../components/CategoryDialog";
 import useApps from "../hooks/useApps";
 import { usePagesStateValue } from "../lib/builder";
+import { Typography } from "@mui/material";
 
 const Apps: React.FC<any> = () => {
-  const apps = useApps();
+  const allApps = useApps();
+  const apps = allApps?.filter((app) => app.published);
   const { data: session, status } = useSession();
   const loadingApps = usePagesStateValue("loaders.apps");
-  const router = useRouter();
   if (status === "loading" || loadingApps) {
     return <AuthSpinner />;
   }
@@ -52,7 +50,10 @@ const Apps: React.FC<any> = () => {
                           router.push(`/${(v as any).value}`);
                       }}
                       renderInput={(params) => (
-                        <TextField {...params} placeholder="Search apps/categories..." />
+                        <TextField
+                          {...params}
+                          placeholder="Search apps/categories..."
+                        />
                       )}
                     />
                   </Box>
@@ -61,12 +62,13 @@ const Apps: React.FC<any> = () => {
                     {/* <CaategoryDialog appId={undefined} /> */}
                     <Button
                       size="small"
+                      disabled={!apps?.length}
                       onClick={() => router.push("/explore")}
                       sx={{ textTransform: "none", ml: 2 }}
                       disableElevation
                       variant="contained"
                     >
-                      Explore Apps
+                      Discover
                     </Button>
                   </Box>
                 </Box>
@@ -82,21 +84,24 @@ const Apps: React.FC<any> = () => {
                   ))}
                 </>
 
-                {!apps.length && userHasValidSession && (
+                {!apps.length && (
                   <div>
-                    <h6>There are 0 published apps</h6>
+                    <Typography variant="h4" sx={{ my: 3 }}>
+                      There are published apps
+                    </Typography>
                     <Button
+                      sx={{ textTransform: "none" }}
                       variant={"outlined"}
                       onClick={() => router.push("/create")}
                     >
                       Create app
                     </Button>
                     <Button
-                      sx={{ ml: 2 }}
+                      sx={{ ml: 2, textTransform: "none" }}
                       variant={"outlined"}
-                      onClick={() => router.push("/drafts")}
+                      onClick={() => router.push("/m")}
                     >
-                      My Drafts
+                      My apps
                     </Button>
                   </div>
                 )}

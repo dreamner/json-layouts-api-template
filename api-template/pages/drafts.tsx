@@ -1,18 +1,16 @@
 // pages/drafts.tsx
 
 import React from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Layout from "../components/Layout";
-import App, { AppProps } from "../components/App";
+import App from "../components/App";
 import { Box, Grid, Container, Button } from "@mui/material";
-import { useRouter } from "next/router";
+import Router from "next/router";
 import { AuthSpinner } from ".";
 import useApps from "../hooks/useApps";
 
 const Drafts: React.FC = () => {
   const { data: session, status } = useSession();
-
-  const router = useRouter();
 
   const allApps = useApps();
 
@@ -57,7 +55,7 @@ const Drafts: React.FC = () => {
                   <h6>You do not have any draft applications</h6>
                   <Button
                     variant={"outlined"}
-                    onClick={() => router.push("/create")}
+                    onClick={() => Router.push("/create")}
                   >
                     Create app
                   </Button>

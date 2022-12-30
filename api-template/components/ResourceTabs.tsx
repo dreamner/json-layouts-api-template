@@ -4,8 +4,9 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import UploadImageDialog from "./UploadImageDialog";
-import { Button, Grid, Paper } from "@mui/material";
+import { Button, Divider, Grid, Paper, Stack } from "@mui/material";
 import DatatableFormDialog from "./DatatableFormDialog";
+import router from "next/router";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -110,11 +111,58 @@ export default function ResourceTabs({ resourceGroup }) {
         )}
         <Grid container sx={{ mt: 3 }} spacing={3}>
           {resourceGroup?.tables?.map((table) => {
+            const columns = table.columns;
             return (
-              <Grid item xs={4} key={table?.id}>
+              <Grid item xs={5} key={table?.id}>
                 <Paper elevation={0} sx={{ p: 3 }}>
-                  <Typography>{table.name}</Typography>
-                  <Button variant="outlined">Copy link</Button>
+                  <Stack spacing={2}>
+                    <Typography>{table.name}</Typography>
+                    <Divider />
+                    <Typography>Fields</Typography>
+                    <ul>
+                      {columns.map((column, index) => {
+                        return <li key={index}>{column.key}</li>;
+                      })}
+                    </ul>
+                    <Stack spacing={2} direction={"row"}>
+                      <Box>
+                        <Button
+                          size="small"
+                          sx={{ textTransform: "none" }}
+                          disabled
+                          variant="outlined"
+                        >
+                          Copy link
+                        </Button>
+                      </Box>
+                      <Button
+                        size="small"
+                        onClick={() =>
+                          router.push(`/res/table/${table.id}/create`)
+                        }
+                        sx={{ textTransform: "none" }}
+                        variant="outlined"
+                      >
+                        Add record
+                      </Button>
+                      <Button
+                        size="small"
+                        onClick={() => router.push(`/res/table/${table.id}`)}
+                        sx={{ textTransform: "none" }}
+                        variant="outlined"
+                      >
+                        View records
+                      </Button>
+                      <Button
+                        size="small"
+                        sx={{ textTransform: "none" }}
+                        disabled
+                        variant="outlined"
+                      >
+                        Create form
+                      </Button>
+                    </Stack>
+                  </Stack>
                 </Paper>
               </Grid>
             );

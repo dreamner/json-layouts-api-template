@@ -1,11 +1,17 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { usePagesStateDisptch, usePagesStateValue } from "../lib/builder";
 import { useAxios } from "./useAxios";
 
-export default function useApps() {
-  const apps = usePagesStateValue("apps") ?? [];
+export default function useTables() {
+  const router = useRouter();
+  const queryId = router.query.id;
 
-  const loadingApps = usePagesStateValue("loaders.apps");
+  const tables = usePagesStateValue("tables") ?? [];
+
+  const data = (tables ?? []).filter(({ id }) => id === queryId)[0];
+
+  const loadingtables = usePagesStateValue("loaders.tables");
 
   const { updateApps, toggleAppsLoader } = useActions();
   const axios = useAxios();
@@ -13,7 +19,7 @@ export default function useApps() {
   async function updateAll() {
     try {
       toggleAppsLoader(true);
-      const response = await axios.get("/api/a");
+      const response = await axios.get(`/api/resource/table/${queryId}`);
       const data = response.data;
       if (data) {
         updateApps(data);
@@ -26,46 +32,44 @@ export default function useApps() {
     }
   }
 
-  const couldBeEmpty =
-    !apps.length &&
-    (loadingApps === null || loadingApps === undefined) &&
-    !loadingApps;
+  const couldBeEmpty = !tables && !loadingtables;
 
   React.useEffect(() => {
-    if (couldBeEmpty) updateAll();
-  }, [couldBeEmpty]);
+    if (queryId) updateAll();
+  }, [queryId]);
 
-  return apps;
+  return data;
 }
 
 function useActions() {
   const dispatchToPages = usePagesStateDisptch();
-  const apps = usePagesStateValue("apps");
+  const tables = usePagesStateValue("tables");
   const loaders = usePagesStateValue("loaders");
-  const loadingApps = usePagesStateValue("loaders.apps");
-  const updateApps = React.useCallback(
+  const loadingApps = usePagesStateValue("loaders.tables");
+  const updateResourceGrps = React.useCallback(
     (payload: any) => {
       const type = "update_all";
-      const key = "apps";
+      const key = "tables";
       dispatchToPages({ payload, type, key });
     },
-    [apps]
+    [tables]
   );
 
-  const toggleAppsLoader = React.useCallback(
+  const toggletablesLoader = React.useCallback(
     (state: boolean) => {
       const type = "update_all";
       const key = "loaders";
-      let payload = { ...loaders, apps: state };
+      let payload = { ...loaders, tables: state };
       dispatchToPages({
         payload,
         type,
         key,
       });
     },
-    [apps, loaders, loadingApps]
+    [tables, loaders, loadingApps]
   );
-  return { updateApps, toggleAppsLoader };
+  return {
+    updateApps: updateResourceGrps,
+    toggleAppsLoader: toggletablesLoader,
+  };
 }
-
-export const useAppActions = useActions;

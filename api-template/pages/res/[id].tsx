@@ -1,22 +1,25 @@
 import React from "react";
 import Layout from "../../components/Layout";
-import { Container, Grid, Box, Typography } from "@mui/material";
+import { Container, Grid, Box, Typography, Chip } from "@mui/material";
 import { useRouter } from "next/router";
 import CreateResourceGroupDialog from "../../components/CreateResourceGroupDialog";
 import useResourceGroups from "../../hooks/useResourceGroups";
+import { usePagesStateValue } from "../../lib/builder";
+import { AuthSpinner } from "..";
 
 const App: React.FC<any> = () => {
+  const groups = useResourceGroups();
   const router = useRouter();
-  const app = useResourceGroups();
-  const props = app; // to refactor
+  const loading = usePagesStateValue("loaders.resourceGroups");
+  if (loading) return <AuthSpinner />;
   return (
     <Layout>
       <Container className="page">
         <Box sx={{ display: "flex" }}>
           <h1 style={{ flexGrow: 1 }}>Resource Groups</h1>
-          {Boolean(props?.resourceGroups?.length) && (
+          {Boolean(groups?.length) && (
             <div>
-              <CreateResourceGroupDialog appId={props?.id} />
+              <CreateResourceGroupDialog resourceGroups={groups} />
             </div>
           )}
         </Box>
@@ -25,26 +28,30 @@ const App: React.FC<any> = () => {
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
               <Grid spacing={2} container>
-                {props?.resourceGroups?.map((app) => (
+                {groups?.map((app) => (
                   <Grid
                     onClick={() => router.push(`/res/group/${app.id}`)}
                     item
                     lg={4}
                     md={6}
                     xs={12}
+                    sx={{ py: 3 }}
                     key={app.id}
                   >
                     <div className="post">
+                      {app.isNew && <Chip color="primary" label="New" />}
                       <Typography variant="h5">{app.name}</Typography>
                       <Typography variant="caption"> {app.tag}</Typography>
                     </div>
                   </Grid>
                 ))}
               </Grid>
-              {!Boolean(props?.resourceGroups?.length) && (
+              {!Boolean(groups?.length) && (
                 <div>
-                  <h6>You do not have resource groups</h6>
-                  <CreateResourceGroupDialog appId={props.id} />
+                  <Typography sx={{ my: 4 }} variant="h4">
+                    You do not have resource groups
+                  </Typography>
+                  <CreateResourceGroupDialog resourceGroups={groups} />
                 </div>
               )}
             </Box>

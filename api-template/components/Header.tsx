@@ -212,6 +212,9 @@ const Header: React.FC = () => {
   return (
     <nav>
       {left}
+      <div style={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography variant="h5" >DREAMFEEL SPACES</Typography>
+      </div>
       {right}
       <style jsx>{`
         nav {

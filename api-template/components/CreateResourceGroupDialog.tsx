@@ -9,28 +9,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import Grid from "@mui/material/Grid";
-import {
-  Box,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  InputLabel,
-  List,
-  ListItemButton,
-  ListItemText,
-  MenuItem,
-  Paper,
-  Select,
-  Stack,
-  Switch,
-  TextField,
-} from "@mui/material";
+import { Box, Divider, Paper, Stack, TextField } from "@mui/material";
 import { usePagesStateValue } from "../lib/builder";
-import renderPage from "./util/renderPage";
-import ImageField from "./ImageField";
-import { useActions } from "./ToggleButtons";
-import { useRouter } from "next/router";
+import router from "next/router";
+import useResourceGroups, {
+  useResourceGroupsActions,
+} from "../hooks/useResourceGroups";
+import { useAxios } from "../hooks/useAxios";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -41,7 +26,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CreateResourceGroupDialog({ appId }) {
+export default function CreateResourceGroupDialog({ resourceGroups = [] }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -66,19 +51,19 @@ export default function CreateResourceGroupDialog({ appId }) {
 
   const [saving, setSaving] = React.useState(false);
 
-  const router = useRouter();
+  const { updateApps: updateResourceGroups } = useResourceGroupsActions();
+
+  const axios = useAxios();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSaving(true);
     try {
       const body = { ...state, appId: router.query.id };
-      const res = await fetch("/api/resource", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (res.json()) {
+      const res = await axios.post("/api/resource", body);
+      if (res.data) {
         setSaving(false);
+        updateResourceGroups([...resourceGroups, { ...res.data, isNew: true }]);
         setOpen(false);
       }
     } catch (error) {
@@ -96,7 +81,6 @@ export default function CreateResourceGroupDialog({ appId }) {
       <Button
         sx={{ textTransform: "none" }}
         size="small"
-        fullWidth
         variant="outlined"
         onClick={handleClickOpen}
       >
@@ -153,11 +137,13 @@ export default function CreateResourceGroupDialog({ appId }) {
                       name="name"
                       fullWidth
                       label="Name"
+                      required
                     />
                     <TextField
                       onChange={handleChange}
                       name="tag"
                       fullWidth
+                      required
                       label="Tag"
                     />
                     <TextField
@@ -170,7 +156,9 @@ export default function CreateResourceGroupDialog({ appId }) {
                     />
                     <Button
                       type="submit"
+                      sx={{ textTransform: "none" }}
                       fullWidth
+                      disabled={saving}
                       disableElevation
                       variant="contained"
                     >

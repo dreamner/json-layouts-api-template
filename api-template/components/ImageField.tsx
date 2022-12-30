@@ -50,7 +50,7 @@ export default function ImageField({
         }
       }
     }
-    if (value.length && multiple) {
+    if (value?.length && multiple) {
       for (let val of value) {
         const reader = new FileReader();
         reader.onload = function (e) {

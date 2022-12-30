@@ -1,11 +1,7 @@
-// pages/drafts.tsx
-
 import React from "react";
-import { GetServerSideProps } from "next";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Box, Grid, Container, Button, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import prisma from "../../lib/prisma";
+import router from "next/router";
 import { AuthSpinner } from "..";
 import Layout from "../../components/Layout";
 import App from "../../components/App";
@@ -13,8 +9,6 @@ import useApps from "../../hooks/useApps";
 
 const Index: React.FC = () => {
   const { data: session, status } = useSession();
-
-  const router = useRouter();
 
   const allApps = useApps();
 
@@ -30,7 +24,7 @@ const Index: React.FC = () => {
   if (!session) {
     return (
       <Layout>
-        <h1>Drafts</h1>
+        <h1>Apps</h1>
         <div>You need to be authenticated to view this page.</div>
       </Layout>
     );
@@ -42,8 +36,10 @@ const Index: React.FC = () => {
         <Container>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ flexGrow: 1 }}>
-              <Typography variant="h5">My apps</Typography>
-              <Grid spacing={2} container>
+              <Typography sx={{ mt: 3 }} variant="h3">
+                My apps
+              </Typography>
+              <Grid sx={{ mt: 2 }} spacing={2} container>
                 {apps.map((app) => (
                   <Grid item lg={3} md={6} xs={12} key={app.id}>
                     <div className="post">
@@ -54,7 +50,7 @@ const Index: React.FC = () => {
               </Grid>
               {!hasApps && (
                 <div>
-                  <h6>You do not have any draft applications</h6>
+                  <h6>You do not have any applications</h6>
                   <Button
                     variant={"outlined"}
                     onClick={() => router.push("/create")}

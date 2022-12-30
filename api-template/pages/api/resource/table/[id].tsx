@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import Cors from "cors";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 
 const cors = Cors({
   methods: ["POST", "GET", "HEAD"],
@@ -27,12 +27,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   await runMiddleware(req, res, cors);
-  const apps = await prisma.app.findMany({
+  const app = await prisma.table.findMany({
     include: {
-      author: {
-        select: { name: true, email: true, image:true },
+      columns: {
+        select: { key: true, id: true },
       },
-    },
+    //   rows: {
+    //     // select: { name: true },
+    //   },
+    } as any,
   });
-  res.json(apps);
+
+  res.json(app);
 }

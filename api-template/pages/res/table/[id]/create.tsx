@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import Layout from "../components/Layout";
-import Router from "next/router";
-import ImageField from "../components/ImageField";
 import {
   Box,
   Button,
@@ -14,11 +11,14 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import useUpload from "../hooks/useUpload";
 import { useSession } from "next-auth/react";
-import { AuthSpinner } from ".";
-import useApps, { useAppActions } from "../hooks/useApps";
-import { useAxios } from "../hooks/useAxios";
+import router from "next/router";
+
+import useUpload from "../../../../hooks/useUpload";
+import { AuthSpinner } from "../../..";
+import Layout from "../../../../components/Layout";
+import ImageField from "../../../../components/ImageField";
+import useTables from "../../../../hooks/useTables";
 
 const Draft: React.FC = () => {
   const [name, setName] = useState("");
@@ -28,14 +28,21 @@ const Draft: React.FC = () => {
 
   const { data: session, status } = useSession();
 
+  const table = useTables() ?? { name: "Unknown table", columns: [] };
+
+  const [state, setState] = useState(() => {
+    return table.columns.reduce((p, c) => {
+      return { ...p, [c.key]: "" };
+    }, {});
+  });
+
+  const handleStateChange = (e) =>
+    setState((p) => ({ ...p, [e.target.name]: e.target.value }));
+
   const [saving, setSaving] = useState(false);
 
   const uploadFiles = useUpload();
 
-  const apps = useApps();
-
-  const { updateApps } = useAppActions();
-  const axios = useAxios();
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -50,23 +57,14 @@ const Draft: React.FC = () => {
       currentState = { ...currentState, ...images };
     }
     try {
-      const res = await axios.post("/api/app", { ...currentState });
-      if (res.data) {
-        setSaving(false);
-        updateApps([
-          ...apps,
-          {
-            ...res.data,
-            isNew: true,
-            author: {
-              email: session?.user?.email,
-              image: session?.user?.image,
-              name: session?.user?.name,
-            },
-          },
-        ]);
-        await Router.push("/m");
-      }
+      const body = { ...currentState };
+      const res = await fetch("/api/app", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res) setSaving(false);
+      await router.push("/m");
     } catch (error) {
       setSaving(false);
     }
@@ -83,7 +81,7 @@ const Draft: React.FC = () => {
   if (!session) {
     return (
       <Layout>
-        <h1>App</h1>
+        <h1>Record</h1>
         <div>You need to be authenticated to view this page.</div>
       </Layout>
     );
@@ -95,50 +93,27 @@ const Draft: React.FC = () => {
         <Box sx={{ flexGrow: 1 }}></Box>
         <form style={{ flexGrow: 1 }} onSubmit={submitData}>
           <Stack spacing={2}>
-            <h1>New App</h1>
-            <TextField
-              autoFocus
-              onChange={(e) => setName(e.target.value)}
-              placeholder="App name"
-              type="text"
-              value={name}
-            />
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
-                Type of application
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={type}
-                label="Type of application"
-                onChange={(e) => setType(e.target.value as string)}
-              >
-                <MenuItem value={"Other"}>Other</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              multiline
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="A short description for your app"
-              rows={8}
-              value={description}
-            />
-            <Box>
-              <ImageField
-                value={image}
-                handleChange={handleLogoChange}
-                desc="Drag and drop or pick an image for your app icon / favicon"
-              />
-            </Box>
+            <h1>New Record</h1>
+            <h1>Table: {table?.name}</h1>
+            {table.columns.map((column) => {
+              return (
+                <TextField
+                  autoFocus
+                  onChange={handleStateChange}
+                  type="text"
+                  label={column.key}
+                  value={state[column.key]}
+                  name={column.key}
+                />
+              );
+            })}
 
             <Button
               variant="contained"
               disableElevation
-              disabled={!name || !description || !image || saving}
               type="submit"
             >
-              {saving ? <CircularProgress size={20} /> : "Create app"}
+              {saving ? <CircularProgress size={20} /> : "Save"}
             </Button>
             <Button
               disableElevation
@@ -146,7 +121,7 @@ const Draft: React.FC = () => {
               variant="outlined"
               className="back"
               href="#"
-              onClick={() => Router.push("/")}
+              onClick={() => router.back()}
             >
               or Cancel
             </Button>
