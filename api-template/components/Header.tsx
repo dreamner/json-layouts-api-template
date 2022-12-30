@@ -144,7 +144,7 @@ const Header: React.FC = () => {
         </div>
         <Link href="/">
           <a className="bold" data-active={isActive("/")}>
-            <Chip icon={<Home />} label="Home" />
+            <Chip sx={{ cursor: "pointer" }} icon={<Home />} label="Home" />
           </a>
         </Link>
         <style jsx>{`
@@ -213,7 +213,13 @@ const Header: React.FC = () => {
     <nav>
       {left}
       <div style={{ flexGrow: 1, textAlign: "center" }}>
-        <Typography variant="h5" >DREAMFEEL SPACES</Typography>
+        <Typography
+          sx={{ cursor: "pointer" }}
+          onClick={() => router.push("/")}
+          variant="h5"
+        >
+          DREAMFEEL SPACES
+        </Typography>
       </div>
       {right}
       <style jsx>{`

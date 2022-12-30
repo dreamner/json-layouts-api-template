@@ -12,7 +12,8 @@ import Logout from "@mui/icons-material/Logout";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { AddCircle, Apps } from "@mui/icons-material";
-
+import AttachMoneyIcon from
+ '@mui/icons-material/AttachMoney';
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -106,6 +107,12 @@ export default function AccountMenu() {
             <AddCircle fontSize="small" />
           </ListItemIcon>
           Create a new app
+        </MenuItem>
+        <MenuItem onClick={() => router.push("/plans")}>
+          <ListItemIcon>
+            <AttachMoneyIcon fontSize="small" />
+          </ListItemIcon>
+          Plans and Billing
         </MenuItem>
         <MenuItem
           onClick={() => {

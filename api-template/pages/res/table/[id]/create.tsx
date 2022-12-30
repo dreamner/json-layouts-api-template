@@ -98,6 +98,7 @@ const Draft: React.FC = () => {
             {table.columns.map((column) => {
               return (
                 <TextField
+                  key={column.key}
                   autoFocus
                   onChange={handleStateChange}
                   type="text"
@@ -108,11 +109,7 @@ const Draft: React.FC = () => {
               );
             })}
 
-            <Button
-              variant="contained"
-              disableElevation
-              type="submit"
-            >
+            <Button variant="contained" disableElevation type="submit">
               {saving ? <CircularProgress size={20} /> : "Save"}
             </Button>
             <Button
